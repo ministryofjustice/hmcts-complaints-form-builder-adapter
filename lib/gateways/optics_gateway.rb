@@ -14,7 +14,16 @@ class OpticsGateway
   end
 
   def payload
-    { Signature: signature, Key: API_KEY }
+    {
+      db: 'hmcts',
+      Type: 'Complaint',
+      Signature: signature,
+      Key: API_KEY,
+      Format: 'json',
+      RequestDate: Date.today,
+      Team: 'INBOX',
+      Customer: {}
+     }
   end
 
   def signature
