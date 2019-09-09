@@ -95,4 +95,6 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   config.auth[:shared_key] = ENV.fetch('JWE_SHARED_KEY')
+  config.auth[:optics_secret_key] = ENV.fetch('OPTICS_SECRET_KEY')
+  config.auth[:optics_api_key] = ENV.fetch('OPTICS_API_KEY')
 end
