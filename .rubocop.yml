@@ -1,3 +1,5 @@
+require: rubocop-rspec
+
 AllCops:
   Exclude:
   - '.bundle/**'
@@ -14,3 +16,7 @@ Style/SymbolArray:
 
 Metrics/LineLength:
   Enabled: false
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe']
+
