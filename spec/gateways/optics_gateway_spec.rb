@@ -2,9 +2,9 @@ describe OpticsGateway do
   context 'when the request is empty but for authentication' do
     let(:endpoint) { 'https://uat.icasework.com/createcase' }
     let(:date) { Time.zone.now.strftime('%Y-%m-%d') }
-    let(:secret_key) { Rails.application.config.auth.fetch(:optics_secret_key) }
+    let(:secret_key) { 'secret' }
+    let(:api_key) { '123' }
     let(:signature) { Digest::MD5.hexdigest("#{date}#{secret_key}") }
-    let(:api_key) { Rails.application.config.auth.fetch(:optics_api_key) }
     let(:payload) do
       {
         db: 'hmcts',
@@ -25,7 +25,7 @@ describe OpticsGateway do
     end
 
     it 'creates a payload with a signature and a key' do
-      gateway = described_class.new
+      gateway = described_class.new(secret_key: secret_key, api_key: api_key)
       response = gateway.create_complaint
       expect(response.code).to eq(200)
     end
