@@ -12,7 +12,7 @@ describe OpticsGateway do
         Signature: signature,
         Key: api_key,
         Format: 'json',
-        RequestDate: Date.today,
+        RequestDate: Time.zone.now.strftime("%Y-%m-%d"),
         Team: 'INBOX',
         Customer: {}
       }
