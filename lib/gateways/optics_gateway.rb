@@ -23,7 +23,7 @@ class OpticsGateway
   end
 
   def signature
-    date = Time.zone.now.strftime("%Y-%m-%d")
+    date = Time.zone.now.strftime('%Y-%m-%d')
     Digest::MD5.hexdigest("#{date}#{SECRET_KEY}")
   end
 end

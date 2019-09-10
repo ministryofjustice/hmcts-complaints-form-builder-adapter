@@ -1,7 +1,7 @@
 describe OpticsGateway do
   context 'when the request is empty but for authentication' do
     let(:endpoint) { 'https://uat.icasework.com/createcase' }
-    let(:date) { Time.now.iso8601.split('T')[0] }
+    let(:date) { Time.zone.now.strftime('%Y-%m-%d') }
     let(:secret_key) { Rails.application.config.auth.fetch(:optics_secret_key) }
     let(:signature) { Digest::MD5.hexdigest("#{date}#{secret_key}") }
     let(:api_key) { Rails.application.config.auth.fetch(:optics_api_key) }
@@ -12,7 +12,7 @@ describe OpticsGateway do
         Signature: signature,
         Key: api_key,
         Format: 'json',
-        RequestDate: Time.zone.now.strftime("%Y-%m-%d"),
+        RequestDate: date,
         Team: 'INBOX',
         Customer: {}
       }
