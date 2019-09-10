@@ -17,9 +17,7 @@ describe OpticsGateway do
         Customer: {}
       }
     end
-    let(:expected_query) do
-      payload.map { |k, v| v.is_a?(Hash) ? (v.map { |a, b| "#{k}.#{a}=#{URI.encode_www_form(b)}" }) : "#{k}=#{v}" }.join('&')
-    end
+    let(:expected_query) { payload.to_query }
 
     before do
       stub_request(:post, "#{endpoint}?#{expected_query}")

@@ -4,14 +4,10 @@ class OpticsGateway
   API_KEY = Rails.application.config.auth.fetch(:optics_api_key)
 
   def create_complaint
-    HTTParty.post("#{CREATE_CASE_ENDPOINT}?#{query_string}")
+    HTTParty.post("#{CREATE_CASE_ENDPOINT}?#{payload.to_query}")
   end
 
   private
-
-  def query_string
-    payload.map { |k, v| v.is_a?(Hash) ? (v.map { |a, b| "#{k}.#{a}=#{URI.encode_www_form(b)}" }) : "#{k}=#{v}" }.join('&')
-  end
 
   def payload
     {
@@ -23,7 +19,7 @@ class OpticsGateway
       RequestDate: Date.today,
       Team: 'INBOX',
       Customer: {}
-     }
+    }
   end
 
   def signature
