@@ -25,7 +25,7 @@ describe OpticsGateway do
     end
 
     it 'creates a payload with a signature and a key' do
-      gateway = OpticsGateway.new
+      gateway = described_class.new
       response = gateway.create_complaint
       expect(response.code).to eq(200)
     end
