@@ -4,7 +4,7 @@ class OpticsGateway
   API_KEY = Rails.application.config.auth.fetch(:optics_api_key)
 
   def create_complaint
-    HTTParty.post("#{CREATE_CASE_ENDPOINT}?#{payload.to_query}")
+    HTTParty.post(CREATE_CASE_ENDPOINT, query: payload)
   end
 
   private
@@ -23,7 +23,7 @@ class OpticsGateway
   end
 
   def signature
-    date = Time.now.iso8601.split('T')[0]
+    date = Time.zone.now.strftime("%Y-%m-%d")
     Digest::MD5.hexdigest("#{date}#{SECRET_KEY}")
   end
 end
