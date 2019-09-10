@@ -1,43 +1,67 @@
-version: 2
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@0.0.2
 jobs:
   test:
     docker:
-      - image: circleci/buildpack-deps:14.04
+      - image: asmega/fb-builder:latest
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: test
-          command: docker-compose run --rm app rspec
-      - run:
           name: lint
           command: docker-compose run --rm app rubocop
-  staging_deploy:
+      - run:
+          name: test
+          command: docker-compose run --rm app rspec
+  deploy_staging:
     docker:
-      - image: circleci/buildpack-deps:14.04
+      - image: asmega/fb-builder:latest
     steps:
       - checkout
-  production_deploy:
+      - run:
+          name: deploy to staging
+          command: './deploy/scripts/circle_deploy.sh staging $KUBE_TOKEN_STAGING'
+
+  deploy_production:
     docker:
-      - image: circleci/buildpack-deps:14.04
+      - image: asmega/fb-builder:latest
     steps:
       - checkout
+      - run:
+          name: deploy to production
+          command: './deploy/scripts/circle_deploy.sh production $KUBE_TOKEN_PRODUCTION'
 
 workflows:
   version: 2
-  test_and_deploy:
+  release:
     jobs:
       - test
-      - staging_deploy:
-          requires:
-          - test
+      - aws-ecr/build_and_push_image:
+          account-url: "754256621582.dkr.ecr.eu-west-2.amazonaws.com"
+          repo: "form-builder/hmcts-complaints-formbuilder-adapter"
+          region: ${AWS_DEFAULT_REGION}
+          tag: "${CIRCLE_SHA1}"
           filters:
             branches:
               only: master
-      - permit_production_deploy:
+      - deploy_staging:
+          requires:
+            - aws-ecr/build_and_push_image
+            - test
+          filters:
+            branches:
+              only: master
+      - confirm_production_deploy:
           type: approval
           requires:
-          - staging_deploy
-      - production_deploy:
+            - deploy_staging
+          filters:
+            branches:
+              only: master
+      - deploy_production:
           requires:
-          - permit_production_deploy
+            - confirm_production_deploy
+          filters:
+            branches:
+              only: master

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-CONFIG_FILE="/tmp/helm_deploy.yaml"
-CIRCLE_SHA1=`git rev-parse HEAD`
-
-helm template deploy/ --set circleSha1=$CIRCLE_SHA1 --set environmentName=$ENV > $CONFIG_FILE
-kubectl apply -f $CONFIG_FILE -n hmcts-complaints-formbuilder-adapter-$ENV
