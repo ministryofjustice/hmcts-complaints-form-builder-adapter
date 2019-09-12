@@ -31,3 +31,5 @@ group :development do
 end
 
 gem 'jwe', '~> 0.4.0'
+gem 'jwt', '~> 2.2'
+gem 'timecop', '~> 0.9.1'
