@@ -52,3 +52,5 @@ node_modules/
 
 # ignore cache dir made by rubocop
 .cache/
+
+.local
