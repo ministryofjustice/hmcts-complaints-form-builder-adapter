@@ -46,7 +46,13 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
-  config.active_job.queue_adapter = :delayed_job
+  # config.active_job.queue_adapter = :delayed_job
+
+  config.active_job.queue_adapter = ActiveJob::QueueAdapters::AsyncAdapter.new(
+    min_threads: 1,
+    max_threads: 2 * Concurrent.processor_count,
+    idletime: 600.seconds
+  )
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
