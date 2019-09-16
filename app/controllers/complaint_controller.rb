@@ -16,8 +16,8 @@ class ComplaintController < ApplicationController
       optics_gateway: Gateway::Optics.new,
       generate_jwt_token: Usecase::Optics::GenerateJwtToken.new(
         url: 'https://uat.icasework.com/token?db=hmcts',
-        api_key: ENV.fetch('OPTICS_API_KEY'),
-        hmac_secret: ENV.fetch('OPTICS_SECRET_KEY')
+        api_key: Rails.configuration.x.optics.api_key,
+        hmac_secret: Rails.configuration.x.optics.secret_key
       )
     )
   end

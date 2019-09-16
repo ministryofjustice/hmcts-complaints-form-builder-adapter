@@ -22,7 +22,7 @@ class ApplicationController < ActionController::API
   private
 
   def jwe_key
-    Rails.application.config.auth.fetch(:shared_key)
+    Rails.configuration.shared_key
   end
 
   def render_unauthorized

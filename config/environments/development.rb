@@ -41,9 +41,12 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.auth[:shared_key] = ENV.fetch('DEVELOPMENT_JWE_SHARED_KEY', '5d6dc7fc083ea4f0'.freeze)
-  config.auth[:optics_secret_key] =
+  config.shared_key =
+    ENV.fetch('DEVELOPMENT_JWE_SHARED_KEY', '5d6dc7fc083ea4f0'.freeze)
+
+  config.x.optics.secret_key =
     ENV.fetch('OPTICS_SECRET_KEY', SecureRandom.hex(8).freeze)
-  config.auth[:optics_api_key] =
+
+  config.x.optics.api_key =
     ENV.fetch('OPTICS_API_KEY', SecureRandom.hex(8).freeze)
 end

@@ -34,14 +34,14 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  config.auth[:shared_key] =
+  config.shared_key =
     ENV.fetch('TEST_JWE_SHARED_KEY', SecureRandom.hex(8).freeze)
 
-  config.auth[:optics_secret_key] =
-    ENV.fetch('OPTICS_SECRET_KEY', SecureRandom.hex(8).freeze)
+  config.x.optics.secret_key =
+    ENV.fetch('OPTICS_SECRET_KEY', 'some_secret_optics_api_key'.freeze)
 
-  config.auth[:optics_api_key] =
-    ENV.fetch('OPTICS_API_KEY', SecureRandom.hex(8).freeze)
+  config.x.optics.api_key =
+    ENV.fetch('OPTICS_API_KEY', 'some_optics_api_key'.freeze)
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
