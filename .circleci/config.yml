@@ -28,7 +28,7 @@ jobs:
             - "7e:e7:44:be:a1:4b:4e:3c:56:65:3a:94:19:50:02:cc"
       - run:
           name: deploy to staging
-          command: './deploy/scripts/circle_deploy.sh staging $KUBE_TOKEN_STAGING'
+          command: './deploy/scripts/circle_deploy.sh "APP_${CIRCLE_SHA1}" staging $KUBE_TOKEN_STAGING'
 
   deploy_production:
     working_directory: ~/circle/git/hmcts-complaints-formbuilder-adapter
@@ -42,7 +42,7 @@ jobs:
             - "7e:e7:44:be:a1:4b:4e:3c:56:65:3a:94:19:50:02:cc"
       - run:
           name: deploy to production
-          command: './deploy/scripts/circle_deploy.sh production $KUBE_TOKEN_PRODUCTION'
+          command: './deploy/scripts/circle_deploy.sh "APP_${CIRCLE_SHA1}" production $KUBE_TOKEN_PRODUCTION'
 
 workflows:
   version: 2
