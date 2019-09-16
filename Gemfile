@@ -3,7 +3,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read('.ruby-version').strip
 
+gem 'delayed_job_active_record', '~> 4.1'
 gem 'httparty', '~> 0.17.0'
+gem 'jwe', '~> 0.4.0'
+gem 'jwt', '~> 2.2'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.0'
@@ -26,6 +29,3 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
-gem 'jwe', '~> 0.4.0'
-gem 'jwt', '~> 2.2'

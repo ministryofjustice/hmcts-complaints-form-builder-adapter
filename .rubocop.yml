@@ -19,3 +19,8 @@ Metrics/LineLength:
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context']
+
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - db/**/*
