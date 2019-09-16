@@ -75,7 +75,6 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.11.1)
-    gem (0.0.1.alpha)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashdiff (1.0.0)
@@ -215,7 +214,6 @@ PLATFORMS
 DEPENDENCIES
   byebug
   delayed_job_active_record (~> 4.1)
-  gem (~> 0.0.1.alpha)
   httparty (~> 0.17.0)
   jwe (~> 0.4.0)
   jwt (~> 2.2)
