@@ -1,7 +1,7 @@
 module Presenter
   class Complaint
     def initialize(form_builder_payload:)
-      @data = form_builder_payload[:submissionAnswers]
+      @data = form_builder_payload.fetch(:submissionAnswers)
     end
 
     def optics_payload
