@@ -49,23 +49,23 @@ workflows:
   release:
     jobs:
       - test
-      - aws-ecr/build_and_push_image:
-          name: push_app_image
+      - aws-ecr/build-and-push-image:
+          name: push_app_image #todo remove ECR_ENDPOINT var as it is not used
           dockerfile: Dockerfile
-          account-url: "754256621582.dkr.ecr.eu-west-2.amazonaws.com"
+          account-url: AWS_ECR_ACCOUNT_URL
+          region: AWS_DEFAULT_REGION
           repo: "form-builder/hmcts-complaints-formbuilder-adapter"
-          region: ${AWS_DEFAULT_REGION}
-          tag: "${CIRCLE_SHA1}"
+          tag: "APP_${CIRCLE_SHA1}"
           filters:
             branches:
               only: master
-      - aws-ecr/build_and_push_image:
+      - aws-ecr/build-and-push-image:
           name: push_worker_image
           dockerfile: Dockerfile.worker
-          account-url: "754256621582.dkr.ecr.eu-west-2.amazonaws.com"
+          account-url: AWS_ACCOUNT_URL
+          region: AWS_DEFAULT_REGION
           repo: "form-builder/hmcts-complaints-formbuilder-adapter"
-          region: ${AWS_DEFAULT_REGION}
-          tag: "${CIRCLE_SHA1}"
+          tag: "WORKER_${CIRCLE_SHA1}"
           filters:
             branches:
               only: master
