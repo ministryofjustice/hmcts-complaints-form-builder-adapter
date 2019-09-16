@@ -1,8 +1,6 @@
 describe 'Submitting a complaint', type: :request do
   before do
     Timecop.freeze(Time.parse('2019-09-11 15:34:46 +0000'))
-    ENV['OPTICS_API_KEY'] = 'some_optics_api_key'
-    ENV['OPTICS_SECRET_KEY'] = 'some_secret_optics_api_key'
 
     stub_request(:post, 'https://uat.icasework.com/token?db=hmcts')
       .with(body: { 'assertion' => 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTU2ODIxNjA4Nn0.fj8VsMONpeEmeavkh23yRsGAtfVlWkJI267gijpy6pA', 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer' },
