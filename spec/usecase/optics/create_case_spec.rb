@@ -32,8 +32,8 @@ describe Usecase::Optics::CreateCase do
       expect(get_bearer_token).to have_received(:execute)
     end
 
-    xit 'calls present on the presenter' do
-      expect(presenter).to have_received(:present)
+    it 'calls present on the presenter' do
+      expect(presenter).to have_received(:optics_payload)
     end
   end
 end
