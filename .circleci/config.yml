@@ -50,6 +50,18 @@ workflows:
     jobs:
       - test
       - aws-ecr/build_and_push_image:
+          name: push_app_image
+          dockerfile: Dockerfile
+          account-url: "754256621582.dkr.ecr.eu-west-2.amazonaws.com"
+          repo: "form-builder/hmcts-complaints-formbuilder-adapter"
+          region: ${AWS_DEFAULT_REGION}
+          tag: "${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: master
+      - aws-ecr/build_and_push_image:
+          name: push_worker_image
+          dockerfile: Dockerfile.worker
           account-url: "754256621582.dkr.ecr.eu-west-2.amazonaws.com"
           repo: "form-builder/hmcts-complaints-formbuilder-adapter"
           region: ${AWS_DEFAULT_REGION}
@@ -59,7 +71,8 @@ workflows:
               only: master
       - deploy_staging:
           requires:
-            - aws-ecr/build_and_push_image
+            - push_app_image
+            - push_worker_image
             - test
           filters:
             branches:

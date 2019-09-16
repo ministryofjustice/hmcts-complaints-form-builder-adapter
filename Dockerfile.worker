@@ -1,0 +1,27 @@
+FROM ruby:2.6.4-alpine3.9
+
+ARG UID
+
+RUN apk add build-base postgresql-contrib postgresql-dev bash tzdata
+
+RUN addgroup -g 1001 -S appgroup && \
+  adduser -u 1001 -S appuser -G appgroup
+
+WORKDIR /app
+ENV HOME /app
+
+COPY Gemfile* .ruby-version ./
+
+RUN gem install bundler
+RUN bundle install --no-cache
+
+COPY . .
+
+RUN chown -R 1001:appgroup /app
+
+USER 1001
+
+ARG RAILS_ENV='production'
+ENV RAILS_ENV=$RAILS_ENV
+
+CMD bin/delayed_job run
