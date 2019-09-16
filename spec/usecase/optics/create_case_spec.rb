@@ -13,7 +13,7 @@ describe Usecase::Optics::CreateCase do
     instance_double('Usecase::Optics::GetBearerToken')
   end
   let(:optics_gateway) { instance_spy(Gateway::Optics) }
-  let(:presenter) { OpenStruct.new(present: {}) }
+  let(:presenter) { instance_double(Presenter::Complaint, optics_payload: {}) }
 
   describe '#execute' do
     before do
@@ -24,7 +24,7 @@ describe Usecase::Optics::CreateCase do
     it 'posts to optics' do
       expect(optics_gateway).to have_received(:post).with(
         bearer_token: 'some token',
-        body: {}
+        body: {}.to_json
       ).once
     end
 

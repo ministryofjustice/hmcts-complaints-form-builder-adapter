@@ -1,10 +1,11 @@
-describe Presenters::Complaint do
+describe Presenter::Complaint do
   let(:input) do
     {
       'serviceSlug': 'my-form',
       'submissionId': '1e937616-dd0b-4bc3-8c67-40e4ffd54f78',
       'submissionAnswers': {
-        'full_name': 'Mr Complainer',
+        'first_name': 'Jim',
+        'last_name': 'Complainer',
         'email_address': 'test@test.com',
         'phone': '07548733456',
         'building_street': '102 Petty France',
@@ -27,7 +28,8 @@ describe Presenters::Complaint do
       RequestMethod: 'Form',
       RequestDate: '1568199892316',
       Team: 'INBOX',
-      "Customer.FullName": 'Mr Complainer',
+      "Customer.FirstName": 'Jim',
+      "Customer.Surname": 'Complainer',
       "Customer.Address": '102 Petty France',
       "Customer.Town": 'London',
       "Customer.County": 'London',
@@ -36,7 +38,7 @@ describe Presenters::Complaint do
       "Customer.Phone": '07548733456',
       Details: 'I lost my case',
       Location: '1021',
-      "Case.ContactMethod": "Online - gov.uk"
+      "Case.ContactMethod": 'Online - gov.uk'
     }
   end
 
@@ -62,8 +64,9 @@ describe Presenters::Complaint do
         RequestMethod: 'Form',
         RequestDate: Date.today,
         Team: 'INBOX',
-        "Case.ContactMethod": "Online - gov.uk",
-        "Customer.FullName": '',
+        "Case.ContactMethod": 'Online - gov.uk',
+        "Customer.FirstName": '',
+        "Customer.Surname": '',
         "Customer.Address": '',
         "Customer.Town": '',
         "Customer.County": '',

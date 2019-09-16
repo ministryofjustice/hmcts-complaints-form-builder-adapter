@@ -1,4 +1,4 @@
-module Presenters
+module Presenter
   class Complaint
     def initialize(form_builder_payload:)
       @data = form_builder_payload[:submissionAnswers]
@@ -8,7 +8,7 @@ module Presenters
       {
         RequestDate: @data.fetch(:submissionDate, Date.today),
         Details: @data.fetch(:complaint_details, ''),
-        Location: @data.fetch(:complaint_location, ''),
+        Location: @data.fetch(:complaint_location, '')
       }.merge(constant_data, customer_data)
     end
 
@@ -16,7 +16,8 @@ module Presenters
 
     def customer_data
       {
-        "Customer.FullName": @data.fetch(:full_name, ''),
+        "Customer.FirstName": @data.fetch(:first_name, ''),
+        "Customer.Surname": @data.fetch(:last_name, ''),
         "Customer.Address": @data.fetch(:building_street, ''),
         "Customer.Town": @data.fetch(:town_city, ''),
         "Customer.County": @data.fetch(:county, ''),
@@ -33,7 +34,7 @@ module Presenters
         Format: 'json',
         RequestMethod: 'Form',
         Team: 'INBOX',
-        "Case.ContactMethod": "Online - gov.uk"
+        "Case.ContactMethod": 'Online - gov.uk'
       }
     end
   end

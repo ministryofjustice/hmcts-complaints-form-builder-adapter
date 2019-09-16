@@ -9,7 +9,7 @@ module Usecase
 
       def execute
         @optics_gateway.post(
-          body: @presenter.present,
+          body: @presenter.optics_payload.to_json,
           bearer_token: @get_bearer_token.execute
         )
       end
