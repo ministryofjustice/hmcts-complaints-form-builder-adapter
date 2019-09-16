@@ -10,7 +10,7 @@ gem 'rails', '~> 6.0.0'
 gem 'sentry-raven', '~> 2.11'
 
 group :test do
-  gem 'webmock', '~> 3.7.2'
+  gem 'webmock', '~> 3.7.3'
 end
 
 group :development, :test do
