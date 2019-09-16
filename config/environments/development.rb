@@ -34,19 +34,19 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
-  # Raises error for missing translations.
-  # config.action_view.raise_on_missing_translations = true
+  # default async active job backend, uses an in-process thread pool
+  config.active_job.queue_adapter = ActiveJob::QueueAdapters::AsyncAdapter.new(
+    min_threads: 1,
+    max_threads: 2 * Concurrent.processor_count,
+    idletime: 600.seconds
+  )
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.shared_key =
-    ENV.fetch('DEVELOPMENT_JWE_SHARED_KEY', '5d6dc7fc083ea4f0'.freeze)
+  config.shared_key = ENV.fetch('DEVELOPMENT_JWE_SHARED_KEY', '5d6dc7fc083ea4f0'.freeze)
 
-  config.x.optics.secret_key =
-    ENV.fetch('OPTICS_SECRET_KEY', SecureRandom.hex(8).freeze)
-
-  config.x.optics.api_key =
-    ENV.fetch('OPTICS_API_KEY', SecureRandom.hex(8).freeze)
+  config.x.optics.secret_key = ENV.fetch('OPTICS_SECRET_KEY', SecureRandom.hex(8).freeze)
+  config.x.optics.api_key = ENV.fetch('OPTICS_API_KEY', SecureRandom.hex(8).freeze)
 end

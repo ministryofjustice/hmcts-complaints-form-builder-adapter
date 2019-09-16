@@ -34,6 +34,8 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
+  config.active_job.queue_adapter = :test
+
   config.shared_key =
     ENV.fetch('TEST_JWE_SHARED_KEY', SecureRandom.hex(8).freeze)
 

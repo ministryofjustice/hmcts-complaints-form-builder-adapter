@@ -1,4 +1,6 @@
 describe 'Submitting a complaint', type: :request do
+  include ActiveJob::TestHelper
+
   before do
     Timecop.freeze(Time.parse('2019-09-11 15:34:46 +0000'))
 
@@ -16,8 +18,9 @@ describe 'Submitting a complaint', type: :request do
         body: 'stub case id response',
         headers: {}
       )
-
-    post '/v1/complaint', params: encrypted_body(msg: runner_submission)
+    perform_enqueued_jobs do
+      post '/v1/complaint', params: encrypted_body(msg: runner_submission)
+    end
   end
 
   let(:expected_optics_payload) do
