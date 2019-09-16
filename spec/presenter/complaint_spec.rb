@@ -15,7 +15,8 @@ describe Presenter::Complaint do
         'postcode': 'SW1H 9AJ',
         'complaint_details': 'I lost my case',
         'complaint_location': '1021',
-        'submissionDate': '1568199892316'
+        'submissionDate': '1568199892316',
+        'case_number': '12345'
       }
     }
   end
@@ -28,6 +29,7 @@ describe Presenter::Complaint do
       RequestMethod: 'Form',
       RequestDate: '1568199892316',
       Team: 'INBOX',
+      Reference: '12345',
       "Customer.FirstName": 'Jim',
       "Customer.Surname": 'Complainer',
       "Customer.Address": '102 Petty France',
@@ -61,6 +63,7 @@ describe Presenter::Complaint do
         db: 'hmcts',
         Type: 'Complaint',
         Format: 'json',
+        Reference: '',
         RequestMethod: 'Form',
         RequestDate: Date.today,
         Team: 'INBOX',

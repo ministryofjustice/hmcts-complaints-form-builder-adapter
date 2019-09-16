@@ -27,6 +27,7 @@ describe 'Submitting a complaint', type: :request do
       RequestDate: Date.today,
       Details: '',
       Location: '',
+      Reference: '',
       db: 'hmcts',
       Type: 'Complaint',
       Format: 'json',
