@@ -8,7 +8,8 @@ module Presenter
       {
         RequestDate: @data.fetch(:submissionDate, Date.today),
         Details: @data.fetch(:complaint_details, ''),
-        Location: @data.fetch(:complaint_location, '')
+        Location: @data.fetch(:complaint_location, ''),
+        Reference: @data.fetch(:case_number, '')
       }.merge(constant_data, customer_data)
     end
 
