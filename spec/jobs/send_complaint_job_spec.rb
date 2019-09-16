@@ -1,12 +1,12 @@
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe SendComplaintJob, :type => :job do
-  describe "#perform_later" do
-    it "queues a job" do
+RSpec.describe SendComplaintJob, type: :job do
+  describe '#perform_later' do
+    it 'queues a job' do
       ActiveJob::Base.queue_adapter = :test
-      expect {
+      expect do
         described_class.perform_later
-      }.to have_enqueued_job.on_queue("send_complaints").exactly(:once)
+      end.to have_enqueued_job.on_queue('send_complaints').exactly(:once)
     end
   end
 end
