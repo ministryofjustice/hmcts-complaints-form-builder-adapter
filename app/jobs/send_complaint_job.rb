@@ -1,5 +1,5 @@
 class SendComplaintJob < ApplicationJob
-  queue_as :my_jobs
+  queue_as :send_complaints
 
   def perform()
   end

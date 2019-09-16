@@ -6,7 +6,7 @@ RSpec.describe SendComplaintJob, :type => :job do
       ActiveJob::Base.queue_adapter = :test
       expect {
         described_class.perform_later
-      }.to have_enqueued_job
+      }.to have_enqueued_job.on_queue("send_complaints").exactly(:once)
     end
   end
 end
