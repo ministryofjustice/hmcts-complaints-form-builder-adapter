@@ -5,8 +5,8 @@ set -e -u -o pipefail
 CONFIG_FILE="/tmp/helm_deploy.yaml"
 
 image_tag=$1
-environment_name=$1
-kube_token=$2
+environment_name=$2
+kube_token=$3
 
 get_secrets() {
     GIT_SSH_COMMAND='ssh -v -i ~/.ssh/id_rsa_7ee744bea14b4e3c56653a94195002cc -o "IdentitiesOnly=yes"' git clone git@github.com:ministryofjustice/hmcts-complaints-formbuilder-adapter-deploy.git deploy-config
