@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SendComplaintJob, type: :job do
   describe '#perform_later' do
-    it 'queues a jobs' do
+    it 'queues a job' do
       expect do
         described_class.perform_later
       end.to have_enqueued_job.on_queue('send_complaints').exactly(:once)
@@ -21,7 +21,7 @@ describe SendComplaintJob, type: :job do
     before do
       allow(Presenter::Complaint).to receive(:new).and_return(gateway).with(form_builder_payload: input)
       allow(Usecase::Optics::GenerateJwtToken).to receive(:new).and_return(create_token).with(
-        url: 'https://uat.icasework.com/token?db=hmcts',
+        endpoint: Rails.configuration.x.optics.endpoint,
         api_key: Rails.configuration.x.optics.api_key,
         hmac_secret: Rails.configuration.x.optics.secret_key
       )

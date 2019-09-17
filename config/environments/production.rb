@@ -101,4 +101,5 @@ Rails.application.configure do
   config.shared_key = ENV.fetch('JWE_SHARED_KEY')
   config.x.optics.secret_key = ENV.fetch('OPTICS_SECRET_KEY')
   config.x.optics.api_key = ENV.fetch('OPTICS_API_KEY')
+  config.x.optics.endpoint = ENV.fetch('OPTICS_ENDPOINT', 'https://uat.icasework.com'.freeze)
 end

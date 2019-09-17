@@ -49,4 +49,5 @@ Rails.application.configure do
 
   config.x.optics.secret_key = ENV.fetch('OPTICS_SECRET_KEY', SecureRandom.hex(8).freeze)
   config.x.optics.api_key = ENV.fetch('OPTICS_API_KEY', SecureRandom.hex(8).freeze)
+  config.x.optics.endpoint = ENV.fetch('OPTICS_ENDPOINT', 'https://uat.icasework.com'.freeze)
 end

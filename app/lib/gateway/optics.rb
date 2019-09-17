@@ -2,8 +2,10 @@ module Gateway
   class Optics
     class ClientError < StandardError; end
 
-    GET_TOKEN_ENDPOINT = 'https://uat.icasework.com/token?db=hmcts'.freeze
-    ENDPOINT = 'https://uat.icasework.com/createcase?db=hmcts'.freeze
+    def initialize(endpoint:)
+      @get_token_url = "#{endpoint}/token?db=hmcts".freeze
+      @post_case_url = "#{endpoint}/createcase?db=hmcts".freeze
+    end
 
     def request_bearer_token(jwt_token:)
       rep = post_jwt(jwt_token)
@@ -12,7 +14,7 @@ module Gateway
     end
 
     def post(body:, bearer_token:)
-      HTTParty.post(ENDPOINT, headers: headers(bearer_token), body: body)
+      HTTParty.post(@post_case_url, headers: headers(bearer_token), body: body)
     end
 
     private
@@ -26,7 +28,7 @@ module Gateway
 
     def post_jwt(jwt_token)
       result = HTTParty.post(
-        GET_TOKEN_ENDPOINT,
+        @get_token_url,
         headers: { 'Content-Type' => 'application/x-www-form-urlencoded' },
         body: URI.encode_www_form(
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',

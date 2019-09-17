@@ -1,6 +1,7 @@
 describe Gateway::Optics do
-  subject(:gateway) { described_class.new }
+  subject(:gateway) { described_class.new(endpoint: endpoint) }
 
+  let(:endpoint) { 'https://example.com' }
   let(:api_key) { 'foo' }
   let(:secret_key) { 'bar' }
   let(:token) { 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmb28iLCJhdWQiOiJodHRwczovL3VhdC5pY2FzZXdvcmsuY29tL3Rva2VuIiwiaWF0IjoxNTY4MjE2MDg2LCJleHAiOjE1ODExNzYwODZ9.0VbK6jGM3Ux8sHq3ekkz-g5xkLxFY4c_6CRVEkA1Sh4' }
@@ -8,7 +9,7 @@ describe Gateway::Optics do
 
   describe '#request_bearer_token' do
     before do
-      stub_request(:post, 'https://uat.icasework.com/token?db=hmcts').to_return(status: 200, body: { access_token: bearer_token }.to_json)
+      stub_request(:post, "#{endpoint}/token?db=hmcts").to_return(status: 200, body: { access_token: bearer_token }.to_json)
     end
 
     let(:expected_body) do
@@ -20,7 +21,7 @@ describe Gateway::Optics do
 
     it 'sends a request for a token' do
       gateway.request_bearer_token(jwt_token: token)
-      expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/token?db=hmcts').with(
+      expect(WebMock).to have_requested(:post, "#{endpoint}/token?db=hmcts").with(
         headers: { 'Content-Type' => 'application/x-www-form-urlencoded' },
         body: expected_body
       ).once
@@ -32,7 +33,7 @@ describe Gateway::Optics do
 
     context 'when there is a failing status code returned' do
       before do
-        stub_request(:post, 'https://uat.icasework.com/token?db=hmcts').to_return(status: 401, body: '<error>errors are returned in xml</error>')
+        stub_request(:post, "#{endpoint}/token?db=hmcts").to_return(status: 401, body: '<error>errors are returned in xml</error>')
       end
 
       it 'checks the return code of the request' do
@@ -45,7 +46,7 @@ describe Gateway::Optics do
 
   describe '#post' do
     before do
-      stub_request(:post, 'https://uat.icasework.com/createcase?db=hmcts').to_return(
+      stub_request(:post, "#{endpoint}/createcase?db=hmcts").to_return(
         status: 200, body: {}.to_json
       )
       Timecop.freeze(Time.parse('2019-09-11 15:34:46 +0000'))
@@ -64,7 +65,7 @@ describe Gateway::Optics do
 
     it 'posts given body to optics' do
       gateway.post(body: {}, bearer_token: bearer_token)
-      expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/createcase?db=hmcts').with(
+      expect(WebMock).to have_requested(:post, "#{endpoint}/createcase?db=hmcts").with(
         headers: expected_headers,
         body: {}
       ).once
