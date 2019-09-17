@@ -35,11 +35,7 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
   # default async active job backend, uses an in-process thread pool
-  config.active_job.queue_adapter = ActiveJob::QueueAdapters::AsyncAdapter.new(
-    min_threads: 1,
-    max_threads: 2 * Concurrent.processor_count,
-    idletime: 600.seconds
-  )
+  config.active_job.queue_adapter = :inline
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

@@ -2,11 +2,13 @@ class SendComplaintJob < ApplicationJob
   queue_as :send_complaints
 
   def perform(form_builder_payload:)
+    Rails.logger.info("Running job id: #{job_id}")
     Usecase::Optics::CreateCase.new(
       optics_gateway: gateway,
       presenter: Presenter::Complaint.new(form_builder_payload: form_builder_payload),
       get_bearer_token: bearer_token
     ).execute
+    Rails.logger.info("Finished job id: #{job_id}")
   end
 
   private
