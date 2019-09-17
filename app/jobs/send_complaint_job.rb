@@ -27,6 +27,6 @@ class SendComplaintJob < ApplicationJob
   end
 
   def gateway
-    @gateway ||= Gateway::Optics.new(endpoint: Rails.configuration.x.optics.endpoint)
+    Gateway::Optics.new(endpoint: Rails.configuration.x.optics.endpoint)
   end
 end
