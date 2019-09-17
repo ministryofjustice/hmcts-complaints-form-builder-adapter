@@ -1,8 +1,8 @@
 module Usecase
   module Optics
     class GenerateJwtToken
-      def initialize(url:, api_key:, hmac_secret:)
-        @url = url
+      def initialize(endpoint:, api_key:, hmac_secret:)
+        @endpoint = "#{endpoint}/token?db=hmcts"
         @api_key = api_key
         @hmac_secret = hmac_secret
       end
@@ -16,12 +16,12 @@ module Usecase
       def payload
         {
           iss: api_key,
-          aud: url,
+          aud: endpoint,
           iat: Time.now.to_i
         }
       end
 
-      attr_reader :url, :api_key, :hmac_secret
+      attr_reader :endpoint, :api_key, :hmac_secret
     end
   end
 end
