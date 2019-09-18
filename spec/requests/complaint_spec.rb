@@ -28,7 +28,7 @@ describe 'Submitting a complaint', type: :request do
   let(:expected_optics_payload) do
     {
       Team: 'INBOX',
-      RequestDate: Date.today,
+      RequestDate: Date.today.to_s,
       Details: '',
       Reference: '',
       db: 'hmcts',

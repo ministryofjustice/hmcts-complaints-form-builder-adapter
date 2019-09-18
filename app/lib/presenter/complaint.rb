@@ -16,8 +16,8 @@ module Presenter
     private
 
     def request_date
-      time = @data.fetch(:submissionDate, Time.now.nsec.to_s)
-      Time.strptime(time.to_i.to_s, '%N').strftime('%Y-%m-%d')
+      time = @data.fetch(:submissionDate, (Time.now.to_i * 1000).to_s)
+      Time.at(time.to_s.to_i / 1000).strftime('%Y-%m-%d')
     end
 
     def customer_data
