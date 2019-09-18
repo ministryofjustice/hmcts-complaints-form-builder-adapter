@@ -29,7 +29,7 @@ describe Presenter::Complaint do
       Type: 'Complaint',
       Format: 'json',
       Team: '1001',
-      RequestDate: '2019-09-17',
+      RequestDate: '2019-09-11',
       Reference: '12345',
       "Customer.FirstName": 'Jim',
       "Customer.Surname": 'Complainer',
@@ -54,7 +54,8 @@ describe Presenter::Complaint do
       {
         'serviceSlug': 'my-form',
         'submissionId': '1e937616-dd0b-4bc3-8c67-40e4ffd54f78',
-        'submissionAnswers': {}
+        'submissionAnswers': {
+        }
       }
     end
 
