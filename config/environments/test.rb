@@ -36,6 +36,12 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :test
 
+  config.log_level = :error
+  config.log_formatter = ::Logger::Formatter.new
+
+  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+
   config.shared_key =
     ENV.fetch('TEST_JWE_SHARED_KEY', SecureRandom.hex(8).freeze)
 
