@@ -8,6 +8,7 @@ spec:
     metadata:
       labels:
         app: hmcts-complaints-formbuilder-adapter
+        appGroup: hmcts-complaints-formbuilder-adapter
     spec:
       containers:
       - name: hmcts-complaints-formbuilder-adapter
@@ -67,6 +68,7 @@ spec:
     metadata:
       labels:
         app: hmcts-complaints-formbuilder-adapter-worker
+        appGroup: hmcts-complaints-formbuilder-adapter
     spec:
       containers:
       - name: hmcts-complaints-formbuilder-adapter
