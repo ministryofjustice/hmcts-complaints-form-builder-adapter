@@ -10,10 +10,10 @@ class ApplicationController < ActionController::API
     begin
       @decrypted_body = JSON.parse(JWE.decrypt(encrypted_payload, jwe_key), symbolize_names: true)
     rescue JWE::DecodeError => e
-      logger.info("returning unauthorized due to JWE::DecodeError '#{e}'")
+      Rails.logger.info("returning unauthorized due to JWE::DecodeError '#{e}'")
       render_unauthorized
     rescue JWE::InvalidData => e
-      logger.error("returning unauthorized due to JWE::InvalidData (we could be missing the decryption key) '#{e}'")
+      Rails.logger.error("returning unauthorized due to JWE::InvalidData (we could be missing the decryption key) '#{e}'")
       render_unauthorized
     end
   end
