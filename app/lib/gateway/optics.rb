@@ -1,6 +1,15 @@
 module Gateway
   class Optics
-    class ClientError < StandardError; end
+    class ClientError < StandardError
+      def initialize(response)
+        super
+        @response = response
+      end
+
+      def to_s
+        "[OPTICS API error: Received #{@response&.code} response, with headers #{@response&.headers}] #{super}"
+      end
+    end
 
     def initialize(endpoint:)
       @get_token_url = "#{endpoint}/token?db=hmcts".freeze

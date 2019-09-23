@@ -33,13 +33,20 @@ describe Gateway::Optics do
 
     context 'when there is a failing status code returned' do
       before do
-        stub_request(:post, "#{endpoint}/token?db=hmcts").to_return(status: 401, body: '<error>errors are returned in xml</error>')
+        stub_request(:post, "#{endpoint}/token?db=hmcts").to_return(status: 401, body: '<html>errors return xml body</error>', headers: { 'error-header': 'some message' })
       end
 
       it 'checks the return code of the request' do
         expect do
           gateway.request_bearer_token(jwt_token: 'foo')
         end.to raise_error(Gateway::Optics::ClientError)
+      end
+
+      it 'returns the status code and headders in an error' do
+        expect do
+          gateway.request_bearer_token(jwt_token: 'foo')
+        end.to raise_error(Gateway::Optics::ClientError)
+                 .with_message(%r{\[OPTICS API error: Received 401 response, with headers {"error-header"=>\["some message"\]}\] <html>errors return xml body</error>})
       end
     end
   end
