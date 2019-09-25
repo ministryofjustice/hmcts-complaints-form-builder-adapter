@@ -14,7 +14,7 @@ describe 'Downloading an attachment', type: :request do
   end
 
   before do
-    stub_request(:get, 'https://cloud-platform-73fd040f8e31655e740b08a2ef9f1510.s3.eu-west-2.amazonaws.com/28d/1050367152b3aa91e6b4d7cd2670c2e66faf0f629ae9cdd2823774d54aa939e7?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA27HJSWAHM3S2M67I/20190924/eu-west-2/s3/aws4_request&X-Amz-Date=20190924T160834Z&X-Amz-Expires=900&X-Amz-Signature=152a75762015abb11f19e903d32b877a772e9e0dce901fe3ac25bcca2a07743b&X-Amz-SignedHeaders=host')
+    stub_request(:get, 'https://some-bucket.s3.eu-west-2.amazonaws.com/28d/1050367152b3aa91e6b4d7cd2670c2e66faf0f629ae9cdd2823774d54aa939e7?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA27HJSWAHM3S2M67I/20190924/eu-west-2/s3/aws4_request&X-Amz-Date=20190924T160834Z&X-Amz-Expires=900&X-Amz-Signature=152a75762015abb11f19e903d32b877a772e9e0dce901fe3ac25bcca2a07743b&X-Amz-SignedHeaders=host')
       .with(
         headers: {
           'Accept' => '*/*',
