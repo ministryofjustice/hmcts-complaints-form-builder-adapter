@@ -34,4 +34,14 @@ describe 'Downloading an attachment', type: :request do
   it 'returns a decrypted file' do
     expect(response.body).to eq(file_data)
   end
+
+  it 'returns the correct mimetype as a header' do
+    expect(response.headers['Content-Type']).to include(attachment.mimetype)
+  end
+
+  it 'returns the correct filename as a header' do
+    expect(response.headers['Content-Disposition']).to include(
+      "attachment; filename=#{attachment.filename}"
+    )
+  end
 end
