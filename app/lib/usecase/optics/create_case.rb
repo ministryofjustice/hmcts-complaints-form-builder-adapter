@@ -8,6 +8,8 @@ module Usecase
       end
 
       def execute
+        Rails.logger.debug("Optics CreateCase payload: #{@presenter.optics_payload.to_json}")
+
         @optics_gateway.post(
           body: @presenter.optics_payload.to_json,
           bearer_token: @get_bearer_token.execute
