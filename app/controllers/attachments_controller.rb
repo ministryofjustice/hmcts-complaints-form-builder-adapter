@@ -13,6 +13,9 @@ class AttachmentsController < ActionController::API
   private
 
   def fetch_file(url)
-    HTTParty.get(url).body
+    data = HTTParty.get(url).body
+    encoded_data = Base64.strict_encode64(data)
+    chomped_data = encoded_data.chomp
+    Base64.strict_decode64(chomped_data)
   end
 end

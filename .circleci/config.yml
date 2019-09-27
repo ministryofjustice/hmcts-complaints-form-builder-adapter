@@ -48,7 +48,7 @@ workflows:
   version: 2
   release:
     jobs:
-      - test
+      # - test
       - aws-ecr/build-and-push-image:
           name: push_app_image
           dockerfile: Dockerfile
@@ -56,9 +56,9 @@ workflows:
           region: AWS_DEFAULT_REGION
           repo: "form-builder/hmcts-complaints-formbuilder-adapter"
           tag: "APP_${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
       - aws-ecr/build-and-push-image:
           name: push_worker_image
           dockerfile: Dockerfile.worker
@@ -66,17 +66,17 @@ workflows:
           region: AWS_DEFAULT_REGION
           repo: "form-builder/hmcts-complaints-formbuilder-adapter"
           tag: "WORKER_${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
       - deploy_staging:
           requires:
             - push_app_image
             - push_worker_image
-            - test
-          filters:
-            branches:
-              only: master
+            # - test
+          # filters:
+          #   branches:
+          #     only: master
       - confirm_production_deploy:
           type: approval
           requires:
