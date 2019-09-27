@@ -16,7 +16,7 @@ spec:
             args:
             - /bin/sh
             - -c
-            - bundle exec rake db:sweep
+            - bundle exec rails runner 'Usecase::SweepDatabase.new(attachments_gateway: Gateway::Attachments.new).call(7.days.ago)'
             securityContext:
               runAsUser: 1001
             imagePullPolicy: Always
