@@ -24,19 +24,43 @@ spec:
               - configMapRef:
                   name: hmcts-complaints-formbuilder-adapter-env-{{ .Values.environmentName }}
             env:
-              - name: DATABASE_URL
+              - name: HOST
+                value: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+              - name: RAILS_LOG_TO_STDOUT
+                value: "true"
+              - name: OPTICS_ENDPOINT
                 valueFrom:
                   secretKeyRef:
-                    name: rds-instance-hmcts-complaints-adapter-{{ .Values.environmentName }}
-                    key: url
+                    name: hmcts-complaints-formbuilder-adapter-secret
+                    key: OPTICS_ENDPOINT
               - name: SECRET_KEY_BASE
                 valueFrom:
                   secretKeyRef:
                     name: hmcts-complaints-formbuilder-adapter-secret
                     key: SECRET_KEY_BASE
+              - name: JWE_SHARED_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: hmcts-complaints-formbuilder-adapter-secret
+                    key: JWE_SHARED_KEY
+              - name: OPTICS_SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: hmcts-complaints-formbuilder-adapter-secret
+                    key: OPTICS_SECRET_KEY
+              - name: OPTICS_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: hmcts-complaints-formbuilder-adapter-secret
+                    key: OPTICS_API_KEY
               - name: SENTRY_DSN
                 valueFrom:
                   secretKeyRef:
                     name: hmcts-complaints-formbuilder-adapter-secret
                     key: SENTRY_DSN
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: rds-instance-hmcts-complaints-adapter-{{ .Values.environmentName }}
+                    key: url
           restartPolicy: Never
