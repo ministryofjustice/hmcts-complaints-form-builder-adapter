@@ -2,7 +2,7 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: fb-datastore-cron-db-sweeper-{{ .Values.environmentName }}
-  namespace: formbuilder-platform-{{ .Values.environmentName }}
+  namespace: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}
 spec:
   schedule: "0 * * * *"
   successfulJobsHistoryLimit: 0
