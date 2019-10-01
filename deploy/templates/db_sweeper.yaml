@@ -20,9 +20,7 @@ spec:
             securityContext:
               runAsUser: 1001
             imagePullPolicy: Always
-            envFrom:
-              - configMapRef:
-                  name: hmcts-complaints-formbuilder-adapter-env-{{ .Values.environmentName }}
+            restartPolicy: Never
             env:
               - name: HOST
                 value: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
@@ -63,4 +61,3 @@ spec:
                   secretKeyRef:
                     name: rds-instance-hmcts-complaints-adapter-{{ .Values.environmentName }}
                     key: url
-          restartPolicy: Never
