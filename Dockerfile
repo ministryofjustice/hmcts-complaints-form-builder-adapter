@@ -1,25 +1,23 @@
 FROM ruby:2.6.4-alpine3.9
 
-ARG UID
-
 RUN apk add build-base postgresql-contrib postgresql-dev bash tzdata
 
-RUN addgroup -g 1001 -S appgroup && \
-  adduser -u 1001 -S appuser -G appgroup
+ARG UID='1001'
+RUN addgroup -S appgroup && \
+  adduser -u ${UID} -S appuser -G appgroup
+
 
 WORKDIR /app
 ENV HOME /app
 
-COPY Gemfile* .ruby-version ./
+COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler
-RUN bundle install --no-cache
 
-COPY . .
+ARG BUNDLE_ARGS='--without test development'
+RUN bundle install --no-cache ${BUNDLE_ARGS}
 
-RUN chown -R 1001:appgroup /app
-
-USER 1001
+COPY --chown=appuser:appgroup . .
 
 ENV APP_PORT 3000
 EXPOSE $APP_PORT
