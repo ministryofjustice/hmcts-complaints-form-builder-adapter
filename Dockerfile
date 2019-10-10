@@ -10,6 +10,8 @@ RUN addgroup -S appgroup && \
 WORKDIR /app
 ENV HOME /app
 
+RUN chown appuser:appgroup /app
+
 COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler
