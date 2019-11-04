@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_action :authorize_request
+  before_action :authorize_request, unless: :disable_jwt?
   attr_reader :decrypted_body
 
   # rubocop:disable Metrics/MethodLength
@@ -27,5 +27,9 @@ class ApplicationController < ActionController::API
 
   def render_unauthorized
     render status: :unauthorized
+  end
+
+  def disable_jwt?
+    Rails.env.development?
   end
 end
