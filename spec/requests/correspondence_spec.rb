@@ -64,13 +64,6 @@ describe 'Submitting a correspondence', type: :request do
     }.to_json
   end
 
-  # ????
-  # ClaimValue
-  # ContactPhone
-  # ClientFirstName
-  # ClientLastName
-  # ClientPostcode
-
   let(:runner_submission) do
     {
       serviceSlug: 'money-claim-queries',

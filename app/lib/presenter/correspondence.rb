@@ -31,6 +31,13 @@ module Presenter
     end
     # rubocop:enable Metrics/MethodLength
 
+    # Left to map
+    #
+    # ContactPhone
+    # ClientFirstName
+    # ClientLastName
+    # ClientPostcode
+
     private
 
     def new_or_existing_claim
