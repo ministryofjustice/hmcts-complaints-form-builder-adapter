@@ -54,7 +54,7 @@ describe 'Submitting a correspondence', type: :request do
       'Applicant1.Forename1': 'Qui Gon',
       'Applicant1.Name': 'Jinn',
       'Applicant1.Email': 'quigon@jedi-temple.com',
-      'Case.ReceivedDate': '2019-09-11T16:34:46+0100',
+      'Case.ReceivedDate': Time.now.zone == 'BST' ? '2019-09-11T16:34:46+0100' : '2019-09-11T15:34:46+0000',
       'CaseContactCustom17.Subject': 'Jedi Council',
       'CaseContactCustom18.Subject': '',
       db: Presenter::Correspondence::DB,
