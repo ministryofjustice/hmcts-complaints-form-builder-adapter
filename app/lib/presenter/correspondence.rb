@@ -2,8 +2,11 @@ module Presenter
   class Correspondence
     attr_reader :submission_answers
 
+    AGENT = 'Agent'.freeze
     CONTACT_METHOD = 'Online form'.freeze
     DB = 'hmcts'.freeze
+    EXISTING_CLAIM = 'existing-claim'.freeze
+    MAIN = 'Main'.freeze
     TEAM = '1022731A'.freeze
     TYPE = 'Correspondence'.freeze
 
@@ -15,7 +18,7 @@ module Presenter
     def optics_payload
       {
         ApplicantType: applicant_type,
-        CRefYesNo: new_or_existing_claim,
+        CRefYesNo: case_reference_yes_no,
         CRef: case_reference,
         CustomerPartyContext: customer_party_context,
         Details: submission_answers.fetch(:MessageContent, ''),
@@ -45,20 +48,16 @@ module Presenter
       @applicant_type ||= submission_answers.fetch(:ApplicantType, '')
     end
 
-    def new_or_existing_claim
-      @new_or_existing_claim ||= submission_answers.fetch(:NewOrExistingClaim, '')
+    def case_reference_yes_no
+      existing_claim? ? 'Yes' : 'No'
     end
 
     def case_reference
-      if new_or_existing_claim == 'Yes'
-        submission_answers.fetch(:CaseReference, '')
-      else
-        ''
-      end
+      existing_claim? ? submission_answers.fetch(:CaseReference, '') : ''
     end
 
     def customer_party_context
-      applicant_type.include?('representing') ? 'Agent' : 'Main'
+      applicant_type.include?('representing') ? AGENT : MAIN
     end
 
     def submission_date
@@ -78,6 +77,11 @@ module Presenter
         Type: TYPE,
         'Case.ContactMethod': CONTACT_METHOD
       }
+    end
+
+    def existing_claim?
+      @existing_claim ||=
+        submission_answers.fetch(:NewOrExistingClaim, '') == EXISTING_CLAIM
     end
   end
 end

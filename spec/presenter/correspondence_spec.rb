@@ -12,7 +12,7 @@ RSpec.describe Presenter::Correspondence do
         submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
         submissionAnswers:
         {
-          NewOrExistingClaim: 'Yes',
+          NewOrExistingClaim: 'existing-claim',
           CaseReference: 'some reference',
           ApplicantType: 'claimant',
           MessageContent: 'some message body thing',
@@ -20,7 +20,10 @@ RSpec.describe Presenter::Correspondence do
           ApplicantLastName: 'Jinn',
           ContactEmail: 'quigon@jedi-temple.com',
           CompanyName: 'Jedi Council',
-          ServiceType: 'money-claim'
+          ServiceType: 'money-claim',
+          ClientFirstName: 'Darth',
+          ClientLastName: 'Maul',
+          ContactPhone: '5555555555'
         }.merge(input_payload)
       }
     end
@@ -28,7 +31,7 @@ RSpec.describe Presenter::Correspondence do
     context 'when case reference is "Yes"' do
       let(:input_payload) do
         {
-          NewOrExistingClaim: 'Yes',
+          NewOrExistingClaim: 'existing-claim',
           CaseReference: 'some reference'
         }
       end
@@ -41,7 +44,7 @@ RSpec.describe Presenter::Correspondence do
     context 'when case reference is "No"' do
       let(:input_payload) do
         {
-          NewOrExistingClaim: 'No',
+          NewOrExistingClaim: 'new-claim',
           CaseReference: 'some reference that should not be there'
         }
       end

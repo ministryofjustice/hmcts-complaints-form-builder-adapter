@@ -74,7 +74,7 @@ describe 'Submitting a correspondence', type: :request do
       submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
       submissionAnswers:
       {
-        NewOrExistingClaim: 'Yes',
+        NewOrExistingClaim: 'existing-claim',
         CaseReference: 'some reference',
         ApplicantType: 'claimant',
         MessageContent: 'some message body thing',
