@@ -57,9 +57,13 @@ describe 'Submitting a correspondence', type: :request do
       'Case.ReceivedDate': Time.now.zone == 'BST' ? '2019-09-11T16:34:46+0100' : '2019-09-11T15:34:46+0000',
       'CaseContactCustom17.Subject': 'Jedi Council',
       'CaseContactCustom18.Subject': '',
+      'Agent.Name': 'Maul',
+      'Agent.Forename1': 'Darth',
+      'Agent.Email': '',
+      'Agent.Phone': '5555555555',
       db: Presenter::Correspondence::DB,
+      Team: Presenter::Correspondence::TEAM,
       Type: Presenter::Correspondence::TYPE,
-      'Case.Team': Presenter::Correspondence::TEAM,
       'Case.ContactMethod': Presenter::Correspondence::CONTACT_METHOD
     }.to_json
   end
@@ -79,7 +83,10 @@ describe 'Submitting a correspondence', type: :request do
         ContactEmail: 'quigon@jedi-temple.com',
         CompanyName: 'Jedi Council',
         QueryTypeDefendant: 'claimant-court-hearing',
-        ServiceType: 'money-claim'
+        ServiceType: 'money-claim',
+        ClientFirstName: 'Darth',
+        ClientLastName: 'Maul',
+        ContactPhone: '5555555555'
       }
     }.to_json
   end

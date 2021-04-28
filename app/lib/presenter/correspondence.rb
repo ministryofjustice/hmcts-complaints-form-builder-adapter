@@ -26,19 +26,24 @@ module Presenter
         'Applicant1.Email': submission_answers.fetch(:ContactEmail, ''),
         'Case.ReceivedDate': submission_date,
         'CaseContactCustom17.Subject': submission_answers.fetch(:CompanyName, ''),
-        'CaseContactCustom18.Subject': ''
+        'CaseContactCustom18.Subject': '',
+        'Agent.Name': submission_answers.fetch(:ClientLastName, ''),
+        'Agent.Forename1': submission_answers.fetch(:ClientFirstName, ''),
+        'Agent.Email': '',
+        'Agent.Phone': submission_answers.fetch(:ContactPhone, '')
       }.merge(constant_data)
     end
     # rubocop:enable Metrics/MethodLength
 
     # Left to map
     #
-    # ContactPhone
-    # ClientFirstName
-    # ClientLastName
     # ClientPostcode
 
     private
+
+    def applicant_type
+      @applicant_type ||= submission_answers.fetch(:ApplicantType, '')
+    end
 
     def new_or_existing_claim
       @new_or_existing_claim ||= submission_answers.fetch(:NewOrExistingClaim, '')
@@ -52,12 +57,8 @@ module Presenter
       end
     end
 
-    def applicant_type
-      @applicant_type ||= submission_answers.fetch(:ApplicantType, '')
-    end
-
     def customer_party_context
-      applicant_type.include?('representing') ? '' : 'Main'
+      applicant_type.include?('representing') ? 'Agent' : 'Main'
     end
 
     def submission_date
@@ -73,8 +74,8 @@ module Presenter
     def constant_data
       {
         db: DB,
+        Team: TEAM,
         Type: TYPE,
-        'Case.Team': TEAM,
         'Case.ContactMethod': CONTACT_METHOD
       }
     end

@@ -61,14 +61,13 @@ RSpec.describe Presenter::Correspondence do
       end
     end
 
-    ## this is being confirmed
     context 'when there is a representative' do
       let(:input_payload) do
-        { ApplicantType: 'representing-defendant' }
+        { ApplicantType: 'representing-claimant' }
       end
 
       it 'returns a blank string for the customer party context' do
-        expect(presenter.optics_payload[:CustomerPartyContext]).to eq('')
+        expect(presenter.optics_payload[:CustomerPartyContext]).to eq('Agent')
       end
     end
 
@@ -83,7 +82,6 @@ RSpec.describe Presenter::Correspondence do
       end
     end
 
-    # TO DO check whether it is possible to have both defendant and claimant in the same submission
     context 'when QueryTypeClaimant is the payload' do
       let(:query_type) { 'claimant-court-hearing' }
       let(:input_payload) do
