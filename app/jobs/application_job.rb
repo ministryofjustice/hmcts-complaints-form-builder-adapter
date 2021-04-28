@@ -23,7 +23,7 @@ class ApplicationJob < ActiveJob::Base
     Gateway::Optics.new(endpoint: Rails.configuration.x.optics.endpoint)
   end
 
-  def record_successful_submission
-    ProcessedSubmission.create
+  def record_successful_submission(submission_id)
+    ProcessedSubmission.create(submission_id: submission_id)
   end
 end

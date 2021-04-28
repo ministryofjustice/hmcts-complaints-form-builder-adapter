@@ -19,7 +19,7 @@ class SendComplaintJob < ApplicationJob
       get_bearer_token: bearer_token
     ).execute
 
-    record_successful_submission
+    record_successful_submission(form_builder_payload[:submissionId])
   end
   # rubocop:enable Metrics/MethodLength
 end
