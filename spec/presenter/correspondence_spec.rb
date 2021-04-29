@@ -6,6 +6,14 @@ RSpec.describe Presenter::Correspondence do
   end
 
   describe '#optics_payload' do
+    let(:constant_data) do
+      {
+        db: Presenter::Correspondence::DB,
+        Team: Presenter::Correspondence::TEAM,
+        Type: Presenter::Correspondence::TYPE,
+        'Case.ContactMethod': Presenter::Correspondence::CONTACT_METHOD
+      }
+    end
     let(:base_payload) do
       {
         serviceSlug: 'money-claim-queries',
@@ -16,10 +24,6 @@ RSpec.describe Presenter::Correspondence do
           CaseReference: 'some reference',
           ApplicantType: 'claimant',
           MessageContent: 'some message body thing',
-          ApplicantFirstName: 'Qui Gon',
-          ApplicantLastName: 'Jinn',
-          ContactEmail: 'quigon@jedi-temple.com',
-          CompanyName: 'Jedi Council',
           ServiceType: 'money-claim',
           ClientFirstName: 'Darth',
           ClientLastName: 'Maul',
@@ -28,79 +32,292 @@ RSpec.describe Presenter::Correspondence do
       }
     end
 
-    context 'when case reference is "Yes"' do
-      let(:input_payload) do
-        {
-          NewOrExistingClaim: 'existing-claim',
-          CaseReference: 'some reference'
-        }
+    context 'applicant type' do
+      context 'when claimant' do
+        let(:input_payload) do
+          { ApplicantType: 'claimant' }
+        end
+
+        it 'returns "A"' do
+          expect(presenter.optics_payload[:ApplicantType]).to eq('A')
+        end
       end
 
-      it 'returns the case reference' do
-        expect(presenter.optics_payload[:CRef]).to eq('some reference')
+      context 'when defendant' do
+        let(:input_payload) do
+          { ApplicantType: 'defendant' }
+        end
+
+        it 'returns "B"' do
+          expect(presenter.optics_payload[:ApplicantType]).to eq('B')
+        end
+      end
+
+      %w[representing-defendant representing-claimant].each do |applicant_type|
+        context "when #{applicant_type}" do
+          let(:input_payload) do
+            { ApplicantType: applicant_type }
+          end
+
+          it 'returns "C"' do
+            expect(presenter.optics_payload[:ApplicantType]).to eq('C')
+          end
+        end
       end
     end
 
-    context 'when case reference is "No"' do
+    context 'case reference' do
+      context 'when there is an existing claim' do
+        let(:input_payload) do
+          {
+            NewOrExistingClaim: 'existing-claim',
+            CaseReference: 'some reference'
+          }
+        end
+
+        it 'returns the case reference' do
+          expect(presenter.optics_payload[:CRef]).to eq('some reference')
+        end
+      end
+
+      context 'when it is a new claim' do
+        let(:input_payload) do
+          {
+            NewOrExistingClaim: 'new-claim',
+            CaseReference: 'some reference that should not be there'
+          }
+        end
+
+        it 'returns blank string the case reference' do
+          expect(presenter.optics_payload[:CRef]).to eq('')
+        end
+      end
+    end
+
+    context 'customer party context' do
+      %w[claimant defendant].each do |applicant_type|
+        context "when applicant type is #{applicant_type}" do
+          let(:input_payload) do
+            { ApplicantType: applicant_type }
+          end
+
+          it 'returns "Main"' do
+            expect(presenter.optics_payload[:CustomerPartyContext]).to eq('Main')
+          end
+        end
+      end
+
+      %w[representing-defendant representing-claimant].each do |applicant_type|
+        context "when applicant type is #{applicant_type}" do
+          let(:input_payload) do
+            { ApplicantType: applicant_type }
+          end
+
+          it 'returns "Agent"' do
+            expect(presenter.optics_payload[:CustomerPartyContext]).to eq('Agent')
+          end
+        end
+      end
+    end
+
+    context 'query type' do
+      context 'when QueryTypeDefendant' do
+        let(:input_payload) do
+          { QueryTypeDefendant: query_type }
+        end
+
+        context 'when court judgement' do
+          let(:query_type) { 'court-judgement' }
+
+          it 'returns "A"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('A')
+          end
+        end
+
+        context 'when court hearing' do
+          let(:query_type) { 'defendant-court-hearing' }
+
+          it 'returns "B"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('B')
+          end
+        end
+
+        context 'when other' do
+          let(:query_type) { 'defendant-other' }
+
+          it 'returns "E"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('E')
+          end
+        end
+      end
+
+      context 'when QueryTypeClaimant' do
+        let(:input_payload) do
+          { QueryTypeClaimant: query_type }
+        end
+
+        context 'when court hearing' do
+          let(:query_type) { 'claimant-court-hearing' }
+
+          it 'returns "B"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('B')
+          end
+        end
+
+        context 'when a progress update' do
+          let(:query_type) { 'progress-update' }
+
+          it 'returns "C"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('C')
+          end
+        end
+
+        context 'change a money claim' do
+          let(:query_type) { 'change-claim' }
+
+          it 'returns "D"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('D')
+          end
+        end
+
+        context 'when other' do
+          let(:query_type) { 'claimant-other' }
+
+          it 'returns "E"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('E')
+          end
+        end
+
+        context 'when the claim has been paid' do
+          let(:query_type) { 'claim-paid' }
+
+          it 'returns "F"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('F')
+          end
+        end
+
+        context 'claim has not been paid' do
+          let(:query_type) { 'claim-not-paid' }
+
+          it 'returns "G"' do
+            expect(presenter.optics_payload[:QueryType]).to eq('G')
+          end
+        end
+      end
+    end
+
+    context 'service type' do
+      context 'when a money claim' do
+        let(:input_payload) do
+          { ServiceType: 'money-claim' }
+        end
+
+        it 'returns "A"' do
+          expect(presenter.optics_payload[:ServiceType]).to eq('A')
+        end
+      end
+
+      context 'when other other query' do
+        let(:input_payload) do
+          { ServiceType: 'other-query' }
+        end
+
+        it 'returns a blank string' do
+          expect(presenter.optics_payload[:ServiceType]).to eq('')
+        end
+      end
+    end
+
+    context 'self representing' do
+      let(:today) { Time.now.strftime('%d/%m/%Y') }
       let(:input_payload) do
         {
+          Applicant1FirstName: 'Qui Gon',
+          Applicant1LastName: 'Jinn',
+          Applicant1Email: 'quigon@jedi-temple.com',
+          Applicant1Phone: '5555555555',
           NewOrExistingClaim: 'new-claim',
-          CaseReference: 'some reference that should not be there'
+          QueryTypeClaimant: 'court-judgement'
         }
       end
+      let(:expected_payload) do
+        {
+          ApplicantType: 'A',
+          CRefYesNo: 'No',
+          CRef: '',
+          CustomerPartyContext: 'Main',
+          Details: 'some message body thing',
+          QueryType: 'A',
+          ServiceType: 'A',
+          'Applicant1.Forename1': 'Qui Gon',
+          'Applicant1.Name': 'Jinn',
+          'Applicant1.Email': 'quigon@jedi-temple.com',
+          'Applicant1.Phone': '5555555555',
+          'Case.ReceivedDate': today,
+          'CaseContactPostcode.Subject': '',
+          'CaseContactCustom17.Subject': '',
+          'CaseContactCustom18.Subject': '',
+          'Agent.Forename1': '',
+          'Agent.Name': '',
+          'Agent.Email': '',
+          'Agent.Phone': ''
+        }.merge(constant_data)
+      end
 
-      it 'returns blank string the case reference' do
-        expect(presenter.optics_payload[:CRef]).to eq('')
+      it 'sets the applicant contact details correctly' do
+        expect(presenter.optics_payload).to eq(expected_payload)
       end
     end
 
-    context 'when there is no representative' do
+    context 'representing' do
+      let(:today) { Time.now.strftime('%d/%m/%Y') }
       let(:input_payload) do
-        { ApplicantType: 'defendant' }
+        {
+          ApplicantType: 'representing-claimant',
+          ApplicantFirstName: 'Qui Gon',
+          ApplicantLastName: 'Jinn',
+          ApplicantEmail: 'quigon@jedi-temple.com',
+          ApplicantPhone: '5555555555',
+          CompanyName: 'Jedi Council',
+          QueryTypeClaimant: 'claimant-other',
+          ClientPostcode: 'W1C 1CA'
+        }
+      end
+      let(:expected_payload) do
+        {
+          ApplicantType: 'C',
+          CRefYesNo: 'Yes',
+          CRef: 'some reference',
+          CustomerPartyContext: 'Agent',
+          Details: 'some message body thing',
+          QueryType: 'E',
+          ServiceType: 'A',
+          'Applicant1.Forename1': 'Darth',
+          'Applicant1.Name': 'Maul',
+          'Applicant1.Email': '',
+          'Applicant1.Phone': '',
+          'Case.ReceivedDate': today,
+          'CaseContactPostcode.Subject': 'W1C 1CA',
+          'CaseContactCustom17.Subject': 'Jedi Council',
+          'CaseContactCustom18.Subject': '',
+          'Agent.Forename1': 'Qui Gon',
+          'Agent.Name': 'Jinn',
+          'Agent.Email': 'quigon@jedi-temple.com',
+          'Agent.Phone': '5555555555'
+        }.merge(constant_data)
       end
 
-      it 'returns "Main" for CustomerPartyContext' do
-        expect(presenter.optics_payload[:CustomerPartyContext]).to eq('Main')
+      it 'sets the agent contact details correctly' do
+        expect(presenter.optics_payload).to eq(expected_payload)
       end
     end
 
-    context 'when there is a representative' do
-      let(:input_payload) do
-        { ApplicantType: 'representing-claimant' }
-      end
-
-      it 'returns a blank string for the customer party context' do
-        expect(presenter.optics_payload[:CustomerPartyContext]).to eq('Agent')
-      end
-    end
-
-    context 'when QueryTypeDefendant is in the payload' do
-      let(:query_type) { 'defendant-court-hearing' }
-      let(:input_payload) do
-        { QueryTypeDefendant: query_type }
-      end
-
-      it 'returns the QueryTypeDefendant for query type' do
-        expect(presenter.optics_payload[:QueryType]).to eq(query_type)
-      end
-    end
-
-    context 'when QueryTypeClaimant is the payload' do
-      let(:query_type) { 'claimant-court-hearing' }
-      let(:input_payload) do
-        { QueryTypeClaimant: query_type }
-      end
-
-      it 'returns QueryTypeClaimant for query type' do
-        expect(presenter.optics_payload[:QueryType]).to eq(query_type)
-      end
-    end
-
-    context 'when neither QueryTypeClaimant or QueryTypeDefendant are there' do
+    context 'received date' do
+      let(:today) { Time.now.strftime('%d/%m/%Y') }
       let(:input_payload) { {} }
 
-      it 'returns a blank string for query type' do
-        expect(presenter.optics_payload[:QueryType]).to eq('')
+      it 'returns a the date correctly formatted' do
+        expect(presenter.optics_payload[:'Case.ReceivedDate']).to eq(today)
       end
     end
   end
