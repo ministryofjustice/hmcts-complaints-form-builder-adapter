@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read('.ruby-version').strip
 
-gem 'daemons', '~> 1.3'
+gem 'daemons', '~> 1.4'
 gem 'delayed_job_active_record', '~> 4.1'
 gem 'httparty', '~> 0.18.1'
 gem 'jwe', '~> 0.4.0'
