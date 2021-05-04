@@ -31,4 +31,4 @@ USER 1001
 ARG RAILS_ENV='production'
 ENV RAILS_ENV=$RAILS_ENV
 
-CMD bin/delayed_job --queue=send_complaints run
+CMD bin/delayed_job --queues=send_complaints,send_correspondences run

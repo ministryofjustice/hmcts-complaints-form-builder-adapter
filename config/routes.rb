@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   scope 'v1' do
     resources :complaint, only: [:create]
     resources :attachments, only: [:show]
+    resources :correspondence, only: [:create]
   end
 
   get '/health', to: 'health#show'

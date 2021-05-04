@@ -103,6 +103,9 @@ describe 'Submitting a complaint', type: :request do
 
     it 'records that there was a successful submission' do
       expect(ProcessedSubmission.count).to eq(1)
+      expect(
+        ProcessedSubmission.first.submission_id
+      ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
     end
   end
 end
