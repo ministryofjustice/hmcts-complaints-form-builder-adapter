@@ -1,4 +1,4 @@
-FROM ruby:2.7.2-alpine3.12
+FROM ruby:2.7.3-alpine3.13
 
 RUN apk add build-base postgresql-contrib postgresql-dev bash tzdata
 
