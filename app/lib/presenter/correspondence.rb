@@ -43,7 +43,7 @@ module Presenter
         QueryType: QUERY_TYPE.fetch(query_type_claimant_or_defendant, ''),
         ServiceType: service_type,
         'CaseContactPostcode.Subject': submission_answers.fetch(:ClientPostcode, ''),
-        'CaseContactCustom17.Subject': submission_answers.fetch(:CompanyName, ''),
+        'CaseContactCustom17.Representative': submission_answers.fetch(:CompanyName, ''),
         'CaseContactCustom18.Subject': '',
         'Case.ReceivedDate': submission_date
       }.merge(representing_data, self_representing_data, constant_data)
