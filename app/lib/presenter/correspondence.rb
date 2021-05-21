@@ -9,7 +9,7 @@ module Presenter
     EXISTING_CLAIM = 'existing-claim'.freeze
     MAIN = 'Main'.freeze
     TEAM = '1022731A'.freeze
-    TYPE = 'Correspondence'.freeze
+    TYPE = '1353909'.freeze
     APPLICANT_TYPE = {
       'claimant' => 'A',
       'defendant' => 'B',
