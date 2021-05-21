@@ -269,6 +269,31 @@ RSpec.describe Presenter::Correspondence do
       end
     end
 
+    context 'correspondence type' do
+      let(:input_payload) { {} }
+
+      context 'when type is not set in the environment' do
+        it 'defaults to use the type in the model' do
+          expect(presenter.optics_payload[:Type]).to eq(Presenter::Correspondence::TYPE)
+        end
+      end
+
+      context 'when type is set in the environment' do
+        let(:correspondence_type) { 'foo' }
+        let(:constant_data) do
+          constant_data.merge({ Type: correspondence_type })
+        end
+
+        before do
+          allow(ENV).to receive(:[]).with('CORRESPONDENCE_TYPE').and_return(correspondence_type)
+        end
+
+        it 'uses the type from the environment' do
+          expect(presenter.optics_payload[:Type]).to eq(correspondence_type)
+        end
+      end
+    end
+
     context 'representing' do
       let(:today) { Time.now.strftime('%d/%m/%Y') }
       let(:input_payload) do
