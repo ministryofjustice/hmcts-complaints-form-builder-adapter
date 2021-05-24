@@ -117,9 +117,13 @@ module Presenter
       {
         db: DB,
         Team: TEAM,
-        Type: TYPE,
+        Type: type,
         'Case.ContactMethod': CONTACT_METHOD
       }
+    end
+
+    def type
+      ENV['CORRESPONDENCE_TYPE'] || TYPE
     end
 
     def representing?

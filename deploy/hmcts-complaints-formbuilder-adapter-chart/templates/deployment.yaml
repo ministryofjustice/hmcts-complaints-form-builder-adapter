@@ -76,6 +76,11 @@ spec:
             secretKeyRef:
               name: hmcts-complaints-formbuilder-adapter-secrets-{{ .Values.environmentName }}
               key: metrics_auth_username
+        - name: CORRESPONDENCE_TYPE
+          valueFrom:
+            secretKeyRef:
+              name: hmcts-complaints-formbuilder-adapter-secrets-{{ .Values.environmentName }}
+              key: correspondence_type
 ---
 # workers
 apiVersion: apps/v1
@@ -147,3 +152,8 @@ spec:
             secretKeyRef:
               name: hmcts-complaints-formbuilder-adapter-secrets-{{ .Values.environmentName }}
               key: metrics_auth_username
+        - name: CORRESPONDENCE_TYPE
+          valueFrom:
+            secretKeyRef:
+              name: hmcts-complaints-formbuilder-adapter-secrets-{{ .Values.environmentName }}
+              key: correspondence_type
