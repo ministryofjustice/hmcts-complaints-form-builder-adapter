@@ -6,7 +6,7 @@ module Presenter
     AGENT = 'Agent'.freeze
     CONTACT_METHOD = 'Online form'.freeze
     DB = 'hmcts'.freeze
-    EXISTING_CLAIM = 'existing-claim'.freeze
+    EXISTING_CASE_REFERENCE = 'CaseReferenceYes'.freeze
     MAIN = 'Main'.freeze
     TEAM = '1022731A'.freeze
     TYPE = '1353909'.freeze
@@ -88,11 +88,11 @@ module Presenter
     end
 
     def case_reference_yes_no
-      existing_claim? ? 'Yes' : 'No'
+      existing_case_reference? ? 'Yes' : 'No'
     end
 
     def case_reference
-      existing_claim? ? submission_answers.fetch(:CaseReference, '') : ''
+      existing_case_reference? ? submission_answers.fetch(:CaseReference, '') : ''
     end
 
     def customer_party_context
@@ -134,9 +134,9 @@ module Presenter
       customer_party_context == MAIN
     end
 
-    def existing_claim?
-      @existing_claim ||=
-        submission_answers.fetch(:NewOrExistingClaim, '') == EXISTING_CLAIM
+    def existing_case_reference?
+      @existing_case_reference ||=
+        submission_answers.fetch(:ClaimNumber, '') == EXISTING_CASE_REFERENCE
     end
   end
   # rubocop:enable Metrics/ClassLength

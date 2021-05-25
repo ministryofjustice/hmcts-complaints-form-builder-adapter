@@ -20,6 +20,7 @@ RSpec.describe Presenter::Correspondence do
         submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
         submissionAnswers:
         {
+          ClaimNumber: 'CaseReferenceYes',
           NewOrExistingClaim: 'existing-claim',
           CaseReference: 'some reference',
           ApplicantType: 'claimant',
@@ -71,6 +72,7 @@ RSpec.describe Presenter::Correspondence do
         let(:input_payload) do
           {
             NewOrExistingClaim: 'existing-claim',
+            ClaimNumber: 'CaseReferenceYes',
             CaseReference: 'some reference'
           }
         end
@@ -84,6 +86,7 @@ RSpec.describe Presenter::Correspondence do
         let(:input_payload) do
           {
             NewOrExistingClaim: 'new-claim',
+            ClaimNumber: 'CaseReferenceNo',
             CaseReference: 'some reference that should not be there'
           }
         end
@@ -237,6 +240,7 @@ RSpec.describe Presenter::Correspondence do
           Applicant1Email: 'quigon@jedi-temple.com',
           Applicant1Phone: '5555555555',
           NewOrExistingClaim: 'new-claim',
+          ClaimNumber: 'CaseReferenceNo',
           QueryTypeClaimant: 'court-judgement'
         }
       end

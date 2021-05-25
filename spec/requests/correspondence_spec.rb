@@ -40,6 +40,7 @@ describe 'Submitting a correspondence', type: :request do
       submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
       submissionAnswers:
       {
+        ClaimNumber: 'CaseReferenceYes',
         NewOrExistingClaim: 'existing-claim',
         CaseReference: 'some reference',
         ApplicantType: 'representing-claimant',
@@ -87,6 +88,7 @@ describe 'Submitting a correspondence', type: :request do
       submissionAnswers:
       {
         NewOrExistingClaim: 'new-claim',
+        ClaimNumber: 'CaseReferenceNo',
         CaseReference: '',
         ApplicantType: 'claimant',
         MessageContent: 'some message body thing',
