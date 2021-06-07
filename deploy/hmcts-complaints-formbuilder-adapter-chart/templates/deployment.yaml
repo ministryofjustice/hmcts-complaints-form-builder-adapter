@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hmcts-complaints-formbuilder-adapter-api-{{ .Values.environmentName }}
 spec:
-  replicas: 2
+  replicas: 10
   selector:
     matchLabels:
       app: hmcts-complaints-formbuilder-adapter
@@ -88,7 +88,7 @@ kind: Deployment
 metadata:
   name: hmcts-complaints-formbuilder-adapter-worker-{{ .Values.environmentName }}
 spec:
-  replicas: 2
+  replicas: 5
   selector:
     matchLabels:
       app: hmcts-complaints-formbuilder-adapter-worker
