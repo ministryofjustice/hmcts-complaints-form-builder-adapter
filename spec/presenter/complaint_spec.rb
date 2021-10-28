@@ -21,6 +21,8 @@ describe Presenter::Complaint do
         'county': 'London',
         'postcode': 'SW1H 9AJ',
         'complaint_details': 'I lost my case',
+        'impact': 'I felt sad',
+        'action_requested': 'Reimbursement',
         'complaint_location': '1001',
         'submissionDate': '1568199892316',
         'case_number': '12345'
@@ -61,6 +63,8 @@ describe Presenter::Complaint do
       "Customer.Email": 'test@test.com',
       "Customer.Phone": '07548733456',
       Details: 'I lost my case',
+      Impact: 'I felt sad',
+      ActionRequested: 'Reimbursement',
       RequestMethod: 'Online - gov.uk',
       "Document1.Name": 'image.png',
       "Document1.URL": 'https://example.com/v1/attachments/3c535282-6ebb-41c5-807e-74394ef036b1',
@@ -111,7 +115,9 @@ describe Presenter::Complaint do
         "Customer.Postcode": '',
         "Customer.Email": '',
         "Customer.Phone": '',
-        Details: ''
+        Details: '',
+        Impact: '',
+        ActionRequested: ''
       }
     end
 

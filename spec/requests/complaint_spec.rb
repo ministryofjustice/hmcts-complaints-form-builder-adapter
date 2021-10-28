@@ -46,6 +46,8 @@ describe 'Submitting a complaint', type: :request do
       'Customer.Postcode': '',
       'Customer.Email': '',
       'Customer.Phone': '',
+      Impact: '',
+      ActionRequested: '',
       'Document1.Name': 'image.png',
       'Document1.MimeType': 'image/png',
       'Document1.URL': 'https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c',
