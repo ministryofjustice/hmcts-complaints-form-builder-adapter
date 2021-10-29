@@ -2,6 +2,9 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: "hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}-hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}-blue"
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
     - hosts:
