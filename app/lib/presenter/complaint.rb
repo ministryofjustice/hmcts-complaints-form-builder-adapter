@@ -8,6 +8,8 @@ module Presenter
     def optics_payload
       {
         Team: submission_answers.fetch(:complaint_location),
+        AssignedTeam: submission_answers.fetch(:complaint_location),
+        AssignedTeamSS: submission_answers.fetch(:complaint_location),
         RequestDate: request_date,
         Details: submission_answers.fetch(:complaint_details, ''),
         Reference: submission_answers.fetch(:case_number, '')
