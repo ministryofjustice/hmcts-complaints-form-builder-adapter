@@ -10,7 +10,7 @@ gem 'jwe', '~> 0.4.0'
 gem 'jwt', '~> 2.3'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.6'
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 6.1.4.6'
 gem 'sentry-raven', '3.1.2'
 
 group :development, :test do
