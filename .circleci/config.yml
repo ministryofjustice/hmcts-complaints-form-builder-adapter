@@ -48,19 +48,19 @@ jobs:
             ENVIRONMENT_NAME: staging
           command: './deploy-scripts/bin/build'
       - run:
-          name: deploy to staging
-          environment:
-            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
-            PLATFORM_ENV: staging
-            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
-          command: './deploy-scripts/bin/deploy'
-      - run:
           name: deploy to staging (EKS cluster)
           environment:
             APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
             PLATFORM_ENV: staging
             K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
           command: './deploy-scripts/bin/deploy-eks'
+      - run:
+          name: deploy to staging
+          environment:
+            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
+            PLATFORM_ENV: staging
+            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
+          command: './deploy-scripts/bin/deploy'
       - slack/status: *slack_status
 
   deploy_production:
@@ -85,6 +85,13 @@ jobs:
           environment:
             ENVIRONMENT_NAME: production
           command: './deploy-scripts/bin/build'
+      - run:
+          name: deploy to production (eks)
+          environment:
+            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
+            PLATFORM_ENV: production
+            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-production
+          command: './deploy-scripts/bin/deploy-eks'
       - run:
           name: deploy to production
           environment:
