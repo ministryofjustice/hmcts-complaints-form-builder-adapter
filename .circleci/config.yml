@@ -54,13 +54,6 @@ jobs:
             PLATFORM_ENV: staging
             K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
           command: './deploy-scripts/bin/deploy-eks'
-      - run:
-          name: deploy to staging
-          environment:
-            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
-            PLATFORM_ENV: staging
-            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
-          command: './deploy-scripts/bin/deploy'
       - slack/status: *slack_status
 
   deploy_production:
@@ -118,21 +111,21 @@ workflows:
               only:
                 - master
                 - deploy-to-staging
-      # - slack/approval-notification:
-      #     message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
-      #     include_job_number_field: false
-      #     requires:
-      #       - deploy_staging
-      # - confirm_production_deploy:
-      #     type: approval
-      #     requires:
-      #       - deploy_staging
-      #     filters:
-      #       branches:
-      #         only: master
-      # - deploy_production:
-      #     requires:
-      #       - confirm_production_deploy
-      #     filters:
-      #       branches:
-      #         only: master
+      - slack/approval-notification:
+          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
+          include_job_number_field: false
+          requires:
+            - deploy_staging
+      - confirm_production_deploy:
+          type: approval
+          requires:
+            - deploy_staging
+          filters:
+            branches:
+              only: master
+      - deploy_production:
+          requires:
+            - confirm_production_deploy
+          filters:
+            branches:
+              only: master
