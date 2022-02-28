@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: hmcts-complaints-formbuilder-adapter-api-{{ .Values.environmentName }}
 spec:
-  replicas: 10
+  replicas: {{ .Values.replicas.api }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.api.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.api.maxUnavailable }}
   selector:
     matchLabels:
       app: hmcts-complaints-formbuilder-adapter
@@ -17,15 +22,26 @@ spec:
       - name: hmcts-complaints-formbuilder-adapter
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/hmcts-complaints-formbuilder-adapter-api:{{ .Values.circleSha1 }}"
         imagePullPolicy: Always
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sleep", "10"]
         ports:
         - containerPort: 3000
-        readinessProbe:
+        livenessProbe:
           httpGet:
             path: /health
             port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          successThreshold: 1
+          initialDelaySeconds: {{ .Values.livenessProbe.api.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.api.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.api.successThreshold }}
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 3000
+          initialDelaySeconds: {{ .Values.readinessProbe.api.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.api.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.api.successThreshold }}
         env:
         - name: HOST
           value: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}.apps.live.cloud-platform.service.justice.gov.uk
@@ -88,7 +104,7 @@ kind: Deployment
 metadata:
   name: hmcts-complaints-formbuilder-adapter-worker-{{ .Values.environmentName }}
 spec:
-  replicas: 5
+  replicas: {{ .Values.replicas.workers }}
   selector:
     matchLabels:
       app: hmcts-complaints-formbuilder-adapter-worker
@@ -102,6 +118,10 @@ spec:
       - name: hmcts-complaints-formbuilder-adapter
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/hmcts-complaints-formbuilder-adapter-worker:{{ .Values.circleSha1 }}"
         imagePullPolicy: Always
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sleep", "10"]
         env:
         - name: HOST
           value: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}.apps.live.cloud-platform.service.justice.gov.uk
