@@ -7,5 +7,6 @@ Rails.application.routes.draw do
   end
 
   get '/health', to: 'health#show'
+  get '/readiness', to: 'health#readiness'
   resource :metrics, only: [:show]
 end

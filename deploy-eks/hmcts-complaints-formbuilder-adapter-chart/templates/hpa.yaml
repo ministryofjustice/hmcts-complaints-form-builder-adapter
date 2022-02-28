@@ -1,0 +1,15 @@
+{{- if .Values.hpa }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hmcts-complaints-formbuilder-adapter-api-{{ .Values.environmentName }}
+  namespace: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hmcts-complaints-formbuilder-adapter-api-{{ .Values.environmentName }}
+  minReplicas: {{ .Values.hpa.api.minReplicas }}
+  maxReplicas: {{ .Values.hpa.api.maxReplicas }}
+  targetCPUUtilizationPercentage: {{ .Values.hpa.api.targetCPUUtilizationPercentage }}
+{{- end }}
