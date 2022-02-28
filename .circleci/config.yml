@@ -85,13 +85,6 @@ jobs:
             PLATFORM_ENV: production
             K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-production
           command: './deploy-scripts/bin/deploy-eks'
-      - run:
-          name: deploy to production
-          environment:
-            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
-            PLATFORM_ENV: production
-            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-production
-          command: './deploy-scripts/bin/deploy'
       - slack/status:
           only_for_branches: master
           success_message: ":rocket:  Successfully deployed to Live  :guitar:"
