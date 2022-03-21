@@ -15,7 +15,13 @@ describe 'Submitting a complaint', type: :request do
     stub_request(:post, 'https://uat.icasework.com/createcase?db=hmcts')
       .with(
         body: expected_optics_payload,
-        headers: { 'Authorization' => 'Bearer some_bearer_token', 'Content-Type' => 'application/json' }
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer some_bearer_token',
+          'Content-Type' => 'application/json',
+          'User-Agent' => 'Ruby'
+        }
       )
       .to_return(
         status: 200,
@@ -30,6 +36,8 @@ describe 'Submitting a complaint', type: :request do
   let(:expected_optics_payload) do
     {
       Team: '111',
+      AssignedTeam: '111',
+      AssignedTeamSS: '111',
       RequestDate: Date.today.to_s,
       Details: '',
       Reference: '',
