@@ -6,7 +6,7 @@ jobs:
   test:
     working_directory: ~/circle
     docker:
-      - image: circleci/buildpack-deps:14.04
+      - image: cimg/ruby:2.7.5
     steps:
       - checkout
       - setup_remote_docker
