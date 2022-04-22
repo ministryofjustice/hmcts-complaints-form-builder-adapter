@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hmcts-complaints-formbuilder-adapter-config-map
+  namespace: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}
+data:
+  COMMENT_TYPE: {{ .Values.commentType }}

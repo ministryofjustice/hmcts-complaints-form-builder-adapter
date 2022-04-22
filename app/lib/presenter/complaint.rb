@@ -1,5 +1,7 @@
 module Presenter
   class Complaint
+    include SubmissionDate
+
     def initialize(form_builder_payload:, attachments:)
       @submission_answers = form_builder_payload.fetch(:submissionAnswers)
       @attachments = attachments
@@ -19,11 +21,6 @@ module Presenter
     private
 
     attr_reader :submission_answers, :attachments
-
-    def request_date
-      time = submission_answers.fetch(:submissionDate, (Time.now.to_i * 1000).to_s)
-      Time.at(time.to_s.to_i / 1000).strftime('%Y-%m-%d')
-    end
 
     # rubocop:disable Metrics/MethodLength
     def customer_data
