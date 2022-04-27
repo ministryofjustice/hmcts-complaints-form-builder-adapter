@@ -122,6 +122,9 @@ spec:
           preStop:
             exec:
               command: ["/bin/sleep", "10"]
+        envFrom:
+          - configMapRef:
+              name: hmcts-complaints-formbuilder-adapter-config-map
         env:
         - name: HOST
           value: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}.apps.live.cloud-platform.service.justice.gov.uk

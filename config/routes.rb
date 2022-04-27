@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :complaint, only: [:create]
     resources :attachments, only: [:show]
     resources :correspondence, only: [:create]
+    resources :comment, only: [:create]
   end
 
   get '/health', to: 'health#show'
