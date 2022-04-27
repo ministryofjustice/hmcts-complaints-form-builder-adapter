@@ -4,4 +4,4 @@ metadata:
   name: hmcts-complaints-formbuilder-adapter-config-map
   namespace: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}
 data:
-  COMMENT_TYPE: {{ .Values.commentType }}
+  COMMENT_TYPE: "{{ .Values.commentType }}"
