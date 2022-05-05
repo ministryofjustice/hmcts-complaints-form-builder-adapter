@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :attachments, only: [:show]
     resources :correspondence, only: [:create]
     resources :comment, only: [:create]
+    resources :feedback, only: [:create]
   end
 
   get '/health', to: 'health#show'
