@@ -9,7 +9,7 @@ module Presenter
     end
 
     REQUEST_METHOD = 'Online form'.freeze
-    TYPE = 'UF144908'.freeze
+    TYPE = 'Praise'.freeze
 
     def optics_payload
       {
