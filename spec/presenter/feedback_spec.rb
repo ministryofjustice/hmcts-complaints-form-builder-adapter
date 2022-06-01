@@ -13,6 +13,7 @@ RSpec.describe Presenter::Feedback do
       submissionAnswers:
       {
         RequestMethod: Presenter::Feedback::REQUEST_METHOD,
+        'External.RequestMethod': Presenter::Feedback::REQUEST_METHOD,
         contact_location: '1101',
         feedback_details: 'feedback for all'
       }.merge(input_payload)
@@ -26,19 +27,28 @@ RSpec.describe Presenter::Feedback do
         }
       end
 
-      it 'should always return "Praise"' do
-        expect(presenter.optics_payload[:Type]).to eq('Praise')
+      it 'should always return the correct type' do
+        expect(presenter.optics_payload[:Type]).to eq(Presenter::Feedback::TYPE)
       end
     end
 
     context 'request method' do
       let(:input_payload) do
         {
-          RequestMethod: ''
+          'External.RequestMethod': ''
         }
       end
-      it 'should always return online form' do
-        expect(presenter.optics_payload[:RequestMethod]).to eq('Online form')
+      
+      context 'External.RequestMethod' do
+        it 'should always return online form' do
+          expect(presenter.optics_payload[:'External.RequestMethod']).to eq('Online form')
+        end
+      end
+
+      context 'RequestMethod' do
+        it 'should always return online form' do
+          expect(presenter.optics_payload[:RequestMethod]).to eq('Online form')
+        end
       end
     end
 
@@ -69,8 +79,27 @@ RSpec.describe Presenter::Feedback do
       let(:today) { Time.now.strftime('%Y-%m-%d') }
       let(:input_payload) { {} }
 
-      it 'returns a the date correctly formatted' do
-        expect(presenter.optics_payload[:RequestDate]).to eq(today)
+      context 'External.RequestDate' do
+        it 'returns a the date correctly formatted' do
+          expect(presenter.optics_payload[:'External.RequestDate']).to eq(today)
+        end
+      end
+
+      context 'RequestDate' do
+        it 'returns a the date correctly formatted' do
+          expect(presenter.optics_payload[:RequestDate]).to eq(today)
+        end
+      end
+    end
+
+    context 'party context' do
+      let(:input_payload) do
+        {
+          PartyContext: ''
+        }
+      end
+      it 'should always return Main' do
+        expect(presenter.optics_payload[:PartyContext]).to eq(Presenter::Feedback::PARTY_CONTEXT)
       end
     end
   end
