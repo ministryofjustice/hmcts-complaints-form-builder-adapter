@@ -58,6 +58,9 @@ describe 'Submitting feedback', type: :request do
       Type:  Presenter::Feedback::TYPE,
       RequestDate: '2022-05-04',
       RequestMethod: Presenter::Feedback::REQUEST_METHOD,
+      'External.RequestDate': '2022-05-04',
+      'External.RequestMethod': Presenter::Feedback::REQUEST_METHOD,
+      PartyContext: Presenter::Feedback::PARTY_CONTEXT,
       AssignedTeam: '1111',
       'Case.ServiceTeam': '1111',
       Details: 'all of the feedback'
