@@ -26,8 +26,8 @@ RSpec.describe Presenter::Feedback do
         }
       end
 
-      it 'should always return "Praise"' do
-        expect(presenter.optics_payload[:Type]).to eq('Praise')
+      it 'should always return the correct type' do
+        expect(presenter.optics_payload[:Type]).to eq(Presenter::Feedback::TYPE)
       end
     end
 
