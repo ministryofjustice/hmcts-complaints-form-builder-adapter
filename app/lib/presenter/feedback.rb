@@ -11,6 +11,7 @@ module Presenter
     REQUEST_METHOD = 'Online form'.freeze
     TYPE = 'UF144908'.freeze
     PARTY_CONTEXT = 'Main'.freeze
+    COURTS = 'COURTS'.freeze
 
     # rubocop:disable Metrics/MethodLength
     def optics_payload
@@ -22,7 +23,8 @@ module Presenter
         'External.RequestMethod': REQUEST_METHOD,
         PartyContext: PARTY_CONTEXT,
         AssignedTeam: submission_answers.fetch(:contact_location, ''),
-        'Case.ServiceTeam': submission_answers.fetch(:contact_location, ''),
+        'Case.Team': submission_answers.fetch(:contact_location, ''),
+        'Case.ServiceTeam': COURTS,
         Details: submission_answers.fetch(:feedback_details, '')
       }
     end
