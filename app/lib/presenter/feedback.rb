@@ -23,8 +23,8 @@ module Presenter
         'External.RequestMethod': REQUEST_METHOD,
         PartyContext: PARTY_CONTEXT,
         AssignedTeam: submission_answers.fetch(:contact_location, ''),
-        'Case.Team': submission_answers.fetch(:contact_location, ''),
         'Case.ServiceTeam': COURTS,
+        'Case.Team': submission_answers.fetch(:contact_location, ''),
         Details: submission_answers.fetch(:feedback_details, '')
       }
     end
