@@ -6,6 +6,7 @@ metadata:
     external-dns.alpha.kubernetes.io/set-identifier: "hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}-hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}-green"
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
+  ingressClassName: default
   tls:
     - hosts:
         - hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}.apps.live.cloud-platform.service.justice.gov.uk
