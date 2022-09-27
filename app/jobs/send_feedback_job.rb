@@ -2,6 +2,7 @@ class SendFeedbackJob < ApplicationJob
   queue_as :send_feedback
 
   def perform(form_builder_payload:)
+    return if previously_processed?(form_builder_payload[:submissionId])
     presenter = Presenter::Feedback.new(
       form_builder_payload:
     )

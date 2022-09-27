@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'application_job_spec'
 
 RSpec.describe SendFeedbackJob, type: :job do
   describe '#perform_later' do
@@ -19,8 +20,10 @@ RSpec.describe SendFeedbackJob, type: :job do
     let(:create_case) { instance_spy(Usecase::Optics::CreateCase) }
     let(:presenter) { instance_spy(Presenter::Feedback) }
     let(:gateway) { instance_spy(Gateway::Optics) }
+    let(:submission_id) { SecureRandom.uuid }
     let(:input) do
       {
+        'submissionId': submission_id,
         'submissionAnswers': {
           contact_location: '1111',
           feedback_details: 'all of the feedback'
@@ -55,10 +58,18 @@ RSpec.describe SendFeedbackJob, type: :job do
     end
 
     context 'when the a submission was submitted to Optics' do
+      before do
+        allow(jobs).to receive(:previously_processed?).and_return(false)
+      end
+
       it 'creates a new entry' do
         jobs.perform(form_builder_payload: input)
         expect(ProcessedSubmission.count).to eq(1)
       end
+    end
+
+    it_behaves_like 'an application job' do
+      let(:job_type) { 'send_feedback' }
     end
   end
 end

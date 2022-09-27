@@ -3,6 +3,8 @@ class SendComplaintJob < ApplicationJob
 
   # rubocop:disable Metrics/MethodLength
   def perform(form_builder_payload:)
+    return if previously_processed?(form_builder_payload[:submissionId])
+
     Rails.logger.info("Working on job_id: #{job_id}")
 
     attachments = Usecase::SpawnAttachments.new(
