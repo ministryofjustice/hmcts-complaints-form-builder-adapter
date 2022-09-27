@@ -6,10 +6,11 @@ describe Presenter::Complaint do
                         attachments: attachments)
   end
 
+  let(:submission_id) { '1e937616-dd0b-4bc3-8c67-40e4ffd54f78' }
   let(:input_payload) do
     {
       'serviceSlug': 'my-form',
-      'submissionId': '1e937616-dd0b-4bc3-8c67-40e4ffd54f78',
+      'submissionId': submission_id,
       'submissionAnswers': {
         'first_name': 'Jim',
         'last_name': 'Complainer',
@@ -55,6 +56,7 @@ describe Presenter::Complaint do
       AssignedTeamSS: '1001',
       RequestDate: '2019-09-11',
       Reference: '12345',
+      ExternalId: submission_id,
       "PartyContextManageCases": 'Main',
       "Customer.FirstName": 'Jim',
       "Customer.Surname": 'Complainer',
@@ -92,7 +94,7 @@ describe Presenter::Complaint do
     let(:invalid_input_payload) do
       {
         'serviceSlug': 'my-form',
-        'submissionId': '1e937616-dd0b-4bc3-8c67-40e4ffd54f78',
+        'submissionId': submission_id,
         'submissionAnswers': {
           'complaint_location': '1001'
         }
@@ -105,6 +107,7 @@ describe Presenter::Complaint do
         Type: 'Complaint',
         Format: 'json',
         Reference: '',
+        ExternalId: submission_id,
         RequestMethod: 'Online - gov.uk',
         "PartyContextManageCases": 'Main',
         RequestDate: Date.today.to_s,

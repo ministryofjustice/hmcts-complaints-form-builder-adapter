@@ -36,6 +36,7 @@ module Presenter
         Details: submission_answers.fetch(:MessageContent, ''),
         QueryType: QUERY_TYPE.fetch(query_type_claimant_or_defendant, ''),
         ServiceType: service_type,
+        ExternalId: form_builder_payload.fetch(:submissionId),
         'CaseContactPostcode.Subject': submission_answers.fetch(:ClientPostcode, ''),
         'CaseContactCustom17.Representative': submission_answers.fetch(:CompanyName, ''),
         'CaseContactCustom18.Subject': '',
@@ -126,6 +127,10 @@ module Presenter
     def existing_case_reference?
       @existing_case_reference ||=
         submission_answers.fetch(:ClaimNumber, '') == EXISTING_CASE_REFERENCE
+    end
+
+    def submission_answers
+      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
     end
   end
   # rubocop:enable Metrics/ClassLength

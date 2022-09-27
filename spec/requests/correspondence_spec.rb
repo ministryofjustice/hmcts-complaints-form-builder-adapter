@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Submitting a correspondence', type: :request do
   include ActiveJob::TestHelper
 
+  let(:submission_id) { '891c837c-adef-4854-8bd0-d681577f381e' }
   let(:constant_data) do
     {
       db: Presenter::Correspondence::DB,
@@ -20,6 +21,7 @@ describe 'Submitting a correspondence', type: :request do
       Details: 'some message body thing',
       QueryType: 'B',
       ServiceType: 'A',
+      ExternalId: submission_id,
       'CaseContactPostcode.Subject': 'W1 1CA',
       'CaseContactCustom17.Representative': 'Jedi Council',
       'CaseContactCustom18.Subject': '',
@@ -37,7 +39,7 @@ describe 'Submitting a correspondence', type: :request do
   let(:representing_runner_submission) do
     {
       serviceSlug: 'money-claim-queries',
-      submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
+      submissionId: submission_id,
       submissionAnswers:
       {
         ClaimNumber: 'CaseReferenceYes',
@@ -67,6 +69,7 @@ describe 'Submitting a correspondence', type: :request do
       Details: 'some message body thing',
       QueryType: 'B',
       ServiceType: 'A',
+      ExternalId: submission_id,
       'CaseContactPostcode.Subject': '',
       'CaseContactCustom17.Representative': '',
       'CaseContactCustom18.Subject': '',
@@ -84,7 +87,7 @@ describe 'Submitting a correspondence', type: :request do
   let(:self_representing_runner_submission) do
     {
       serviceSlug: 'money-claim-queries',
-      submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
+      submissionId: submission_id,
       submissionAnswers:
       {
         NewOrExistingClaim: 'new-claim',
@@ -181,7 +184,7 @@ describe 'Submitting a correspondence', type: :request do
         expect(ProcessedSubmission.count).to eq(1)
         expect(
           ProcessedSubmission.first.submission_id
-        ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+        ).to eq(submission_id)
       end
     end
   end
@@ -222,7 +225,7 @@ describe 'Submitting a correspondence', type: :request do
         expect(ProcessedSubmission.count).to eq(1)
         expect(
           ProcessedSubmission.first.submission_id
-        ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+        ).to eq(submission_id)
       end
     end
   end

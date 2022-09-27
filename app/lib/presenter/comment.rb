@@ -9,7 +9,8 @@ module Presenter
         RequestMethod: REQUEST_METHOD,
         AssignedTeam: submission_answers.fetch(:contact_location, ''),
         'Case.ServiceTeam': submission_answers.fetch(:contact_location, ''),
-        Details: submission_answers.fetch(:feedback_details, '')
+        Details: submission_answers.fetch(:feedback_details, ''),
+        ExternalId: form_builder_payload.fetch(:submissionId)
       }
     end
 
@@ -17,6 +18,10 @@ module Presenter
 
     def type
       ENV['COMMENT_TYPE'] || ''
+    end
+
+    def submission_answers
+      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
     end
   end
 end

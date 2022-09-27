@@ -53,6 +53,7 @@ describe 'Submitting feedback', type: :request do
     end
   end
 
+  let(:submission_id) { '891c837c-adef-4854-8bd0-d681577f381e' }
   let(:expected_optics_payload) do
     {
       Type:  Presenter::Feedback::TYPE,
@@ -62,14 +63,15 @@ describe 'Submitting feedback', type: :request do
       'External.RequestMethod': Presenter::Feedback::REQUEST_METHOD,
       PartyContext: Presenter::Feedback::PARTY_CONTEXT,
       AssignedTeam: '1111',
-      Details: 'all of the feedback'
+      Details: 'all of the feedback',
+      ExternalId: submission_id
     }.to_json
   end
 
   let(:runner_submission) do
     {
       serviceSlug: 'user-feedback-form',
-      submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
+      submissionId: submission_id,
       submissionAnswers:
       {
         contact_location: '1111',
@@ -112,7 +114,7 @@ describe 'Submitting feedback', type: :request do
       expect(ProcessedSubmission.count).to eq(1)
       expect(
         ProcessedSubmission.first.submission_id
-      ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+      ).to eq(submission_id)
     end
   end
 end
