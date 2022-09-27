@@ -33,6 +33,7 @@ describe 'Submitting a complaint', type: :request do
     end
   end
 
+  let(:submission_id) { '891c837c-adef-4854-8bd0-d681577f381e' }
   let(:expected_optics_payload) do
     {
       Team: '111',
@@ -41,6 +42,7 @@ describe 'Submitting a complaint', type: :request do
       RequestDate: Date.today.to_s,
       Details: '',
       Reference: '',
+      ExternalId: submission_id,
       db: 'hmcts',
       Type: 'Complaint',
       Format: 'json',
@@ -66,7 +68,7 @@ describe 'Submitting a complaint', type: :request do
   let(:runner_submission) do
     {
       serviceSlug: 'claim-for-the-costs-of-a-something',
-      submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
+      submissionId: submission_id,
       submissionAnswers:
       {
         fullname: 'Full Name',
@@ -115,7 +117,7 @@ describe 'Submitting a complaint', type: :request do
       expect(ProcessedSubmission.count).to eq(1)
       expect(
         ProcessedSubmission.first.submission_id
-      ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+      ).to eq(submission_id)
     end
   end
 end

@@ -12,7 +12,8 @@ module Presenter
         AssignedTeamSS: submission_answers.fetch(:complaint_location),
         RequestDate: request_date,
         Details: submission_answers.fetch(:complaint_details, ''),
-        Reference: submission_answers.fetch(:case_number, '')
+        Reference: submission_answers.fetch(:case_number, ''),
+        ExternalId: form_builder_payload.fetch(:submissionId)
       }.merge(constant_data, customer_data, *attachments_data)
     end
 
@@ -58,6 +59,10 @@ module Presenter
         RequestMethod: 'Online - gov.uk',
         'PartyContextManageCases': 'Main'
       }
+    end
+
+    def submission_answers
+      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
     end
   end
 end
