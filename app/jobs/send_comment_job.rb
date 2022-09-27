@@ -2,6 +2,7 @@ class SendCommentJob < ApplicationJob
   queue_as :send_comments
 
   def perform(form_builder_payload:)
+    return if previously_processed?(form_builder_payload[:submissionId])
     presenter = Presenter::Comment.new(
       form_builder_payload:
     )

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'application_job_spec'
 
 describe SendComplaintJob, type: :job do
   describe '#perform_later' do
@@ -18,7 +19,8 @@ describe SendComplaintJob, type: :job do
     let(:spawn_attachments) { instance_spy(Usecase::SpawnAttachments) }
     let(:presenter) { instance_spy(Presenter::Complaint) }
     let(:gateway) { instance_spy(Gateway::Optics) }
-    let(:input) { { 'submissionAnswers': {} } }
+    let(:submission_id) { SecureRandom.uuid }
+    let(:input) { { 'submissionId': submission_id, 'submissionAnswers': {} } }
     let(:attachments) do
       [
         Attachment.new,
@@ -50,16 +52,26 @@ describe SendComplaintJob, type: :job do
       allow(Gateway::Optics).to receive(:new).and_return(gateway)
     end
 
-    it 'calls the spawn attachments usecase' do
-      jobs.perform(form_builder_payload: input)
-      expect(spawn_attachments).to have_received(:call).once
+    context 'when processing a submission' do
+      before do
+        allow(jobs).to receive(:previously_processed?).and_return(false)
+      end
+
+      it 'calls the spawn attachments usecase' do
+        jobs.perform(form_builder_payload: input)
+        expect(spawn_attachments).to have_received(:call).once
+      end
+
+      context 'when the a submission was submitted to Optics' do
+        it 'creates a new entry' do
+          jobs.perform(form_builder_payload: input)
+          expect(ProcessedSubmission.count).to eq(1)
+        end
+      end
     end
 
-    context 'when the a submission was submitted to Optics' do
-      it 'creates a new entry' do
-        jobs.perform(form_builder_payload: input)
-        expect(ProcessedSubmission.count).to eq(1)
-      end
+    it_behaves_like 'an application job' do
+      let(:job_type) { 'send_complaints' }
     end
   end
 end
