@@ -7,7 +7,10 @@ module Gateway
       end
 
       def to_s
-        "[OPTICS API error: Received #{@response&.code} response, with headers #{@response&.headers}] #{super}"
+        message = "[OPTICS API error: Received #{@response&.code} response, with headers #{@response&.headers}]"
+        "#{message} #{super}"
+      rescue StandardError
+        message
       end
     end
 
