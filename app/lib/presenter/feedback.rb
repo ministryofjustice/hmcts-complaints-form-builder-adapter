@@ -1,5 +1,13 @@
 module Presenter
-  class Feedback < BasePresenter
+  class Feedback
+    include SubmissionDate
+
+    attr_reader :submission_answers
+
+    def initialize(form_builder_payload:)
+      @submission_answers = form_builder_payload.fetch(:submissionAnswers)
+    end
+
     REQUEST_METHOD = 'Online form'.freeze
     TYPE = 'UF144908'.freeze
     PARTY_CONTEXT = 'Main'.freeze

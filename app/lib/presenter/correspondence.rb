@@ -1,6 +1,8 @@
 module Presenter
   # rubocop:disable Metrics/ClassLength
-  class Correspondence < BasePresenter
+  class Correspondence
+    attr_reader :submission_answers
+
     AGENT = 'Agent'.freeze
     CONTACT_METHOD = 'Online form'.freeze
     DB = 'hmcts'.freeze
@@ -26,6 +28,10 @@ module Presenter
       'claim-not-paid' => 'G'
     }.freeze
 
+    def initialize(form_builder_payload:)
+      @submission_answers = form_builder_payload.fetch(:submissionAnswers)
+    end
+
     # rubocop:disable Metrics/MethodLength
     def optics_payload
       {
@@ -39,7 +45,7 @@ module Presenter
         'CaseContactPostcode.Subject': submission_answers.fetch(:ClientPostcode, ''),
         'CaseContactCustom17.Representative': submission_answers.fetch(:CompanyName, ''),
         'CaseContactCustom18.Subject': '',
-        'Case.ReceivedDate': request_date('%d/%m/%Y')
+        'Case.ReceivedDate': submission_date
       }.merge(representing_data, self_representing_data, constant_data)
     end
 
@@ -91,6 +97,11 @@ module Presenter
 
     def customer_party_context
       @customer_party_context ||= applicant_type == 'C' ? AGENT : MAIN
+    end
+
+    def submission_date
+      time = submission_answers.fetch(:submissionDate, (Time.now.to_i * 1000).to_s)
+      Time.at(time.to_s.to_i / 1000).strftime('%d/%m/%Y')
     end
 
     def query_type_claimant_or_defendant
