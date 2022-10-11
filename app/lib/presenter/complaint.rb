@@ -1,7 +1,9 @@
 module Presenter
-  class Complaint < BasePresenter
+  class Complaint
+    include SubmissionDate
+
     def initialize(form_builder_payload:, attachments:)
-      super(form_builder_payload: form_builder_payload)
+      @submission_answers = form_builder_payload.fetch(:submissionAnswers)
       @attachments = attachments
     end
 
@@ -18,7 +20,7 @@ module Presenter
 
     private
 
-    attr_reader :attachments
+    attr_reader :submission_answers, :attachments
 
     # rubocop:disable Metrics/MethodLength
     def customer_data
