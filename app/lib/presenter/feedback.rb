@@ -19,11 +19,5 @@ module Presenter
       }
     end
     # rubocop:enable Metrics/MethodLength
-
-    private
-
-    def submission_answers
-      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
-    end
   end
 end
