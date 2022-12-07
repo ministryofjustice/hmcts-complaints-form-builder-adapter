@@ -60,9 +60,5 @@ module Presenter
         'PartyContextManageCases': 'Main'
       }
     end
-
-    def submission_answers
-      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
-    end
   end
 end

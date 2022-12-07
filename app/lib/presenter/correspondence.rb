@@ -128,10 +128,6 @@ module Presenter
       @existing_case_reference ||=
         submission_answers.fetch(:ClaimNumber, '') == EXISTING_CASE_REFERENCE
     end
-
-    def submission_answers
-      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
-    end
   end
   # rubocop:enable Metrics/ClassLength
 end

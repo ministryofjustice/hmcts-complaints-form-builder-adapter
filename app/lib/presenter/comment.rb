@@ -19,9 +19,5 @@ module Presenter
     def type
       ENV['COMMENT_TYPE'] || ''
     end
-
-    def submission_answers
-      @submission_answers ||= form_builder_payload.fetch(:submissionAnswers)
-    end
   end
 end
