@@ -24,6 +24,6 @@ class ApplicationJob < ActiveJob::Base
   end
 
   def record_successful_submission(submission_id)
-    ProcessedSubmission.create(submission_id: submission_id)
+    ProcessedSubmission.create(submission_id:)
   end
 end

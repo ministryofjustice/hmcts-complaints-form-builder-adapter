@@ -1,7 +1,7 @@
 module Presenter
   class Complaint < BasePresenter
     def initialize(form_builder_payload:, attachments:)
-      super(form_builder_payload: form_builder_payload)
+      super(form_builder_payload:)
       @attachments = attachments
     end
 
