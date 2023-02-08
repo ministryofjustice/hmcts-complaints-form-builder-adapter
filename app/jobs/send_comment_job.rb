@@ -3,12 +3,12 @@ class SendCommentJob < ApplicationJob
 
   def perform(form_builder_payload:)
     presenter = Presenter::Comment.new(
-      form_builder_payload: form_builder_payload
+      form_builder_payload:
     )
 
     Usecase::Optics::CreateCase.new(
       optics_gateway: gateway,
-      presenter: presenter,
+      presenter:,
       get_bearer_token: bearer_token
     ).execute
 

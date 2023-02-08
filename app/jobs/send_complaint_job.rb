@@ -6,16 +6,16 @@ class SendComplaintJob < ApplicationJob
     Rails.logger.info("Working on job_id: #{job_id}")
 
     attachments = Usecase::SpawnAttachments.new(
-      form_builder_payload: form_builder_payload
+      form_builder_payload:
     ).call
     presenter = Presenter::Complaint.new(
-      form_builder_payload: form_builder_payload,
-      attachments: attachments
+      form_builder_payload:,
+      attachments:
     )
 
     Usecase::Optics::CreateCase.new(
       optics_gateway: gateway,
-      presenter: presenter,
+      presenter:,
       get_bearer_token: bearer_token
     ).execute
 

@@ -21,7 +21,7 @@ module Usecase
     attr_reader :identifier
 
     def attachment
-      @attachment ||= Attachment.find_by(identifier: identifier)
+      @attachment ||= Attachment.find_by(identifier:)
     end
 
     def uri
