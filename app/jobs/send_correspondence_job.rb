@@ -3,7 +3,10 @@ class SendCorrespondenceJob < ApplicationJob
 
   def perform(form_builder_payload:)
     return if previously_processed?(form_builder_payload[:submissionId])
+<<<<<<< HEAD
 
+=======
+>>>>>>> 644faee (Update all jobs to check for existence of previous submissions)
     presenter = Presenter::Correspondence.new(
       form_builder_payload:
     )
