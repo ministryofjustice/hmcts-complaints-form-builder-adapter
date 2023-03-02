@@ -19,10 +19,12 @@ class ApplicationJob < ActiveJob::Base
     )
   end
 
+  # rubocop:disable Style/HashSyntax
   def previously_processed?(submission_id)
     ProcessedSubmission.exists?(submission_id: submission_id) ||
       case_exists_in_optics?(submission_id)
   end
+  # rubocop:enable Style/HashSyntax
 
   # rubocop:disable Metrics/MethodLength
   def case_exists_in_optics?(submission_id)
