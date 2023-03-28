@@ -5,6 +5,7 @@ module Presenter
       @attachments = attachments
     end
 
+    # rubocop:disable Metrics/MethodLength
     def optics_payload
       {
         Team: submission_answers.fetch(:complaint_location),
@@ -13,9 +14,12 @@ module Presenter
         RequestDate: request_date,
         Details: submission_answers.fetch(:complaint_details, ''),
         Reference: submission_answers.fetch(:case_number, ''),
-        ExternalId: form_builder_payload.fetch(:submissionId)
+        ExternalId: form_builder_payload.fetch(:submissionId),
+        RelatedToCourtTribunalCase: submission_answers[:case_number].present? ? 'Yes' : 'No',
+        'Case.ExternalIdMC': submission_answers.fetch(:case_number, '')
       }.merge(constant_data, customer_data, *attachments_data)
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 

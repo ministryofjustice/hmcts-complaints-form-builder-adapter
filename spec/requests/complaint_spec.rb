@@ -56,6 +56,8 @@ describe 'Submitting a complaint', type: :request do
       Details: '',
       Reference: '',
       ExternalId: submission_id,
+      RelatedToCourtTribunalCase: 'No',
+      'Case.ExternalIdMC': '',
       db: 'hmcts',
       Type: 'Complaint',
       Format: 'json',
