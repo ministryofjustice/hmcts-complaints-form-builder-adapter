@@ -54,7 +54,6 @@ describe 'Submitting a complaint', type: :request do
       AssignedTeamSS: '111',
       RequestDate: Date.today.to_s,
       Details: '',
-      Reference: '',
       ExternalId: submission_id,
       RelatedToCourtTribunalCase: 'No',
       'Case.ExternalIdMC': '',
