@@ -9,7 +9,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'jwe', '~> 0.4.0'
 gem 'jwt', '~> 2.7'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 6.1'
+gem 'puma', '~> 6.2'
 gem 'rails', '~> 6.1.7.1', '< 7.0.0.0'
 gem 'sentry-raven', '3.1.2'
 
