@@ -24,7 +24,6 @@ class ApplicationJob < ActiveJob::Base
       case_exists_in_optics?(submission_id)
   end
 
-  # rubocop:disable Metrics/MethodLength
   def case_exists_in_optics?(submission_id)
     result = gateway.get_case_attribute(submission_id, bearer_token.execute)
     if result.success?
@@ -39,7 +38,6 @@ class ApplicationJob < ActiveJob::Base
     Rails.logger.warn(e.message)
     raise(e)
   end
-  # rubocop:enable Metrics/MethodLength
 
   def gateway
     Gateway::Optics.new(endpoint: Rails.configuration.x.optics.endpoint)

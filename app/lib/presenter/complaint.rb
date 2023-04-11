@@ -22,7 +22,6 @@ module Presenter
 
     attr_reader :attachments
 
-    # rubocop:disable Metrics/MethodLength
     def customer_data
       {
         'Customer.FirstName': submission_answers.fetch(:first_name, ''),
@@ -37,7 +36,6 @@ module Presenter
         'ActionRequested': submission_answers.fetch(:action_requested, '')
       }
     end
-    # rubocop:enable Metrics/MethodLength
 
     def attachments_data
       attachments.map.with_index do |attachment, index|

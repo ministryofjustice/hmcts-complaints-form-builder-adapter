@@ -4,7 +4,6 @@ module Presenter
     TYPE = 'UF144908'.freeze
     PARTY_CONTEXT = 'Main'.freeze
 
-    # rubocop:disable Metrics/MethodLength
     def optics_payload
       {
         Type: TYPE,
@@ -18,6 +17,5 @@ module Presenter
         ExternalId: form_builder_payload.fetch(:submissionId)
       }
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

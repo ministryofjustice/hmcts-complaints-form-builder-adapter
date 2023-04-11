@@ -26,7 +26,6 @@ module Presenter
       'claim-not-paid' => 'G'
     }.freeze
 
-    # rubocop:disable Metrics/MethodLength
     def optics_payload
       {
         ApplicantType: applicant_type,
@@ -75,7 +74,6 @@ module Presenter
         'Agent.Phone': ''
       }
     end
-    # rubocop:enable Metrics/MethodLength
 
     def applicant_type
       @applicant_type ||=
