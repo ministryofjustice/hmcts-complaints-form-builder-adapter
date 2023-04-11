@@ -13,7 +13,8 @@ module Presenter
         'External.RequestMethod': REQUEST_METHOD,
         PartyContext: PARTY_CONTEXT,
         AssignedTeam: submission_answers.fetch(:contact_location, ''),
-        Details: submission_answers.fetch(:feedback_details, '')
+        Details: submission_answers.fetch(:feedback_details, ''),
+        ExternalId: form_builder_payload.fetch(:submissionId)
       }
     end
   end

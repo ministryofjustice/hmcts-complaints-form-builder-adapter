@@ -26,7 +26,6 @@ module Presenter
       'claim-not-paid' => 'G'
     }.freeze
 
-    # rubocop:disable Metrics/MethodLength
     def optics_payload
       {
         ApplicantType: applicant_type,
@@ -36,6 +35,7 @@ module Presenter
         Details: submission_answers.fetch(:MessageContent, ''),
         QueryType: QUERY_TYPE.fetch(query_type_claimant_or_defendant, ''),
         ServiceType: service_type,
+        ExternalId: form_builder_payload.fetch(:submissionId),
         'CaseContactPostcode.Subject': submission_answers.fetch(:ClientPostcode, ''),
         'CaseContactCustom17.Representative': submission_answers.fetch(:CompanyName, ''),
         'CaseContactCustom18.Subject': '',
@@ -74,7 +74,6 @@ module Presenter
         'Agent.Phone': ''
       }
     end
-    # rubocop:enable Metrics/MethodLength
 
     def applicant_type
       @applicant_type ||=

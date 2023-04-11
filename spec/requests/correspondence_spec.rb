@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Submitting a correspondence', type: :request do
   include ActiveJob::TestHelper
 
+  let(:submission_id) { '891c837c-adef-4854-8bd0-d681577f381e' }
   let(:constant_data) do
     {
       db: Presenter::Correspondence::DB,
@@ -20,6 +21,7 @@ describe 'Submitting a correspondence', type: :request do
       Details: 'some message body thing',
       QueryType: 'B',
       ServiceType: 'A',
+      ExternalId: submission_id,
       'CaseContactPostcode.Subject': 'W1 1CA',
       'CaseContactCustom17.Representative': 'Jedi Council',
       'CaseContactCustom18.Subject': '',
@@ -37,7 +39,7 @@ describe 'Submitting a correspondence', type: :request do
   let(:representing_runner_submission) do
     {
       serviceSlug: 'money-claim-queries',
-      submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
+      submissionId: submission_id,
       submissionAnswers:
       {
         ClaimNumber: 'CaseReferenceYes',
@@ -67,6 +69,7 @@ describe 'Submitting a correspondence', type: :request do
       Details: 'some message body thing',
       QueryType: 'B',
       ServiceType: 'A',
+      ExternalId: submission_id,
       'CaseContactPostcode.Subject': '',
       'CaseContactCustom17.Representative': '',
       'CaseContactCustom18.Subject': '',
@@ -84,7 +87,7 @@ describe 'Submitting a correspondence', type: :request do
   let(:self_representing_runner_submission) do
     {
       serviceSlug: 'money-claim-queries',
-      submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
+      submissionId: submission_id,
       submissionAnswers:
       {
         NewOrExistingClaim: 'new-claim',
@@ -109,9 +112,7 @@ describe 'Submitting a correspondence', type: :request do
   before do
     Timecop.freeze(Time.parse('2019-09-11 15:34:46 +0000'))
 
-    allow(SecureRandom).to receive(:uuid).and_return(
-      'e2161d54-92f8-4e10-b3a1-94630c65df3c'
-    )
+    allow(SecureRandom).to receive(:uuid).and_return(submission_id)
 
     stub_request(:post, 'https://uat.icasework.com/token?db=hmcts')
       .with(
@@ -126,6 +127,19 @@ describe 'Submitting a correspondence', type: :request do
           access_token: 'some_bearer_token'
         }.to_json, headers: {}
       )
+
+    stub_request(
+      :get,
+      "https://uat.icasework.com/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=#{submission_id}"
+    ).with(
+      headers: {
+        'Accept'=>'*/*',
+        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization'=>'Bearer some_bearer_token',
+        'Content-Type'=>'application/json',
+        'User-Agent'=>'Ruby'
+      }
+    ).to_return(status: 400, body: '', headers: {}) # 400 means the case does NOT exist in OPTICS
 
     stub_request(:post, 'https://uat.icasework.com/createcase?db=hmcts')
       .with(
@@ -162,6 +176,17 @@ describe 'Submitting a correspondence', type: :request do
         expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/token?db=hmcts').with(
           headers: { 'Content-Type' => 'application/x-www-form-urlencoded' },
           body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTU2ODIxNjA4Nn0.fj8VsMONpeEmeavkh23yRsGAtfVlWkJI267gijpy6pA'
+        ).twice
+      end
+
+      it 'checks whether the submission has been previously processed' do
+        expect(WebMock).to have_requested(
+          :get, "https://uat.icasework.com/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=#{submission_id}"
+        ).with(
+          headers: {
+            'Authorization' => 'Bearer some_bearer_token',
+            'Content-Type' => 'application/json'
+          }
         ).once
       end
 
@@ -181,7 +206,7 @@ describe 'Submitting a correspondence', type: :request do
         expect(ProcessedSubmission.count).to eq(1)
         expect(
           ProcessedSubmission.first.submission_id
-        ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+        ).to eq(submission_id)
       end
     end
   end
@@ -203,6 +228,17 @@ describe 'Submitting a correspondence', type: :request do
         expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/token?db=hmcts').with(
           headers: { 'Content-Type' => 'application/x-www-form-urlencoded' },
           body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTU2ODIxNjA4Nn0.fj8VsMONpeEmeavkh23yRsGAtfVlWkJI267gijpy6pA'
+        ).twice
+      end
+
+      it 'checks whether the submission has been previously processed' do
+        expect(WebMock).to have_requested(
+          :get, "https://uat.icasework.com/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=#{submission_id}"
+        ).with(
+          headers: {
+            'Authorization' => 'Bearer some_bearer_token',
+            'Content-Type' => 'application/json'
+          }
         ).once
       end
 
@@ -222,7 +258,7 @@ describe 'Submitting a correspondence', type: :request do
         expect(ProcessedSubmission.count).to eq(1)
         expect(
           ProcessedSubmission.first.submission_id
-        ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+        ).to eq(submission_id)
       end
     end
   end

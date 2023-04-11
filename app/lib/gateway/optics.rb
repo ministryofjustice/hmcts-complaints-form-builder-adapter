@@ -7,13 +7,17 @@ module Gateway
       end
 
       def to_s
-        "[OPTICS API error: Received #{@response&.code} response, with headers #{@response&.headers}] #{super}"
+        message = "[OPTICS API error: Received #{@response&.code} response, with headers #{@response&.headers}]"
+        "#{message} #{super}"
+      rescue StandardError
+        message
       end
     end
 
     def initialize(endpoint:)
       @get_token_url = "#{endpoint}/token?db=hmcts".freeze
       @post_case_url = "#{endpoint}/createcase?db=hmcts".freeze
+      @get_case_attribute_url = "#{endpoint}/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=".freeze
     end
 
     def request_bearer_token(jwt_token:)
@@ -28,6 +32,12 @@ module Gateway
       return result if result.success?
 
       raise ClientError, result
+    end
+
+    def get_case_attribute(submission_id, bearer_token)
+      HTTParty.get("#{@get_case_attribute_url}#{submission_id}", headers: headers(bearer_token))
+    rescue HTTParty::Error => e
+      raise ClientError, e
     end
 
     private

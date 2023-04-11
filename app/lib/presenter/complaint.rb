@@ -12,7 +12,9 @@ module Presenter
         AssignedTeamSS: submission_answers.fetch(:complaint_location),
         RequestDate: request_date,
         Details: submission_answers.fetch(:complaint_details, ''),
-        Reference: submission_answers.fetch(:case_number, '')
+        ExternalId: form_builder_payload.fetch(:submissionId),
+        RelatedToCourtTribunalCase: submission_answers[:case_number].present? ? 'Yes' : 'No',
+        'Case.ExternalIdMC': submission_answers.fetch(:case_number, '')
       }.merge(constant_data, customer_data, *attachments_data)
     end
 
@@ -20,7 +22,6 @@ module Presenter
 
     attr_reader :attachments
 
-    # rubocop:disable Metrics/MethodLength
     def customer_data
       {
         'Customer.FirstName': submission_answers.fetch(:first_name, ''),
@@ -35,7 +36,6 @@ module Presenter
         'ActionRequested': submission_answers.fetch(:action_requested, '')
       }
     end
-    # rubocop:enable Metrics/MethodLength
 
     def attachments_data
       attachments.map.with_index do |attachment, index|
