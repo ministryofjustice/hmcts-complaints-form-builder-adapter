@@ -17,7 +17,7 @@ RSpec.describe Presenter::Correspondence do
     let(:base_payload) do
       {
         serviceSlug: 'money-claim-queries',
-        submissionId: submission_id,
+        submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
         submissionAnswers:
         {
           ClaimNumber: 'CaseReferenceYes',
@@ -32,7 +32,6 @@ RSpec.describe Presenter::Correspondence do
         }.merge(input_payload)
       }
     end
-    let(:submission_id) { '891c837c-adef-4854-8bd0-d681577f381e' }
 
     context 'applicant type' do
       context 'when claimant' do
@@ -254,7 +253,6 @@ RSpec.describe Presenter::Correspondence do
           Details: 'some message body thing',
           QueryType: 'A',
           ServiceType: 'A',
-          ExternalId: submission_id,
           'Applicant1.Forename1': 'Qui Gon',
           'Applicant1.Name': 'Jinn',
           'Applicant1.Email': 'quigon@jedi-temple.com',
@@ -323,7 +321,6 @@ RSpec.describe Presenter::Correspondence do
           Details: 'some message body thing',
           QueryType: 'E',
           ServiceType: 'A',
-          ExternalId: submission_id,
           'Applicant1.Forename1': 'Darth',
           'Applicant1.Name': 'Maul',
           'Applicant1.Email': '',

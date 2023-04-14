@@ -42,7 +42,7 @@ describe Gateway::Optics do
         end.to raise_error(Gateway::Optics::ClientError)
       end
 
-      it 'returns the status code and headers in an error' do
+      it 'returns the status code and headders in an error' do
         expect do
           gateway.request_bearer_token(jwt_token: 'foo')
         end.to raise_error(Gateway::Optics::ClientError)
@@ -99,37 +99,6 @@ describe Gateway::Optics do
           gateway.post(body: {}, bearer_token: bearer_token)
         end.to raise_error(Gateway::Optics::ClientError)
           .with_message(%r{\[OPTICS API error: Received 500 response, with headers {"error-header"=>\["some message"\]}\] <html>errors return xml body</error>})
-      end
-    end
-  end
-
-  describe '#get_case_attribute' do
-    let(:submission_id) { SecureRandom.uuid }
-    let(:headers) do
-      {
-        'Content-Type' => 'application/json',
-        'Authorization' => "Bearer #{bearer_token}"
-      }
-    end
-    let(:request_uri) do
-      "#{endpoint}/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=#{submission_id}"
-    end
-
-    it 'requests the case attribute from OPTICS' do
-      expect(HTTParty).to receive(:get).with(request_uri, headers: headers)
-
-      gateway.get_case_attribute(submission_id, bearer_token)
-    end
-
-    context 'when there is an error communicating with OPTICS' do
-      before do
-        allow(HTTParty).to receive(:get).and_raise(HTTParty::Error.new('something something something dark side'))
-      end
-
-      it 'raises a client error' do
-        expect {
-          gateway.get_case_attribute(submission_id, bearer_token)
-        }.to raise_error(Gateway::Optics::ClientError)
       end
     end
   end
