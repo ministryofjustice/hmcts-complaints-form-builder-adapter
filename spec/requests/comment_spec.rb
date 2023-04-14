@@ -74,8 +74,7 @@ describe 'Submitting a comment', type: :request do
       RequestMethod: Presenter::Comment::REQUEST_METHOD,
       AssignedTeam: '1111',
       'Case.ServiceTeam': '1111',
-      Details: 'all of the feedback',
-      ExternalId: submission_id
+      Details: 'all of the feedback'
     }.to_json
   end
 

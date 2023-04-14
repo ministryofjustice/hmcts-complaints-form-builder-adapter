@@ -74,8 +74,7 @@ describe 'Submitting feedback', type: :request do
       'External.RequestMethod': Presenter::Feedback::REQUEST_METHOD,
       PartyContext: Presenter::Feedback::PARTY_CONTEXT,
       AssignedTeam: '1111',
-      Details: 'all of the feedback',
-      ExternalId: submission_id
+      Details: 'all of the feedback'
     }.to_json
   end
 

@@ -35,7 +35,6 @@ module Presenter
         Details: submission_answers.fetch(:MessageContent, ''),
         QueryType: QUERY_TYPE.fetch(query_type_claimant_or_defendant, ''),
         ServiceType: service_type,
-        ExternalId: form_builder_payload.fetch(:submissionId),
         'CaseContactPostcode.Subject': submission_answers.fetch(:ClientPostcode, ''),
         'CaseContactCustom17.Representative': submission_answers.fetch(:CompanyName, ''),
         'CaseContactCustom18.Subject': '',
