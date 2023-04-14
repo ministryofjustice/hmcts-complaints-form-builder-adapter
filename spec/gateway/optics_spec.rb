@@ -102,35 +102,4 @@ describe Gateway::Optics do
       end
     end
   end
-
-  describe '#get_case_attribute' do
-    let(:submission_id) { SecureRandom.uuid }
-    let(:headers) do
-      {
-        'Content-Type' => 'application/json',
-        'Authorization' => "Bearer #{bearer_token}"
-      }
-    end
-    let(:request_uri) do
-      "#{endpoint}/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=#{submission_id}"
-    end
-
-    it 'requests the case attribute from OPTICS' do
-      expect(HTTParty).to receive(:get).with(request_uri, headers: headers)
-
-      gateway.get_case_attribute(submission_id, bearer_token)
-    end
-
-    context 'when there is an error communicating with OPTICS' do
-      before do
-        allow(HTTParty).to receive(:get).and_raise(HTTParty::Error.new('something something something dark side'))
-      end
-
-      it 'raises a client error' do
-        expect {
-          gateway.get_case_attribute(submission_id, bearer_token)
-        }.to raise_error(Gateway::Optics::ClientError)
-      end
-    end
-  end
 end

@@ -17,7 +17,6 @@ module Gateway
     def initialize(endpoint:)
       @get_token_url = "#{endpoint}/token?db=hmcts".freeze
       @post_case_url = "#{endpoint}/createcase?db=hmcts".freeze
-      @get_case_attribute_url = "#{endpoint}/getcaseattribute?db=hmcts&Format=json&Attribute=CaseId&ExternalId=".freeze
     end
 
     def request_bearer_token(jwt_token:)
@@ -32,12 +31,6 @@ module Gateway
       return result if result.success?
 
       raise ClientError, result
-    end
-
-    def get_case_attribute(submission_id, bearer_token)
-      HTTParty.get("#{@get_case_attribute_url}#{submission_id}", headers: headers(bearer_token))
-    rescue HTTParty::Error => e
-      raise ClientError, e
     end
 
     private
