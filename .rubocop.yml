@@ -25,7 +25,9 @@ Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'let']
 
 Metrics/MethodLength:
-  Enabled: false
+  Enabled: true
+  Exclude:
+    - db/**/*
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

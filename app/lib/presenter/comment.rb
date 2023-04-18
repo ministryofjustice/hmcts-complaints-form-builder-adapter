@@ -9,8 +9,7 @@ module Presenter
         RequestMethod: REQUEST_METHOD,
         AssignedTeam: submission_answers.fetch(:contact_location, ''),
         'Case.ServiceTeam': submission_answers.fetch(:contact_location, ''),
-        Details: submission_answers.fetch(:feedback_details, ''),
-        ExternalId: form_builder_payload.fetch(:submissionId)
+        Details: submission_answers.fetch(:feedback_details, '')
       }
     end
 

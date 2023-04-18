@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   before_action :authorize_request
   attr_reader :decrypted_body
 
+  # rubocop:disable Metrics/MethodLength
   def authorize_request
     encrypted_payload = request.raw_post
     return render_unauthorized if encrypted_payload.nil? || encrypted_payload.empty?
@@ -16,6 +17,7 @@ class ApplicationController < ActionController::API
       render_unauthorized
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
