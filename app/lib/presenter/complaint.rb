@@ -30,7 +30,7 @@ module Presenter
         'Customer.County': submission_answers.fetch(:county, ''),
         'Customer.Postcode': submission_answers.fetch(:postcode, ''),
         'Customer.Email': submission_answers.fetch(:email_address, ''),
-        'Customer.Phone': submission_answers.fetch(:phone, ''),
+        'Customer.Phone': format_phone_number_optics(submission_answers.fetch(:phone, '')),
         'Impact': submission_answers.fetch(:impact, ''),
         'ActionRequested': submission_answers.fetch(:action_requested, '')
       }
