@@ -4,8 +4,6 @@ class ApplicationController < ActionController::API
 
   # rubocop:disable Metrics/MethodLength
   def authorize_request
-    Sentry.capture_message('Hello Sentry Test')
-
     encrypted_payload = request.raw_post
     return render_unauthorized if encrypted_payload.nil? || encrypted_payload.empty?
 
