@@ -20,5 +20,9 @@ module Presenter
     def format_date_optics(date)
       Date.parse(date).to_s
     end
+
+    def format_phone_number_optics(phone_string)
+      phone_string.to_i
+    end
   end
 end
