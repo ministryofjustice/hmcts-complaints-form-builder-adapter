@@ -26,6 +26,7 @@ class ApplicationController < ActionController::API
   end
 
   def render_unauthorized
+    Sentry.capture_message('Hello Sentry Test')
     render status: :unauthorized
   end
 end
