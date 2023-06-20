@@ -104,23 +104,22 @@ workflows:
               only:
                 - master
                 - deploy-to-staging
-                - update-sentry
-      # - slack/approval-notification:
-      #     message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
-      #     include_job_number_field: false
-      #     requires:
-      #       - deploy_staging
-      # - confirm_production_deploy:
-      #     type: approval
-      #     requires:
-      #       - deploy_staging
-      #     filters:
-      #       branches:
-      #         only: master
-      # - deploy_production:
-      #     context: *context
-      #     requires:
-      #       - confirm_production_deploy
-      #     filters:
-      #       branches:
-      #         only: master
+      - slack/approval-notification:
+          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
+          include_job_number_field: false
+          requires:
+            - deploy_staging
+      - confirm_production_deploy:
+          type: approval
+          requires:
+            - deploy_staging
+          filters:
+            branches:
+              only: master
+      - deploy_production:
+          context: *context
+          requires:
+            - confirm_production_deploy
+          filters:
+            branches:
+              only: master
