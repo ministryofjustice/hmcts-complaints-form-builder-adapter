@@ -56,7 +56,7 @@ module Presenter
         'Agent.Forename1': submission_answers.fetch(:ApplicantFirstName, ''),
         'Agent.Name': submission_answers.fetch(:ApplicantLastName, ''),
         'Agent.Email': submission_answers.fetch(:ApplicantEmail, ''),
-        'Agent.Phone': format_phone_number_optics(submission_answers.fetch(:ApplicantPhone, ''))
+        'Agent.Phone': submission_answers.fetch(:ApplicantPhone, '')
       }
     end
 
@@ -67,7 +67,7 @@ module Presenter
         'Applicant1.Forename1': submission_answers.fetch(:Applicant1FirstName, ''),
         'Applicant1.Name': submission_answers.fetch(:Applicant1LastName, ''),
         'Applicant1.Email': submission_answers.fetch(:Applicant1Email, ''),
-        'Applicant1.Phone': format_phone_number_optics(submission_answers.fetch(:Applicant1Phone, '')),
+        'Applicant1.Phone': submission_answers.fetch(:Applicant1Phone, ''),
         'Agent.Forename1': '',
         'Agent.Name': '',
         'Agent.Email': '',

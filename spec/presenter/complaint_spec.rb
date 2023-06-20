@@ -63,7 +63,7 @@ describe Presenter::Complaint do
       "Customer.County": 'London',
       "Customer.Postcode": 'SW1H 9AJ',
       "Customer.Email": 'test@test.com',
-      "Customer.Phone": 07548733456,
+      "Customer.Phone": '07548733456',
       Details: 'I lost my case',
       Impact: 'I felt sad',
       ActionRequested: 'Reimbursement',

@@ -256,7 +256,7 @@ RSpec.describe Presenter::Correspondence do
           'Applicant1.Forename1': 'Qui Gon',
           'Applicant1.Name': 'Jinn',
           'Applicant1.Email': 'quigon@jedi-temple.com',
-          'Applicant1.Phone': 5555555555,
+          'Applicant1.Phone': '5555555555',
           'Case.ReceivedDate': today,
           'CaseContactPostcode.Subject': '',
           'CaseContactCustom17.Representative': '',
@@ -332,7 +332,7 @@ RSpec.describe Presenter::Correspondence do
           'Agent.Forename1': 'Qui Gon',
           'Agent.Name': 'Jinn',
           'Agent.Email': 'quigon@jedi-temple.com',
-          'Agent.Phone': 5555555555
+          'Agent.Phone': '5555555555'
         }.merge(constant_data)
       end
 
