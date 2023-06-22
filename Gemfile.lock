@@ -239,9 +239,8 @@ GEM
     sentry-rails (5.3.1)
       railties (>= 5.0)
       sentry-ruby-core (~> 5.3.1)
-    sentry-ruby (5.3.1)
+    sentry-ruby (5.9.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      sentry-ruby-core (= 5.3.1)
     sentry-ruby-core (5.3.1)
       concurrent-ruby
     shellany (0.0.1)
@@ -292,7 +291,7 @@ DEPENDENCIES
   rubocop-rspec (~> 2.19)
   sentry-delayed_job (~> 5.3.1)
   sentry-rails (~> 5.3.1)
-  sentry-ruby (~> 5.3.1)
+  sentry-ruby (~> 5.9.0)
   spring
   spring-watcher-listen (~> 2.1.0)
   timecop (~> 0.9.6)
