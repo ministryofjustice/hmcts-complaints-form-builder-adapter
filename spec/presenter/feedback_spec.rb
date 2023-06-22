@@ -8,7 +8,7 @@ RSpec.describe Presenter::Feedback do
   describe '#optics_payload' do
     let(:base_payload) do
     {
-      serviceSlug: 'user-feedback-form',
+      serviceSlug: 'user-feedback',
       submissionId: 'd2f3829d-2496-463e-8d0a-e86e354e225a',
       submissionAnswers:
       {
@@ -100,6 +100,30 @@ RSpec.describe Presenter::Feedback do
       end
       it 'should always return Main' do
         expect(presenter.optics_payload[:PartyContext]).to eq(Presenter::Feedback::PARTY_CONTEXT)
+      end
+    end
+
+    context 'v2 moj-forms inputs' do
+      let(:base_payload) do
+        {
+          serviceSlug: 'hmcts-feedback-form-eng',
+          submissionId: '72c49803-e9c3-42ac-bde1-09c04595a2d3',
+          submissionAnswers:
+          {
+            RequestMethod: Presenter::Feedback::REQUEST_METHOD,
+            'External.RequestMethod': Presenter::Feedback::REQUEST_METHOD,
+            whichpartofhmctswereyouincontactwith_autocomplete_1: '107',
+            telluswhatwedidwell_textarea_1: 'Thank you very much'
+          }
+        }
+      end
+
+      it 'returns the hmcts team' do
+        expect(presenter.optics_payload[:AssignedTeam]).to eq('107')
+      end
+
+      it 'returns the details of feedback' do
+        expect(presenter.optics_payload[:Details]).to eq('Thank you very much')
       end
     end
   end
