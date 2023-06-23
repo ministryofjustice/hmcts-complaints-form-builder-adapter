@@ -65,7 +65,7 @@ describe 'Submitting a complaint', type: :request do
 
   let(:runner_submission) do
     {
-      serviceSlug: 'claim-for-the-costs-of-a-something',
+      serviceSlug: 'complain-about-a-court-or-tribunal',
       submissionId: '891c837c-adef-4854-8bd0-d681577f381e',
       submissionAnswers:
       {

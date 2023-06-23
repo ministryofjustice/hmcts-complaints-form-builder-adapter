@@ -5,6 +5,7 @@ module Presenter
     # rubocop:disable Metrics/MethodLength, Naming/VariableNumber
     def optics_payload
       service_slug = form_builder_payload.fetch(:serviceSlug)
+      # Handling legacy form
       if service_slug == 'comments-form'
         {
           Type: type,

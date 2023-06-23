@@ -33,12 +33,8 @@ RSpec.describe Presenter::Feedback do
     end
 
     context 'request method' do
-      let(:input_payload) do
-        {
-          'External.RequestMethod': ''
-        }
-      end
-      
+      let(:input_payload) { { 'External.RequestMethod': '' } }
+
       context 'External.RequestMethod' do
         it 'should always return online form' do
           expect(presenter.optics_payload[:'External.RequestMethod']).to eq('Online form')

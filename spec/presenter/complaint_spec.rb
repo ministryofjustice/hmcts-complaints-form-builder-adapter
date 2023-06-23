@@ -8,7 +8,7 @@ describe Presenter::Complaint do
 
   let(:input_payload) do
     {
-      'serviceSlug': 'my-form',
+      'serviceSlug': 'complain-about-a-court-or-tribunal',
       'submissionId': '1e937616-dd0b-4bc3-8c67-40e4ffd54f78',
       'submissionAnswers': {
         'first_name': 'Jim',
@@ -91,7 +91,7 @@ describe Presenter::Complaint do
 
     let(:invalid_input_payload) do
       {
-        'serviceSlug': 'my-form',
+        'serviceSlug': 'complain-about-a-court-or-tribunal',
         'submissionId': '1e937616-dd0b-4bc3-8c67-40e4ffd54f78',
         'submissionAnswers': {
           'complaint_location': '1001'
@@ -127,6 +127,64 @@ describe Presenter::Complaint do
 
     it 'still returns a hash without failures' do
       expect(presenter.optics_payload).to eq(output)
+    end
+  end
+
+  context 'v2 mojforms' do
+    let(:input_payload) do
+      {
+        'serviceSlug': 'hmcts-complaint-form-eng',
+        'submissionId': '2c5d9b9e-241b-4cc4-b281-f6a524484df9',
+        'submissionAnswers': {
+          'yourname_text_1': 'First',
+          'yourname_text_2': 'Last',
+          'casenumber_text_1': '123456',
+          'youremailaddress_email_1': 'first.last@test.com',
+          'yourcomplaint_textarea_1': 'Life is unfair',
+          'howhasthisaffectedyou_textarea_1': 'This is sad',
+          'whatcanwedotoputthisright_textarea_1': 'Consolation',
+          'courtortribunalyourcomplaintisabout_autocomplete_1': '1002',
+          'submissionDate': '1568199892316'
+        }
+      }
+    end
+
+    let(:output_v2) do
+      {
+        db: 'hmcts',
+        Type: 'Complaint',
+        Format: 'json',
+        Team: '1002',
+        AssignedTeam: '1002',
+        AssignedTeamSS: '1002',
+        RequestDate: '2019-09-11',
+        Reference: '123456',
+        "PartyContextManageCases": 'Main',
+        "Customer.FirstName": 'First',
+        "Customer.Surname": 'Last',
+        "Customer.Address": '',
+        "Customer.Town": '',
+        "Customer.County": '',
+        "Customer.Postcode": '',
+        "Customer.Email": 'first.last@test.com',
+        "Customer.Phone": '',
+        Details: 'Life is unfair',
+        Impact: 'This is sad',
+        ActionRequested: 'Consolation',
+        RequestMethod: 'Online - gov.uk',
+        "Document1.Name": 'image.png',
+        "Document1.URL": 'https://example.com/v1/attachments/3c535282-6ebb-41c5-807e-74394ef036b1',
+        "Document1.MimeType": 'image/png',
+        "Document1.URLLoadContent": true,
+        "Document2.Name": 'document.pdf',
+        "Document2.URL": 'https://example.com/v1/attachments/3c535282-6ebb-41c5-807e-74394ef036b2',
+        "Document2.MimeType": 'application/pdf',
+        "Document2.URLLoadContent": true
+      }
+    end
+
+    it 'generates the correct hash' do
+      expect(presenter.optics_payload).to eq(output_v2)
     end
   end
 end
