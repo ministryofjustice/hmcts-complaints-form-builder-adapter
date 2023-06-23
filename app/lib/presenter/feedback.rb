@@ -6,9 +6,7 @@ module Presenter
 
     # rubocop:disable Metrics/MethodLength
     def optics_payload
-      service_slug = form_builder_payload.fetch(:serviceSlug)
-      # If this is the legacy form
-      if service_slug == 'user-feedback'
+      if @api_version == 'v1'
         {
           Type: TYPE,
           RequestDate: request_date,

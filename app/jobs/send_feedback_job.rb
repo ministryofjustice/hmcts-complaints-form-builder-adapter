@@ -1,9 +1,10 @@
 class SendFeedbackJob < ApplicationJob
   queue_as :send_feedback
 
-  def perform(form_builder_payload:)
+  def perform(form_builder_payload:, api_version: 'v1')
     presenter = Presenter::Feedback.new(
-      form_builder_payload:
+      form_builder_payload:,
+      api_version:
     )
 
     Usecase::Optics::CreateCase.new(

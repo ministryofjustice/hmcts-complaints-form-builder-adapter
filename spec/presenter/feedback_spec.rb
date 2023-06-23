@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Presenter::Feedback do
   subject(:presenter) do
-    described_class.new(form_builder_payload: base_payload)
+    described_class.new(form_builder_payload: base_payload, api_version:)
   end
 
   describe '#optics_payload' do
@@ -19,6 +19,8 @@ RSpec.describe Presenter::Feedback do
       }.merge(input_payload)
     }
     end
+
+    let(:api_version) { 'v1' }
 
     context 'type' do
       let(:input_payload) do
@@ -100,6 +102,7 @@ RSpec.describe Presenter::Feedback do
     end
 
     context 'v2 moj-forms inputs' do
+      let(:api_version) { 'v2' }
       let(:base_payload) do
         {
           serviceSlug: 'hmcts-feedback-form-eng',
