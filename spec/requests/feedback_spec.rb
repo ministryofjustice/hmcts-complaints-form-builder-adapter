@@ -48,7 +48,6 @@ describe 'Submitting feedback', type: :request do
           }
         }
       )
-
   end
 
   let(:expected_optics_payload) do

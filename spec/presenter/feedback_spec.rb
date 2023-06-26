@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Presenter::Feedback do
   subject(:presenter) do
-    described_class.new(form_builder_payload: base_payload, api_version:)
+    described_class.new(form_builder_payload: base_payload, api_version: api_version)
   end
 
   describe '#optics_payload' do

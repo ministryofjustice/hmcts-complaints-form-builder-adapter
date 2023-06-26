@@ -6,7 +6,8 @@ module Presenter
 
     # rubocop:disable Metrics/MethodLength
     def optics_payload
-      if @api_version == 'v1'
+      case @api_version
+      when 'v1'
         {
           Type: TYPE,
           RequestDate: request_date,
@@ -17,7 +18,7 @@ module Presenter
           AssignedTeam: submission_answers.fetch(:contact_location, ''),
           Details: submission_answers.fetch(:feedback_details, '')
         }
-      else
+      when 'v2'
         {
           Type: TYPE,
           RequestDate: request_date,
