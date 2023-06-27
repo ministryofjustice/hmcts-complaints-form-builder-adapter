@@ -120,4 +120,32 @@ describe 'Submitting feedback', type: :request do
       end
     end
   end
+
+  context 'with mojforms v2 services' do
+    let(:runner_submission) do
+      {
+        serviceSlug: 'hmcts-feedback-form-eng',
+        submissionId: '72c49803-e9c3-42ac-bde1-09c04595a2d3',
+        submissionAnswers:
+        {
+          whichpartofhmctswereyouincontactwith_autocomplete_1: '1111',
+          telluswhatwedidwell_textarea_1: 'all of the feedback'
+        }
+      }.to_json
+    end
+
+    before do
+      perform_enqueued_jobs do
+        post '/v2/feedback', params: encrypted_body(msg: runner_submission)
+      end
+    end
+
+    include_context 'when authentication required' do
+      let(:url) { '/v2/feedback' }
+    end
+
+    it 'returns 201 on a valid post' do
+      expect(response).to have_http_status(:created)
+    end
+  end
 end
