@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   scope 'v2' do
     resources :feedback, only: [:create], defaults: { api_version: 'v2' }
+    resources :comment, only: [:create], defaults: { api_version: 'v2' }
   end
 
   get '/health', to: 'health#show'

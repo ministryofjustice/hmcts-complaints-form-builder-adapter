@@ -63,6 +63,10 @@ describe 'Submitting a comment', type: :request do
     }.to_json
   end
 
+  after do
+    Timecop.return
+  end
+
   context 'FormBuilder v1 forms submissions' do
     before do
       perform_enqueued_jobs do
@@ -79,10 +83,6 @@ describe 'Submitting a comment', type: :request do
           feedback_details: 'all of the feedback'
         }
       }.to_json
-    end
-
-    after do
-      Timecop.return
     end
 
     include_context 'when authentication required' do
@@ -116,6 +116,60 @@ describe 'Submitting a comment', type: :request do
         expect(
           ProcessedSubmission.first.submission_id
         ).to eq('891c837c-adef-4854-8bd0-d681577f381e')
+      end
+    end
+  end
+
+  context 'MoJ Forms v2 submissions' do
+    before do
+      perform_enqueued_jobs do
+        post '/v2/comment', params: encrypted_body(msg: runner_submission)
+      end
+    end
+
+    let(:runner_submission) do
+      {
+        serviceSlug: 'hmcts-comment-form-eng',
+        submissionId: '72c49803-e9c3-42ac-bde1-09c04595a2d3',
+        submissionAnswers:
+        {
+          'which-contact-with_autocomplete_1': '1111',
+          feedback_textarea_1: 'all of the feedback'
+        }
+      }.to_json
+    end
+
+    include_context 'when authentication required' do
+      let(:url) { '/v2/comment' }
+    end
+
+    it 'returns 201 on a valid post' do
+      expect(response).to have_http_status(:created)
+    end
+
+    describe 'end to end submission' do
+      it 'requests a bearer token' do
+        expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/token?db=hmcts').with(
+          headers: { 'Content-Type' => 'application/x-www-form-urlencoded' },
+          body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTY1MDkwMDg4Nn0.zR67gqqkz2PmgafsdBw_qFHWEDLhKsvvD9waJC3hbO8'
+        ).once
+      end
+
+      it 'posts the submission to Optics' do
+        expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/createcase?db=hmcts').with(
+          headers: {
+            'Authorization' => 'Bearer some_bearer_token',
+            'Content-Type' => 'application/json'
+          },
+          body: expected_optics_payload
+        ).once
+      end
+
+      it 'records that there was a successful submission' do
+        expect(ProcessedSubmission.count).to eq(1)
+        expect(
+          ProcessedSubmission.first.submission_id
+        ).to eq('72c49803-e9c3-42ac-bde1-09c04595a2d3')
       end
     end
   end
