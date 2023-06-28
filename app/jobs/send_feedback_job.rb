@@ -1,14 +1,10 @@
 class SendFeedbackJob < ApplicationJob
   queue_as :send_feedback
 
-  # rubocop:disable Metrics/MethodLength
   def perform(form_builder_payload:, api_version:)
     api_version = 'v1' if api_version.nil?
 
-    presenter = Presenter::Feedback.new(
-      form_builder_payload:,
-      api_version:
-    )
+    presenter = Presenter::Feedback.new(form_builder_payload:, api_version:)
 
     Usecase::Optics::CreateCase.new(
       optics_gateway: gateway,
@@ -18,5 +14,4 @@ class SendFeedbackJob < ApplicationJob
 
     record_successful_submission(form_builder_payload[:submissionId])
   end
-  # rubocop:enable Metrics/MethodLength
 end

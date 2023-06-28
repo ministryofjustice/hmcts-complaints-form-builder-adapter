@@ -32,7 +32,7 @@ RSpec.describe SendCommentJob, type: :job do
       allow(Presenter::Comment)
         .to receive(:new)
         .and_return(presenter)
-        .with(form_builder_payload: input)
+        .with(form_builder_payload: input, api_version: 'v1')
       allow(Usecase::Optics::GenerateJwtToken)
         .to receive(:new).and_return(create_token).with(
           endpoint: Rails.configuration.x.optics.endpoint,
@@ -56,7 +56,7 @@ RSpec.describe SendCommentJob, type: :job do
 
     context 'when the a submission was submitted to Optics' do
       it 'creates a new entry' do
-        jobs.perform(form_builder_payload: input)
+        jobs.perform(form_builder_payload: input, api_version: 'v1')
         expect(ProcessedSubmission.count).to eq(1)
       end
     end
