@@ -1,16 +1,14 @@
 module Presenter
   class Complaint < BasePresenter
-    def initialize(form_builder_payload:, attachments:)
-      super(form_builder_payload:)
+    def initialize(form_builder_payload:, attachments:, api_version:)
+      super(form_builder_payload:, api_version:)
       @attachments = attachments
     end
 
     # rubocop:disable Metrics/MethodLength,
     def optics_payload
-      service_slug = form_builder_payload.fetch(:serviceSlug)
-
-      # If this submission comes from legacy form
-      if service_slug == 'complain-about-a-court-or-tribunal'
+      case @api_version
+      when 'v1'
         {
           Team: submission_answers.fetch(:complaint_location),
           AssignedTeam: submission_answers.fetch(:complaint_location),
@@ -19,7 +17,7 @@ module Presenter
           Details: submission_answers.fetch(:complaint_details, ''),
           Reference: submission_answers.fetch(:case_number, '')
         }.merge(constant_data, customer_data, *attachments_data)
-      else
+      when 'v2'
         {
           # rubocop:disable Naming/VariableNumber
           Team: submission_answers.fetch(:courtortribunalyourcomplaintisabout_autocomplete_1),
