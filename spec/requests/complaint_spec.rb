@@ -123,4 +123,57 @@ describe 'Submitting a complaint', type: :request do
         end
       end
   end
+
+  context 'v2 mojforms submissions' do
+    before do
+      stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
+         with(
+           body: "{\"Team\":\"111\",\"AssignedTeam\":\"111\",\"AssignedTeamSS\":\"111\",\"RequestDate\":\"2019-09-11\",\"Details\":\"\",\"Reference\":\"\",\"db\":\"hmcts\",\"Type\":\"Complaint\",\"Format\":\"json\",\"RequestMethod\":\"Online - gov.uk\",\"PartyContextManageCases\":\"Main\",\"Customer.FirstName\":\"\",\"Customer.Surname\":\"\",\"Customer.Address\":\"\",\"Customer.Town\":\"\",\"Customer.County\":\"\",\"Customer.Postcode\":\"\",\"Customer.Email\":\"\",\"Customer.Phone\":\"\",\"Impact\":\"\",\"ActionRequested\":\"\",\"Document1.Name\":\"image.png\",\"Document1.MimeType\":\"image/png\",\"Document1.URL\":\"https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c\",\"Document1.URLLoadContent\":true}",
+           headers: {
+       	  'Accept'=>'*/*',
+       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	  'Authorization'=>'Bearer some_bearer_token',
+       	  'Content-Type'=>'application/json',
+       	  'User-Agent'=>'Ruby'
+           }).
+         to_return(status: 200, body: "", headers: {})
+
+      perform_enqueued_jobs do
+        post '/v2/complaint', params: encrypted_body(msg: runner_submission)
+      end
+    end
+
+    let(:runner_submission) do
+      {
+        serviceSlug: 'hmcts-complaint-form-eng',
+        submissionId: '72c49803-e9c3-42ac-bde1-09c04595a2d3',
+        submissionAnswers:
+        {
+          'yourname_text_1': '',
+          'yourname_text_2': '',
+          'casenumber_text_1': '',
+          'youremailaddress_email_1': '',
+          'yourcomplaint_textarea_1': '',
+          'howhasthisaffectedyou_textarea_1': '',
+          'whatcanwedotoputthisright_textarea_1': '',
+          'courtortribunalyourcomplaintisabout_autocomplete_1': '111'
+        },
+        attachments: [{
+          url: 'https://example.com/s3/image.png',
+          encryption_key: 'secret_key',
+          encryption_iv: 'secret_iv',
+          filename: 'image.png',
+          mimetype: 'image/png'
+        }]
+      }.to_json
+    end
+
+      include_context 'when authentication required' do
+        let(:url) { '/v2/complaint' }
+      end
+
+      it 'returns 201 on a valid post' do
+        expect(response).to have_http_status(:created)
+      end
+  end
 end
