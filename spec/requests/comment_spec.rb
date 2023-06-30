@@ -6,50 +6,9 @@ describe 'Submitting a comment', type: :request do
   before do
     Timecop.freeze(Time.parse('2022-04-25 15:34:46 +0000'))
 
-    allow(ENV).to receive(:[]).with('COMMENT_TYPE').and_return('1801265')
-
     allow(SecureRandom).to receive(:uuid).and_return(
       'e2161d54-92f8-4e10-b3a1-94630c65df3c'
     )
-
-    stub_request(:post, 'https://uat.icasework.com/token?db=hmcts')
-    .with(
-      body: {
-        'assertion' => 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTY1MDkwMDg4Nn0.zR67gqqkz2PmgafsdBw_qFHWEDLhKsvvD9waJC3hbO8', 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer'
-      },
-      headers: {
-        'Accept'=>'*/*',
-        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Content-Type'=>'application/x-www-form-urlencoded',
-        'User-Agent'=>'Ruby'
-        }
-      ).to_return(
-        status: 200,
-        body: {
-          access_token: 'some_bearer_token'
-        }.to_json, headers: {}
-      )
-
-    stub_request(:post, 'https://uat.icasework.com/createcase?db=hmcts')
-      .with(
-        body: expected_optics_payload,
-        headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Bearer some_bearer_token',
-          'Content-Type'=>'application/json',
-          'User-Agent'=>'Ruby'
-        }
-      )
-      .to_return(
-        {
-          status: 200,
-          body: 'stub case id response',
-          headers: {
-            'Content-Type'=>'application/x-www-form-urlencoded'
-          }
-        }
-      )
   end
 
   let(:expected_optics_payload) do
@@ -69,6 +28,47 @@ describe 'Submitting a comment', type: :request do
 
   context 'FormBuilder v1 forms submissions' do
     before do
+      allow(ENV).to receive(:[]).with('COMMENT_TYPE').and_return('1801265')
+
+      stub_request(:post, 'https://uat.icasework.com/token?db=hmcts')
+      .with(
+        body: {
+          'assertion' => 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTY1MDkwMDg4Nn0.zR67gqqkz2PmgafsdBw_qFHWEDLhKsvvD9waJC3hbO8', 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+        },
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/x-www-form-urlencoded',
+          'User-Agent'=>'Ruby'
+          }
+        ).to_return(
+          status: 200,
+          body: {
+            access_token: 'some_bearer_token'
+          }.to_json, headers: {}
+        )
+
+      stub_request(:post, 'https://uat.icasework.com/createcase?db=hmcts')
+        .with(
+          body: expected_optics_payload,
+          headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Authorization'=>'Bearer some_bearer_token',
+            'Content-Type'=>'application/json',
+            'User-Agent'=>'Ruby'
+          }
+        )
+        .to_return(
+          {
+            status: 200,
+            body: 'stub case id response',
+            headers: {
+              'Content-Type'=>'application/x-www-form-urlencoded'
+            }
+          }
+        )
+
       perform_enqueued_jobs do
         post '/v1/comment', params: encrypted_body(msg: runner_submission)
       end
@@ -121,12 +121,6 @@ describe 'Submitting a comment', type: :request do
   end
 
   context 'MoJ Forms v2 submissions' do
-    before do
-      perform_enqueued_jobs do
-        post '/v2/comment', params: encrypted_body(msg: runner_submission)
-      end
-    end
-
     let(:runner_submission) do
       {
         serviceSlug: 'hmcts-comment-form-eng',
@@ -137,6 +131,35 @@ describe 'Submitting a comment', type: :request do
           feedback_textarea_1: 'all of the feedback'
         }
       }.to_json
+    end
+
+    before do
+      stub_request(:post, "https://uat.icasework.com/token?db=hmcts").
+      with(
+        body: {"assertion"=>"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTY1MDkwMDg4Nn0.zR67gqqkz2PmgafsdBw_qFHWEDLhKsvvD9waJC3hbO8", "grant_type"=>"urn:ietf:params:oauth:grant-type:jwt-bearer"},
+        headers: {
+        'Accept'=>'*/*',
+        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Content-Type'=>'application/x-www-form-urlencoded',
+        'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200, body: "", headers: {})
+
+      stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
+      with(
+        body: "{\"Type\":\"\",\"RequestDate\":\"2022-04-25\",\"RequestMethod\":\"Online form\",\"AssignedTeam\":\"\",\"Case.ServiceTeam\":\"\",\"Details\":\"\"}",
+        headers: {
+        'Accept'=>'*/*',
+        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization'=>'Bearer some_bearer_token',
+        'Content-Type'=>'application/json',
+        'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200, body: "", headers: {})
+
+      perform_enqueued_jobs do
+        post '/v2/comment', params: encrypted_body(msg: runner_submission)
+      end
     end
 
     include_context 'when authentication required' do
