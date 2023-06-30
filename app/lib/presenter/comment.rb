@@ -4,9 +4,8 @@ module Presenter
 
     # rubocop:disable Metrics/MethodLength, Naming/VariableNumber
     def optics_payload
-      service_slug = form_builder_payload.fetch(:serviceSlug)
-      # Handling legacy form
-      if service_slug == 'comments-form'
+      case @api_version
+      when 'v1'
         {
           Type: type,
           RequestDate: request_date,
@@ -15,7 +14,7 @@ module Presenter
           'Case.ServiceTeam': submission_answers.fetch(:contact_location, ''),
           Details: submission_answers.fetch(:feedback_details, '')
         }
-      else
+      when 'v2'
         {
           Type: type,
           RequestDate: request_date,
