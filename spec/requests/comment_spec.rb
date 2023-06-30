@@ -142,8 +142,7 @@ describe 'Submitting a comment', type: :request do
         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
         'Content-Type'=>'application/x-www-form-urlencoded',
         'User-Agent'=>'Ruby'
-        }).
-      to_return(status: 200, body: "", headers: {})
+        }).to_return(status: 200, body: {access_token: 'some_bearer_token'}.to_json, headers: {})
 
       stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
       with(
@@ -154,8 +153,7 @@ describe 'Submitting a comment', type: :request do
         'Authorization'=>'Bearer some_bearer_token',
         'Content-Type'=>'application/json',
         'User-Agent'=>'Ruby'
-        }).
-      to_return(status: 200, body: "", headers: {})
+        }).to_return(status: 200, body: "", headers: {})
 
       perform_enqueued_jobs do
         post '/v2/comment', params: encrypted_body(msg: runner_submission)
@@ -184,7 +182,7 @@ describe 'Submitting a comment', type: :request do
             'Authorization' => 'Bearer some_bearer_token',
             'Content-Type' => 'application/json'
           },
-          body: expected_optics_payload
+          body: '{"Type":"","RequestDate":"2022-04-25","RequestMethod":"Online form","AssignedTeam":"","Case.ServiceTeam":"","Details":""}'
         ).once
       end
 
