@@ -146,14 +146,16 @@ describe 'Submitting a comment', type: :request do
 
       stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
       with(
-        body: "{\"Type\":\"\",\"RequestDate\":\"2022-04-25\",\"RequestMethod\":\"Online form\",\"AssignedTeam\":\"\",\"Case.ServiceTeam\":\"\",\"Details\":\"\"}",
+        body: "{\"Type\":\"\",\"RequestDate\":\"2022-04-25\",\"RequestMethod\":\"Online form\",\"AssignedTeam\":\"1111\",\"Case.ServiceTeam\":\"1111\",\"Details\":\"all of the feedback\"}",
         headers: {
         'Accept'=>'*/*',
         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
         'Authorization'=>'Bearer some_bearer_token',
         'Content-Type'=>'application/json',
         'User-Agent'=>'Ruby'
-        }).to_return(status: 200, body: "", headers: {})
+        }).to_return({  status: 200,
+                        body: 'stub case id response',
+                        headers: {'Content-Type'=>'application/x-www-form-urlencoded'}})
 
       perform_enqueued_jobs do
         post '/v2/comment', params: encrypted_body(msg: runner_submission)
@@ -182,7 +184,7 @@ describe 'Submitting a comment', type: :request do
             'Authorization' => 'Bearer some_bearer_token',
             'Content-Type' => 'application/json'
           },
-          body: '{"Type":"","RequestDate":"2022-04-25","RequestMethod":"Online form","AssignedTeam":"","Case.ServiceTeam":"","Details":""}'
+          body: '{"Type":"","RequestDate":"2022-04-25","RequestMethod":"Online form","AssignedTeam":"1111","Case.ServiceTeam":"1111","Details":"all of the feedback"}'
         ).once
       end
 

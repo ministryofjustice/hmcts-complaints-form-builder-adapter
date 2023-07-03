@@ -168,23 +168,6 @@ describe 'Submitting a complaint', type: :request do
           }).
         to_return(status: 200, body: "", headers: {})
 
-      # stub_request(:post, 'https://uat.icasework.com/createcase?db=hmcts')
-      #   .with(
-      #     body: expected_optics_payload,
-      #     headers: {
-      #       'Accept'=>'*/*',
-      #       'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-      #       'Authorization' => 'Bearer some_bearer_token',
-      #       'Content-Type' => 'application/json',
-      #       'User-Agent' => 'Ruby'
-      #     }
-      #   )
-      #   .to_return(
-      #     status: 200,
-      #     body: 'stub case id response',
-      #     headers: {}
-      #   )
-
       perform_enqueued_jobs do
         post '/v2/complaint', params: encrypted_body(msg: runner_submission)
       end
