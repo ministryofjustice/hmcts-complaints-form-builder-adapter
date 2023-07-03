@@ -7,8 +7,6 @@ module Presenter
 
     # rubocop:disable Metrics/MethodLength,
     def optics_payload
-      Rails.logger.warn("api version: #{@api_version}")
-
       case @api_version
       when 'v1'
         {

@@ -4,7 +4,7 @@ class SendComplaintJob < ApplicationJob
   # rubocop:disable Metrics/MethodLength
   def perform(form_builder_payload:, api_version:)
     api_version = 'v1' if api_version.nil?
-    Rails.logger.warn("Working on job_id: #{job_id}")
+    Rails.logger.info("Working on job_id: #{job_id}")
 
     attachments = Usecase::SpawnAttachments.new(
       form_builder_payload:
@@ -21,7 +21,7 @@ class SendComplaintJob < ApplicationJob
       get_bearer_token: bearer_token
     ).execute
 
-    Rails.logger.warn("Sent #{form_builder_payload[:submissionId]} to Optics")
+    Rails.logger.info("Sent #{form_builder_payload[:submissionId]} to Optics")
 
     record_successful_submission(form_builder_payload[:submissionId])
   end
