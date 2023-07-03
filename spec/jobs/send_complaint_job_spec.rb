@@ -51,13 +51,13 @@ describe SendComplaintJob, type: :job do
     end
 
     it 'calls the spawn attachments usecase' do
-      jobs.perform(form_builder_payload: input)
+      jobs.perform(form_builder_payload: input, api_version:'v1')
       expect(spawn_attachments).to have_received(:call).once
     end
 
     context 'when the a submission was submitted to Optics' do
       it 'creates a new entry' do
-        jobs.perform(form_builder_payload: input)
+        jobs.perform(form_builder_payload: input, api_version:'v1')
         expect(ProcessedSubmission.count).to eq(1)
       end
     end

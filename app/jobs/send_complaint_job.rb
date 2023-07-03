@@ -2,7 +2,7 @@ class SendComplaintJob < ApplicationJob
   queue_as :send_complaints
 
   # rubocop:disable Metrics/MethodLength
-  def perform(form_builder_payload:, api_version: 'v1')
+  def perform(form_builder_payload:, api_version:)
     api_version = 'v1' if api_version.nil?
     Rails.logger.warn("Working on job_id: #{job_id}")
 
