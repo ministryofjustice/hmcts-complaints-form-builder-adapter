@@ -137,13 +137,13 @@ describe 'Submitting feedback', type: :request do
     before do
       stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
       with(
-        body: "{\"Type\":\"UF144908\",\"RequestDate\":\"2022-05-04\",\"RequestMethod\":\"Online form\",\"External.RequestDate\":\"2022-05-04\",\"External.RequestMethod\":\"Online form\",\"PartyContext\":\"Main\",\"AssignedTeam\":\"\",\"Details\":\"\"}",
+        body: "{\"Type\":\"UF144908\",\"RequestDate\":\"2022-05-04\",\"RequestMethod\":\"Online form\",\"External.RequestDate\":\"2022-05-04\",\"External.RequestMethod\":\"Online form\",\"PartyContext\":\"Main\",\"AssignedTeam\":\"1111\",\"Details\":\"all of the feedback\"}",
         headers: {
-        'Accept'=>'*/*',
-        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Authorization'=>'Bearer some_bearer_token',
-        'Content-Type'=>'application/json',
-        'User-Agent'=>'Ruby'
+       'Accept'=>'*/*',
+       'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       'Authorization'=>'Bearer some_bearer_token',
+       'Content-Type'=>'application/json',
+       'User-Agent'=>'Ruby'
         }).
       to_return(status: 200, body: "", headers: {})
 
@@ -189,7 +189,7 @@ describe 'Submitting feedback', type: :request do
       it 'posts the submission to Optics' do
         expect(WebMock).to have_requested(:post, 'https://uat.icasework.com/createcase?db=hmcts').with(
           headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'Bearer some_bearer_token', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'},
-          body: '{"Type":"UF144908","RequestDate":"2022-05-04","RequestMethod":"Online form","External.RequestDate":"2022-05-04","External.RequestMethod":"Online form","PartyContext":"Main","AssignedTeam":"","Details":""}'
+          body: '{"Type":"UF144908","RequestDate":"2022-05-04","RequestMethod":"Online form","External.RequestDate":"2022-05-04","External.RequestMethod":"Online form","PartyContext":"Main","AssignedTeam":"1111","Details":"all of the feedback"}'
         ).once
       end
 
