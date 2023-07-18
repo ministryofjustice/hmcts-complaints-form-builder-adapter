@@ -8,6 +8,12 @@ Rails.application.routes.draw do
     resources :feedback, only: [:create]
   end
 
+  scope 'v2' do
+    resources :comment, only: [:create], defaults: { api_version: 'v2' }
+    resources :complaint, only: [:create], defaults: { api_version: 'v2' }
+    resources :feedback, only: [:create], defaults: { api_version: 'v2' }
+  end
+
   get '/health', to: 'health#show'
   get '/readiness', to: 'health#readiness'
   resource :metrics, only: [:show]

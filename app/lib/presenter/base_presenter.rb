@@ -1,7 +1,8 @@
 module Presenter
   class BasePresenter
-    def initialize(form_builder_payload:)
+    def initialize(form_builder_payload:, api_version: 'v1')
       @form_builder_payload = form_builder_payload
+      @api_version = api_version
     end
 
     private

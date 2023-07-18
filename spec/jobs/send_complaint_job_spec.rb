@@ -27,7 +27,7 @@ describe SendComplaintJob, type: :job do
     end
 
     before do
-      allow(Presenter::Complaint).to receive(:new).and_return(presenter).with(form_builder_payload: input, attachments: attachments)
+      allow(Presenter::Complaint).to receive(:new).and_return(presenter).with(form_builder_payload: input, attachments: attachments, api_version: 'v1')
       allow(Usecase::Optics::GenerateJwtToken).to receive(:new).and_return(create_token).with(
         endpoint: Rails.configuration.x.optics.endpoint,
         api_key: Rails.configuration.x.optics.api_key,
@@ -51,13 +51,13 @@ describe SendComplaintJob, type: :job do
     end
 
     it 'calls the spawn attachments usecase' do
-      jobs.perform(form_builder_payload: input)
+      jobs.perform(form_builder_payload: input, api_version:'v1')
       expect(spawn_attachments).to have_received(:call).once
     end
 
     context 'when the a submission was submitted to Optics' do
       it 'creates a new entry' do
-        jobs.perform(form_builder_payload: input)
+        jobs.perform(form_builder_payload: input, api_version:'v1')
         expect(ProcessedSubmission.count).to eq(1)
       end
     end
