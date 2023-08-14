@@ -24,7 +24,7 @@ end
 group :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
-  gem 'timecop', '~> 0.9.6'
+  gem 'timecop', '~> 0.9.7'
   gem 'webmock', '~> 3.18.1'
 end
 
