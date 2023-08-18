@@ -257,7 +257,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     thor (1.2.2)
-    timecop (0.9.6)
+    timecop (0.9.8)
     timeout (0.3.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -295,7 +295,7 @@ DEPENDENCIES
   sentry-ruby (~> 5.3.1)
   spring
   spring-watcher-listen (~> 2.1.0)
-  timecop (~> 0.9.6)
+  timecop (~> 0.9.8)
   webmock (~> 3.18.1)
 
 RUBY VERSION
