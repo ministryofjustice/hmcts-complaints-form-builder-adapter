@@ -41,7 +41,7 @@ jobs:
           only_for_branches: master
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
-  deploy_staging_api:
+  build_api_image:
     working_directory: ~/circle/git/hmcts-complaints-formbuilder-adapter
     docker: &ecr_base_image
       - image: docker.io/ministryofjustice/fb-builder:latest
@@ -59,7 +59,7 @@ jobs:
       - add_ssh_keys: &ssh-keys
           fingerprints:
             - b6:94:b5:ea:b1:3a:92:9b:44:db:94:a7:3d:c0:dd:48
-      - run:
+      - run: &base_environment_variables
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
@@ -73,16 +73,9 @@ jobs:
             ENVIRONMENT_NAME: staging
             BUILD_WORKER: false
           command: './deploy-scripts/bin/build'
-      - run:
-          name: deploy to staging (EKS cluster)
-          environment:
-            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
-            PLATFORM_ENV: staging
-            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
-          command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *slack_status
 
-  deploy_staging_worker:
+  build_worker_image:
     working_directory: ~/circle/git/hmcts-complaints-formbuilder-adapter
     docker: *ecr_base_image
     steps:
@@ -108,8 +101,18 @@ jobs:
             ENVIRONMENT_NAME: staging
             BUILD_WORKER: true
           command: './deploy-scripts/bin/build'
+      - slack/status: *slack_status
+
+  deploy_to_staging:
+    working_directory: ~/circle/git/hmcts-complaints-formbuilder-adapter
+    docker: *ecr_base_image
+    steps:
+      - checkout
+      - add_ssh_keys: *ssh-keys
+      - run: *base_environment_variables
+      - run: *deploy_scripts
       - run:
-          name: deploy to staging (EKS cluster)
+          name: deploy to test dev (EKS cluster)
           environment:
             APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
             PLATFORM_ENV: staging
@@ -163,7 +166,7 @@ workflows:
       - test:
           requires:
             - login-to-aws
-      - deploy_staging_api:
+      - build_api_image:
           context: *context
           requires:
             - test
@@ -172,7 +175,7 @@ workflows:
               only:
                 - master
                 - ecr-migration
-      - deploy_staging_worker:
+      - build_worker_image:
           context: *context
           requires:
             - test
@@ -181,17 +184,22 @@ workflows:
               only:
                 - master
                 - ecr-migration
+      - deploy_to_staging:
+          context: *context
+          requires:
+            - build_api_image
+            - build_worker_image
       - slack/approval-notification:
           message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
           include_job_number_field: false
           requires:
-            - deploy_staging_api
-            - deploy_staging_worker
+            - build_api_image
+            - build_worker_image
       - confirm_production_deploy:
           type: approval
           requires:
-            - deploy_staging_api
-            - deploy_staging_worker
+            - build_api_image
+            - build_worker_image
           filters:
             branches:
               only: master
