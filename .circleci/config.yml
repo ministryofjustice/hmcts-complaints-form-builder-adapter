@@ -135,14 +135,7 @@ jobs:
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b694b5eab13a929b44db94a73dc0dd48" >> $BASH_ENV
-      - run:
-          name: cloning deploy scripts
-          command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
-      - run:
-          name: build and push docker images
-          environment:
-            ENVIRONMENT_NAME: production
-          command: './deploy-scripts/bin/build'
+      - run: *deploy_scripts
       - run:
           name: deploy to production (eks)
           environment:
@@ -174,7 +167,6 @@ workflows:
             branches:
               only:
                 - master
-                - ecr-migration
       - build_worker_image:
           context: *context
           requires:
@@ -183,7 +175,6 @@ workflows:
             branches:
               only:
                 - master
-                - ecr-migration
       - deploy_to_staging:
           context: *context
           requires:
