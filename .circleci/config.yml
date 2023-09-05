@@ -99,7 +99,7 @@ jobs:
           name: build and push docker images
           environment:
             ENVIRONMENT_NAME: staging
-            BUILD_WORKER: true
+            BUILD_WORKER: 'true'
           command: './deploy-scripts/bin/build'
       - slack/status: *slack_status
 
