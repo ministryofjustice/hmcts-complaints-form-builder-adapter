@@ -71,6 +71,7 @@ jobs:
           name: build and push docker images
           environment:
             ENVIRONMENT_NAME: staging
+            BUILD_WORKER: false
           command: './deploy-scripts/bin/build'
       - run:
           name: deploy to staging (EKS cluster)
