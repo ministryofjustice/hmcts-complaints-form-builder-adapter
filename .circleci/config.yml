@@ -41,7 +41,7 @@ jobs:
           only_for_branches: master
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
-  deploy_staging:
+  deploy_staging_api:
     working_directory: ~/circle/git/hmcts-complaints-formbuilder-adapter
     docker: &ecr_base_image
       - image: docker.io/ministryofjustice/fb-builder:latest
@@ -64,9 +64,43 @@ jobs:
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b694b5eab13a929b44db94a73dc0dd48" >> $BASH_ENV
-      - run:
+      - run: &deploy_scripts
           name: cloning deploy scripts
           command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      - run:
+          name: build and push docker images
+          environment:
+            ENVIRONMENT_NAME: staging
+          command: './deploy-scripts/bin/build'
+      - run:
+          name: deploy to staging (EKS cluster)
+          environment:
+            APPLICATION_NAME: hmcts-complaints-formbuilder-adapter
+            PLATFORM_ENV: staging
+            K8S_NAMESPACE: hmcts-complaints-formbuilder-adapter-staging
+          command: './deploy-scripts/bin/deploy-eks'
+      - slack/status: *slack_status
+
+  deploy_staging_worker:
+    working_directory: ~/circle/git/hmcts-complaints-formbuilder-adapter
+    docker: *ecr_base_image
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: *workspace_envs
+      - setup_remote_docker
+      - aws-cli/setup:
+          role_arn: $WORKERS_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+      - add_ssh_keys: *ssh-keys
+      - run:
+          name: Setup base environment variable
+          command: |
+            echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
+            echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_b694b5eab13a929b44db94a73dc0dd48" >> $BASH_ENV
+            echo "export BUILD_WORKER=true" >> $BASH_ENV
+      - run: *deploy_scripts
       - run:
           name: build and push docker images
           environment:
@@ -127,7 +161,16 @@ workflows:
       - test:
           requires:
             - login-to-aws
-      - deploy_staging:
+      - deploy_staging_api:
+          context: *context
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+                - ecr-migration
+      - deploy_staging_worker:
           context: *context
           requires:
             - test
@@ -140,11 +183,13 @@ workflows:
           message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
           include_job_number_field: false
           requires:
-            - deploy_staging
+            - deploy_staging_api
+            - deploy_staging_worker
       - confirm_production_deploy:
           type: approval
           requires:
-            - deploy_staging
+            - deploy_staging_api
+            - deploy_staging_worker
           filters:
             branches:
               only: master
