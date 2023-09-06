@@ -1,10 +1,8 @@
 class SendEnquiryJob < ApplicationJob
-  queue_as :send_enquiry
+  queue_as :send_enquiries
 
-  def perform(form_builder_payload:, api_version:)
-    api_version = 'v1' if api_version.nil?
-
-    presenter = Presenter::Enquiry.new(form_builder_payload:, api_version:)
+  def perform(form_builder_payload:)
+    presenter = Presenter::Enquiry.new(form_builder_payload:)
 
     Usecase::Optics::CreateCase.new(
       optics_gateway: gateway,
