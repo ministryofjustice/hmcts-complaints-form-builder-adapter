@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :comment, only: [:create], defaults: { api_version: 'v2' }
     resources :complaint, only: [:create], defaults: { api_version: 'v2' }
     resources :feedback, only: [:create], defaults: { api_version: 'v2' }
+    resources :enquiry, only: [:create], defaults: { api_version: 'v2' }
   end
 
   get '/health', to: 'health#show'
