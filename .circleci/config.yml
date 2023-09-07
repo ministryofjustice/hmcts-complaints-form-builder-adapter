@@ -167,6 +167,7 @@ workflows:
             branches:
               only:
                 - master
+                - complaints-new-requirements
       - build_worker_image:
           context: *context
           requires:
@@ -175,29 +176,30 @@ workflows:
             branches:
               only:
                 - master
+                - complaints-new-requirements
       - deploy_to_staging:
           context: *context
           requires:
             - build_api_image
             - build_worker_image
-      - slack/approval-notification:
-          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
-          include_job_number_field: false
-          requires:
-            - build_api_image
-            - build_worker_image
-      - confirm_production_deploy:
-          type: approval
-          requires:
-            - build_api_image
-            - build_worker_image
-          filters:
-            branches:
-              only: master
-      - deploy_production:
-          context: *context
-          requires:
-            - confirm_production_deploy
-          filters:
-            branches:
-              only: master
+#      - slack/approval-notification:
+#          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
+#          include_job_number_field: false
+#          requires:
+#            - build_api_image
+#            - build_worker_image
+#      - confirm_production_deploy:
+#          type: approval
+#          requires:
+#            - build_api_image
+#            - build_worker_image
+#          filters:
+#            branches:
+#              only: master
+#      - deploy_production:
+#          context: *context
+#          requires:
+#            - confirm_production_deploy
+#          filters:
+#            branches:
+#              only: master
