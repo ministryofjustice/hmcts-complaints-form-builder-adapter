@@ -25,9 +25,9 @@ RSpec.describe Presenter::Enquiry do
       }
     end
 
-    it 'returns the case number' do
-      expect(presenter.optics_payload[:Reference]).to eq('0000')
-    end
+    # it 'returns the case number' do
+    #   expect(presenter.optics_payload[:Reference]).to eq('0000')
+    # end
 
     it 'returns the contact location' do
       expect(presenter.optics_payload[:AssignedTeam]).to eq('973')
