@@ -1,12 +1,11 @@
 module Presenter
   class Enquiry < BasePresenter
     REQUEST_METHOD = 'Online form'.freeze
-    TYPE = 'GeneralEnquiry'.freeze
 
     # rubocop:disable Metrics/MethodLength, Naming/VariableNumber
     def optics_payload
       {
-        Type: TYPE,
+        Type: ENV['COMMENT_TYPE'] || '',
         RequestDate: request_date,
         RequestMethod: REQUEST_METHOD,
         'Customer.FirstName': submission_answers.fetch(:contactdetails_text_1, ''),
