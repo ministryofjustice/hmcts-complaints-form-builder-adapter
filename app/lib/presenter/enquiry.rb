@@ -1,7 +1,7 @@
 module Presenter
   class Enquiry < BasePresenter
     REQUEST_METHOD = 'Online form'.freeze
-    TYPE = 'Query'.freeze
+    TYPE = 'HMCTS General enquiry'.freeze
 
     # rubocop:disable Metrics/MethodLength, Naming/VariableNumber
     def optics_payload
@@ -13,7 +13,7 @@ module Presenter
         'Customer.Surname': submission_answers.fetch(:contactdetails_text_2, ''),
         Reference: submission_answers.fetch(:'contact-details_text_1', ''),
         'Customer.Email': submission_answers.fetch(:usercontactemail_email_1, ''),
-        AssignedTeam: submission_answers.fetch(:courttribunalorservice_autocomplete_1, 'INBOX'),
+        AssignedTeam: submission_answers.fetch(:courttribunalorservice_autocomplete_1, ''),
         'Case.ServiceTeam': submission_answers.fetch(:courttribunalorservice_autocomplete_1, ''),
         Details: submission_answers.fetch(:area_textarea_1, '')
       }
