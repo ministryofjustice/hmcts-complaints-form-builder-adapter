@@ -1,7 +1,7 @@
 module Presenter
   class Enquiry < BasePresenter
     REQUEST_METHOD = 'Online form'.freeze
-    TYPE = 'Query'.freeze
+    TYPE = 'HMCTSGeneralEnquiry'.freeze
 
     # rubocop:disable Metrics/MethodLength, Naming/VariableNumber
     def optics_payload
