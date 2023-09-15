@@ -9,23 +9,23 @@ gem 'httparty', '~> 0.21.0'
 gem 'jwe', '~> 0.4.0'
 gem 'jwt', '~> 2.7'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 6.2'
+gem 'puma', '~> 6.3'
 gem 'rails', '~> 6.1.7.1', '< 7.0.0.0'
 gem 'sentry-delayed_job', '~> 5.3.1'
 gem 'sentry-rails', '~> 5.3.1'
-gem 'sentry-ruby', '~> 5.3.1'
+gem 'sentry-ruby', '~> 5.11.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rubocop', '~> 1.48.1'
-  gem 'rubocop-rspec', '~> 2.19'
+  gem 'rubocop', '~> 1.56.3'
+  gem 'rubocop-rspec', '~> 2.24'
 end
 
 group :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'timecop', '~> 0.9.8'
-  gem 'webmock', '~> 3.18.1'
+  gem 'webmock', '~> 3.19.1'
 end
 
 group :development do
