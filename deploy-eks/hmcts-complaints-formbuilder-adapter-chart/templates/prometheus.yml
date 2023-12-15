@@ -1,0 +1,62 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}
+  name: prometheus-rules
+  labels:
+    role: alert-rules
+    prometheus: cloud-platform
+spec:
+  groups:
+  - name: hmcts-adapter
+    rules:
+    - alert: KubePodNotReady
+      annotations:
+        message: Pod {{`{{`}} $labels.namespace {{`}}`}}/{{`{{`}} $labels.pod {{`}}`}} has been in a non-ready state for longer than 10 minutes
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodnotready
+      expr: sum by (namespace, pod) (kube_pod_status_phase{job="kube-state-metrics", phase!~"Running|Succeeded", namespace="hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}"}) > 0
+      for: 10m
+      labels:
+        severity: {{ .Values.prometheus.alertSeverity }}
+
+    - alert: KubePodCrashLooping
+      annotations:
+        message: Pod {{`{{`}} $labels.namespace {{`}}`}}/{{`{{`}} $labels.pod {{`}}`}} ({{`{{`}} $labels.container {{`}}`}}) is restarting excessively
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping
+      expr: rate(kube_pod_container_status_restarts_total{job="kube-state-metrics", namespace="hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}"}[10m]) > 0
+      for: 5m
+      labels:
+        severity: {{ .Values.prometheus.alertSeverity }}
+
+    - alert: DeploymentReplicasMismatch
+      annotations:
+        message: Deployment `{{`{{`}} $labels.deployment {{`}}`}}` has not matched the expected number of replicas for more than 30m.
+      expr: >-
+        kube_deployment_spec_replicas{job="kube-state-metrics", namespace="hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}"}
+        != kube_deployment_status_replicas_available{job="kube-state-metrics"}
+      for: 30m
+      labels:
+        severity: {{ .Values.prometheus.alertSeverity }}
+
+    - alert: KubeNamespaceQuotaNearing
+      annotations:
+        message: Namespace {{`{{`}} $labels.namespace {{`}}`}} is using {{`{{`}} printf "%0.0f" $value {{`}}`}}% of its {{`{{`}} $labels.resource {{`}}`}} quota.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotaexceeded
+      expr: |-
+        100 * kube_resourcequota{job="kube-state-metrics", type="used", namespace="hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}"}
+          / ignoring(instance, job, type)
+        (kube_resourcequota{job="kube-state-metrics", type="hard", namespace="hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}"} > 0)
+          > 90
+      for: 5m
+      labels:
+        severity: {{ .Values.prometheus.alertSeverity }}
+
+    - alert: FailedDelayedJobs
+      annotations:
+        message: A HMCTS Adapter Delayed job has failed in {{ .Values.environmentName }}
+        runbook_url: https://ministryofjustice.github.io/fb-guide-and-runbook/troubleshooting/find-a-failed-submission/#delayed-job-failures
+      expr: |-
+        avg(delayed_jobs_failed{namespace="hmcts-complaints-formbuilder-adapter-{{ .Values.environmentName }}"}) > 0
+      for: 1m
+      labels:
+        severity: {{ .Values.prometheus.alertSeverity }}
