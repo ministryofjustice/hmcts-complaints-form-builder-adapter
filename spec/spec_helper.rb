@@ -96,3 +96,16 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 end
+
+require 'simplecov'
+require 'simplecov-console'
+
+SimpleCov.start do
+  add_filter '/config/'
+  add_filter '/spec/'
+end
+SimpleCov.minimum_coverage 100
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::Console
+])
