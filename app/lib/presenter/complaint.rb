@@ -47,8 +47,8 @@ module Presenter
         'Customer.Postcode': submission_answers.fetch(:postcode, ''),
         'Customer.Email': submission_answers.fetch(:email_address, ''),
         'Customer.Phone': submission_answers.fetch(:phone, ''),
-        'Impact': submission_answers.fetch(:impact, ''),
-        'ActionRequested': submission_answers.fetch(:action_requested, '')
+        Impact: submission_answers.fetch(:impact, ''),
+        ActionRequested: submission_answers.fetch(:action_requested, '')
       }
     end
     # rubocop:enable Metrics/MethodLength
@@ -72,7 +72,7 @@ module Presenter
         Type: 'Complaint',
         Format: 'json',
         RequestMethod: 'Online - gov.uk',
-        'PartyContextManageCases': 'Main'
+        PartyContextManageCases: 'Main'
       }
     end
 
@@ -87,8 +87,8 @@ module Presenter
         'Customer.Postcode': submission_answers.fetch(:youraddress_text_4, ''),
         'Customer.Email': submission_answers.fetch(:youremailaddress_email_1, ''),
         'Customer.Phone': submission_answers.fetch(:yourphonenumber_text_1, ''),
-        'Impact': submission_answers.fetch(:howhasthisaffectedyou_textarea_1, ''),
-        'ActionRequested': submission_answers.fetch(:whatcanwedotoputthisright_textarea_1, '')
+        Impact: submission_answers.fetch(:howhasthisaffectedyou_textarea_1, ''),
+        ActionRequested: submission_answers.fetch(:whatcanwedotoputthisright_textarea_1, '')
       }
     end
     # rubocop:enable Metrics/MethodLength, Naming/VariableNumber

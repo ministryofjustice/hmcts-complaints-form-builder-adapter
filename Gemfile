@@ -24,6 +24,8 @@ end
 group :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
+  gem 'simplecov'
+  gem 'simplecov-console', require: false
   gem 'timecop', '~> 0.9.8'
   gem 'webmock', '~> 3.19.1'
 end
