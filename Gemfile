@@ -11,9 +11,9 @@ gem 'jwt', '~> 2.7'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
 gem 'rails', '~> 6.1.7.1', '< 7.0.0.0'
-gem 'sentry-delayed_job', '~> 5.14.0'
-gem 'sentry-rails', '~> 5.14.0'
-gem 'sentry-ruby', '~> 5.14.0'
+gem 'sentry-delayed_job', '~> 5.15.0'
+gem 'sentry-rails', '~> 5.15.0'
+gem 'sentry-ruby', '~> 5.15.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
