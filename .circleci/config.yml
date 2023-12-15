@@ -167,6 +167,7 @@ workflows:
             branches:
               only:
                 - master
+                - prometheus-rules
       - build_worker_image:
           context: *context
           requires:
@@ -175,6 +176,7 @@ workflows:
             branches:
               only:
                 - master
+                - prometheus-rules
       - deploy_to_staging:
           context: *context
           requires:
