@@ -8,6 +8,7 @@ AllCops:
   - Guardfile
   - config/environments/**
   - spec/**/*
+  NewCops: enable
 
 Style/Documentation:
   Enabled: false
@@ -22,7 +23,7 @@ Metrics/LineLength:
   Enabled: false
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'let']
+  AllowedMethods: ['describe', 'context', 'let']
 
 Metrics/MethodLength:
   Enabled: true
