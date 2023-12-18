@@ -4,35 +4,19 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    time: "03:00"
-    timezone: Europe/London
-  open-pull-requests-limit: 10
-  reviewers:
-  - mattempty
-  - chrispymm
-  - H3ll3m4
-  - StevenLeighton21
+  # Disable version updates, but leave security updates
+  open-pull-requests-limit: 0
+
 - package-ecosystem: docker
   directory: "/docker/api"
   schedule:
     interval: daily
-    time: "03:00"
-    timezone: Europe/London
-  open-pull-requests-limit: 10
-  reviewers:
-  - mattempty
-  - chrispymm
-  - H3ll3m4
-  - StevenLeighton21
+  # Disable version updates, but leave security updates
+  open-pull-requests-limit: 0
+
 - package-ecosystem: docker
   directory: "/docker/worker"
   schedule:
     interval: daily
-    time: "03:00"
-    timezone: Europe/London
-  open-pull-requests-limit: 10
-  reviewers:
-  - mattempty
-  - chrispymm
-  - H3ll3m4
-  - StevenLeighton21
+  # Disable version updates, but leave security updates
+  open-pull-requests-limit: 0
