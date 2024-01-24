@@ -10,6 +10,6 @@ class MetricsController < ActionController::Base
     @failed_job_stats = Delayed::Job.where('attempts > 0').count
 
     response.set_header('Content-Type', 'text/plain; version=0.0.4')
-    render 'metrics/show.text'
+    render 'metrics/show', formats: [:text]
   end
 end
