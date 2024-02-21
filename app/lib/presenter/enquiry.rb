@@ -3,7 +3,7 @@ module Presenter
     REQUEST_METHOD = 'Online form'.freeze
     TYPE = 'HMCTS General enquiry'.freeze
 
-    # rubocop:disable Metrics/MethodLength, Naming/VariableNumber
+    # rubocop:disable Metrics/MethodLength
     def optics_payload
       {
         Type: TYPE,
@@ -18,6 +18,6 @@ module Presenter
         Details: submission_answers.fetch(:area_textarea_1, '')
       }
     end
-    # rubocop:enable  Metrics/MethodLength, Naming/VariableNumber
+    # rubocop:enable  Metrics/MethodLength
   end
 end

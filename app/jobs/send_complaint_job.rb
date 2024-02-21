@@ -3,7 +3,6 @@ class SendComplaintJob < ApplicationJob
 
   # rubocop:disable Metrics/MethodLength
   def perform(form_builder_payload:, api_version:)
-    api_version = 'v1' if api_version.nil?
     Rails.logger.info("Working on job_id: #{job_id}")
 
     attachments = Usecase::SpawnAttachments.new(

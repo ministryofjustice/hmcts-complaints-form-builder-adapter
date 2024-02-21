@@ -30,6 +30,6 @@ class ApplicationController < ActionController::API
   end
 
   def api_version
-    @api_version = params[:api_version].blank? ? 'v1' : params[:api_version]
+    params[:api_version]
   end
 end

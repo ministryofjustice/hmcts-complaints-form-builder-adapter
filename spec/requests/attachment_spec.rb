@@ -24,7 +24,7 @@ describe 'Downloading an attachment', type: :request do
       )
       .to_return(status: 200, body: encrypted_file_data, headers: {})
 
-    get "/v1/attachments/#{attachment.identifier}"
+    get "/v2/attachments/#{attachment.identifier}"
   end
 
   it 'returns 201 on a valid post' do

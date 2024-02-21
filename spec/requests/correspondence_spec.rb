@@ -141,7 +141,7 @@ describe 'Submitting a correspondence', type: :request do
         headers: {}
       )
     perform_enqueued_jobs do
-      post '/v1/correspondence', params: encrypted_body(msg: runner_submission)
+      post '/v2/correspondence', params: encrypted_body(msg: runner_submission)
     end
   end
 
@@ -150,7 +150,7 @@ describe 'Submitting a correspondence', type: :request do
     let(:runner_submission) { representing_runner_submission }
 
     include_context 'when authentication required' do
-      let(:url) { '/v1/correspondence' }
+      let(:url) { '/v2/correspondence' }
     end
 
     it 'returns 201 on a valid post' do
@@ -186,12 +186,12 @@ describe 'Submitting a correspondence', type: :request do
     end
   end
 
-  context 'self respresenting' do
+  context 'self representing' do
     let(:expected_optics_payload) { expected_self_representing_optics_payload }
     let(:runner_submission) { self_representing_runner_submission }
 
     include_context 'when authentication required' do
-      let(:url) { '/v1/correspondence' }
+      let(:url) { '/v2/correspondence' }
     end
 
     it 'returns 201 on a valid post' do
