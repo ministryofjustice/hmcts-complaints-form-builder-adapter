@@ -1,6 +1,10 @@
-require: rubocop-rspec
+require:
+- rubocop-rspec
+- rubocop-factory_bot
 
 AllCops:
+  SuggestExtensions: false
+  NewCops: enable
   Exclude:
   - .bundle/**
   - bin/**
@@ -8,7 +12,6 @@ AllCops:
   - Guardfile
   - config/environments/**
   - spec/**/*
-  NewCops: enable
 
 Style/Documentation:
   Enabled: false
@@ -19,7 +22,7 @@ Style/FrozenStringLiteralComment:
 Style/SymbolArray:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/BlockLength:
@@ -34,4 +37,7 @@ RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
 Metrics/AbcSize:
+  Enabled: false
+
+Naming/VariableNumber:
   Enabled: false
