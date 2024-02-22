@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     resources :complaint, only: [:create]
     resources :feedback, only: [:create]
     resources :enquiry, only: [:create]
-    resources :correspondence, only: [:create]
     resources :attachments, only: [:show]
   end
 
