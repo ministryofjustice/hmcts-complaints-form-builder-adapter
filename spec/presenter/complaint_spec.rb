@@ -72,11 +72,11 @@ describe Presenter::Complaint do
         ActionRequested: 'Consolation',
         RequestMethod: 'Online - gov.uk',
         "Document1.Name": 'image.png',
-        "Document1.URL": 'https://example.com/v2/attachments/3c535282-6ebb-41c5-807e-74394ef036b1',
+        "Document1.URL": 'https://example.com/v1/attachments/3c535282-6ebb-41c5-807e-74394ef036b1',
         "Document1.MimeType": 'image/png',
         "Document1.URLLoadContent": true,
         "Document2.Name": 'document.pdf',
-        "Document2.URL": 'https://example.com/v2/attachments/3c535282-6ebb-41c5-807e-74394ef036b2',
+        "Document2.URL": 'https://example.com/v1/attachments/3c535282-6ebb-41c5-807e-74394ef036b2',
         "Document2.MimeType": 'application/pdf',
         "Document2.URLLoadContent": true
       }

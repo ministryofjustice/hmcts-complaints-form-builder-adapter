@@ -34,7 +34,7 @@ describe 'Submitting a complaint', type: :request do
       ActionRequested: '',
       'Document1.Name': 'image.png',
       'Document1.MimeType': 'image/png',
-      'Document1.URL': 'https://example.com/v2/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c',
+      'Document1.URL': 'https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c',
       'Document1.URLLoadContent': true
     }.to_json
   end
@@ -77,7 +77,7 @@ describe 'Submitting a complaint', type: :request do
 
       stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
         with(
-          body: "{\"Team\":\"111\",\"AssignedTeam\":\"111\",\"AssignedTeamSS\":\"111\",\"RequestDate\":\"2019-09-11\",\"Details\":\"\",\"Reference\":\"\",\"db\":\"hmcts\",\"Type\":\"Complaint\",\"Format\":\"json\",\"RequestMethod\":\"Online - gov.uk\",\"PartyContextManageCases\":\"Main\",\"Customer.FirstName\":\"\",\"Customer.Surname\":\"\",\"Customer.Address\":\"\",\"Customer.Town\":\"\",\"Customer.County\":\"\",\"Customer.Postcode\":\"\",\"Customer.Email\":\"\",\"Customer.Phone\":\"\",\"Impact\":\"\",\"ActionRequested\":\"\",\"Document1.Name\":\"image.png\",\"Document1.MimeType\":\"image/png\",\"Document1.URL\":\"https://example.com/v2/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c\",\"Document1.URLLoadContent\":true}",
+          body: "{\"Team\":\"111\",\"AssignedTeam\":\"111\",\"AssignedTeamSS\":\"111\",\"RequestDate\":\"2019-09-11\",\"Details\":\"\",\"Reference\":\"\",\"db\":\"hmcts\",\"Type\":\"Complaint\",\"Format\":\"json\",\"RequestMethod\":\"Online - gov.uk\",\"PartyContextManageCases\":\"Main\",\"Customer.FirstName\":\"\",\"Customer.Surname\":\"\",\"Customer.Address\":\"\",\"Customer.Town\":\"\",\"Customer.County\":\"\",\"Customer.Postcode\":\"\",\"Customer.Email\":\"\",\"Customer.Phone\":\"\",\"Impact\":\"\",\"ActionRequested\":\"\",\"Document1.Name\":\"image.png\",\"Document1.MimeType\":\"image/png\",\"Document1.URL\":\"https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c\",\"Document1.URLLoadContent\":true}",
           headers: {
         'Accept'=>'*/*',
         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
