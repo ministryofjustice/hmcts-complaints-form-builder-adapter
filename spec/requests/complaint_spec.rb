@@ -24,14 +24,14 @@ describe 'Submitting a complaint', type: :request do
       "PartyContextManageCases": 'Main',
       'Customer.FirstName': '',
       'Customer.Surname': '',
-      'Customer.Address': '',
-      'Customer.Town': '',
-      'Customer.County': '',
-      'Customer.Postcode': '',
       'Customer.Email': '',
       'Customer.Phone': '',
       Impact: '',
       ActionRequested: '',
+      'Customer.Address': '',
+      'Customer.Town': '',
+      'Customer.County': '',
+      'Customer.Postcode': '',
       'Document1.Name': 'image.png',
       'Document1.MimeType': 'image/png',
       'Document1.URL': 'https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c',
@@ -66,29 +66,32 @@ describe 'Submitting a complaint', type: :request do
           filename: 'image.png',
           mimetype: 'image/png'
         }]
-      }.to_json
+      }
+    end
+
+    let(:payload_body) do
+      "{\"Team\":\"111\",\"AssignedTeam\":\"111\",\"AssignedTeamSS\":\"111\",\"RequestDate\":\"2019-09-11\",\"Details\":\"\",\"Reference\":\"\",\"db\":\"hmcts\",\"Type\":\"Complaint\",\"Format\":\"json\",\"RequestMethod\":\"Online - gov.uk\",\"PartyContextManageCases\":\"Main\",\"Customer.FirstName\":\"\",\"Customer.Surname\":\"\",\"Customer.Email\":\"\",\"Customer.Phone\":\"\",\"Impact\":\"\",\"ActionRequested\":\"\",\"Customer.Address\":\"\",\"Customer.Town\":\"\",\"Customer.County\":\"\",\"Customer.Postcode\":\"\",\"Document1.Name\":\"image.png\",\"Document1.MimeType\":\"image/png\",\"Document1.URL\":\"https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c\",\"Document1.URLLoadContent\":true}"
     end
 
     before do
-
       stub_request(:post, 'https://uat.icasework.com/token?db=hmcts')
       .with(body: { 'assertion' => 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb21lX29wdGljc19hcGlfa2V5IiwiYXVkIjoiaHR0cHM6Ly91YXQuaWNhc2V3b3JrLmNvbS90b2tlbj9kYj1obWN0cyIsImlhdCI6MTU2ODIxNjA4Nn0.fj8VsMONpeEmeavkh23yRsGAtfVlWkJI267gijpy6pA', 'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer' },
             headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }).to_return(status: 200, body: { access_token: 'some_bearer_token' }.to_json, headers: {})
 
       stub_request(:post, "https://uat.icasework.com/createcase?db=hmcts").
         with(
-          body: "{\"Team\":\"111\",\"AssignedTeam\":\"111\",\"AssignedTeamSS\":\"111\",\"RequestDate\":\"2019-09-11\",\"Details\":\"\",\"Reference\":\"\",\"db\":\"hmcts\",\"Type\":\"Complaint\",\"Format\":\"json\",\"RequestMethod\":\"Online - gov.uk\",\"PartyContextManageCases\":\"Main\",\"Customer.FirstName\":\"\",\"Customer.Surname\":\"\",\"Customer.Address\":\"\",\"Customer.Town\":\"\",\"Customer.County\":\"\",\"Customer.Postcode\":\"\",\"Customer.Email\":\"\",\"Customer.Phone\":\"\",\"Impact\":\"\",\"ActionRequested\":\"\",\"Document1.Name\":\"image.png\",\"Document1.MimeType\":\"image/png\",\"Document1.URL\":\"https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c\",\"Document1.URLLoadContent\":true}",
+          body: payload_body,
           headers: {
-        'Accept'=>'*/*',
-        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Authorization'=>'Bearer some_bearer_token',
-        'Content-Type'=>'application/json',
-        'User-Agent'=>'Ruby'
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Authorization'=>'Bearer some_bearer_token',
+            'Content-Type'=>'application/json',
+            'User-Agent'=>'Ruby'
           }).
         to_return(status: 200, body: "", headers: {})
 
       perform_enqueued_jobs do
-        post '/v2/complaint', params: encrypted_body(msg: runner_submission)
+        post '/v2/complaint', params: encrypted_body(msg: runner_submission.to_json)
       end
     end
 
@@ -98,6 +101,36 @@ describe 'Submitting a complaint', type: :request do
 
     it 'returns 201 on a valid post' do
       expect(response).to have_http_status(:created)
+    end
+
+    context 'for a submission with containing a new address component' do
+      let(:runner_submission) do
+        super().merge(
+          {
+            submissionAnswers: {
+              'yourname_text_1': 'John',
+              'yourname_text_2': 'Doe',
+              'courtortribunalyourcomplaintisabout_autocomplete_1': '111',
+              'youraddress_address_1': {
+                'address_line_one' => 'Street 123',
+                'address_line_two' =>'High Tower',
+                'city' => 'London',
+                'county' => 'Greater London',
+                'postcode' => 'SW1H 9EA',
+                'country' => 'United Kingdom'
+              }
+            }
+          }
+        )
+      end
+
+      let(:payload_body) do
+        "{\"Team\":\"111\",\"AssignedTeam\":\"111\",\"AssignedTeamSS\":\"111\",\"RequestDate\":\"2019-09-11\",\"Details\":\"\",\"Reference\":\"\",\"db\":\"hmcts\",\"Type\":\"Complaint\",\"Format\":\"json\",\"RequestMethod\":\"Online - gov.uk\",\"PartyContextManageCases\":\"Main\",\"Customer.FirstName\":\"John\",\"Customer.Surname\":\"Doe\",\"Customer.Email\":\"\",\"Customer.Phone\":\"\",\"Impact\":\"\",\"ActionRequested\":\"\",\"Customer.Address\":\"Street 123, High Tower\",\"Customer.Town\":\"London\",\"Customer.County\":\"Greater London\",\"Customer.Postcode\":\"SW1H 9EA\",\"Document1.Name\":\"image.png\",\"Document1.MimeType\":\"image/png\",\"Document1.URL\":\"https://example.com/v1/attachments/e2161d54-92f8-4e10-b3a1-94630c65df3c\",\"Document1.URLLoadContent\":true}"
+      end
+
+      it 'returns 201 on a valid post' do
+        expect(response).to have_http_status(:created)
+      end
     end
 
     describe 'end to end submission' do
