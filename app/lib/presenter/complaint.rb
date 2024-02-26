@@ -43,21 +43,42 @@ module Presenter
       }
     end
 
-    # rubocop:disable Metrics/MethodLength
     def customer_data
       {
         'Customer.FirstName': submission_answers.fetch(:yourname_text_1, ''),
         'Customer.Surname': submission_answers.fetch(:yourname_text_2, ''),
-        'Customer.Address': submission_answers.fetch(:youraddress_text_1, ''),
-        'Customer.Town': submission_answers.fetch(:youraddress_text_2, ''),
-        'Customer.County': submission_answers.fetch(:youraddress_text_3, ''),
-        'Customer.Postcode': submission_answers.fetch(:youraddress_text_4, ''),
         'Customer.Email': submission_answers.fetch(:youremailaddress_email_1, ''),
         'Customer.Phone': submission_answers.fetch(:yourphonenumber_text_1, ''),
         Impact: submission_answers.fetch(:howhasthisaffectedyou_textarea_1, ''),
         ActionRequested: submission_answers.fetch(:whatcanwedotoputthisright_textarea_1, '')
-      }
+      }.merge(
+        customer_address
+      )
+    end
+
+    # TODO: temporarily until en/cy forms are updated, support both address formats
+    # rubocop:disable Metrics/MethodLength
+    def customer_address
+      if address_component.present?
+        {
+          'Customer.Address': [address_component[:address_line_one], address_component[:address_line_two]].compact_blank.join(', '),
+          'Customer.Town': address_component.fetch(:city, ''),
+          'Customer.County': address_component.fetch(:county, ''),
+          'Customer.Postcode': address_component.fetch(:postcode, '')
+        }
+      else
+        {
+          'Customer.Address': submission_answers.fetch(:youraddress_text_1, ''),
+          'Customer.Town': submission_answers.fetch(:youraddress_text_2, ''),
+          'Customer.County': submission_answers.fetch(:youraddress_text_3, ''),
+          'Customer.Postcode': submission_answers.fetch(:youraddress_text_4, '')
+        }
+      end
     end
     # rubocop:enable Metrics/MethodLength
+
+    def address_component
+      @address_component ||= submission_answers.fetch(:youraddress_address_1, {}).with_indifferent_access
+    end
   end
 end
