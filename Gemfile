@@ -10,7 +10,7 @@ gem 'jwe', '~> 0.4.0'
 gem 'jwt', '~> 2.7'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rails', '~> 6.1.7.1', '< 7.0.0.0'
+gem 'rails', '< 7.1'
 gem 'sentry-delayed_job', '~> 5.14'
 gem 'sentry-rails', '~> 5.15'
 gem 'sentry-ruby', '~> 5.15'
@@ -32,7 +32,6 @@ end
 
 group :development do
   gem 'guard-rspec', require: false
-  gem 'listen', '>= 3.0.5', '< 3.9'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
 end
